@@ -6,16 +6,12 @@ var parallelize = async.parallel;
 var request = require('request');
 var _ = require('underscore');
 
+var readArgs = require('./read-args.js');
 var queryApi = require('./query-api');
 var formatResults = require('./format-results');
 
 (function main() {
-  var searches = {
-    //'cebanu valentina': 'CA Chişinău',
-    'Șeica Ion Anatolie': 'CA Chişinău',
-    //'romanescu constantin': 'CA Chişinău'
-  };
-
+  var searches = readArgs();
   var queries = _(searches).keys();
 
   forEach(queries, function(query, callback) {
@@ -136,7 +132,6 @@ function citaţiiÎnInstanţă(query, curteaDeApel) {
     'filters': JSON.stringify({
       'groupOp': 'OR',
       'rules': [
-        {'field': 'obiectul_examinarii', 'op': 'cn', 'data': query},
         {'field': 'reclamantul', 'op': 'cn', 'data': query},
         {'field': 'persoana_citata', 'op': 'cn', 'data': query}
       ]

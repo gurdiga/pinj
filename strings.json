@@ -1,0 +1,66 @@
+{
+  "hotărîrileInstanţei": {
+    "title": "Hotărîrile instanţei",
+    "columnTitles": [
+      "SKIP",
+      "Data pronunţării",
+      "Numărul dosarului",
+      "Denumirea dosarului",
+      "Tipul dosarului",
+      "SKIP"
+    ]
+  },
+  "agendaŞedinţelor": {
+    "title": "Agenda şedinţelor",
+    "columnTitles": [
+      "SKIP",
+      "Data şedinţei",
+      "Ora şedinţei",
+      "Tipul dosarului",
+      "Numărul dosarului",
+      "Părţile",
+      "Tipul şedinţei",
+      "Sala şedinţei",
+      "Data actualizării"
+    ]
+  },
+  "citaţiiÎnInstanţă": {
+    "title": "Citaţii în instanţă",
+    "columnTitles": [
+      "SKIP",
+      "Numărul dosarului",
+      "Data şedinţei",
+      "Ora şedinţei",
+      "Pîrît",
+      "Obiectul examinării",
+      "Reclamant",
+      "Instanţa de judecată",
+      "Judecător",
+      "Persoana responsabilă",
+      "Contacte",
+      "Data publicării"
+    ]
+  },
+  "cereriÎnInstanţă": {
+    "title": "Cereri în instanţă",
+    "columnTitles": [
+      "SKIP",
+      "Numărul dosarului",
+      "Părţile dosarului",
+      "Tipul dosarului",
+      "Categoria dosarului",
+      "Statutul dosarului",
+      "Data actualizării"
+    ]
+  },
+  "proceduriDeInsolvabilitate": {
+    "title": "Proceduri de insolvabilitate",
+    "columnTitles": [
+      "SKIP",
+      "Data pronunţării",
+      "Numărul dosarului",
+      "Denumirea dosarului",
+      "Tipul dosarului",
+    ]
+  }
+}

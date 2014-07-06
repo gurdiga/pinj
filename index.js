@@ -3,7 +3,6 @@
 var async = require('async');
 var forEach = async.eachSeries;
 var parallelize = async.parallel;
-var request = require('request');
 var _ = require('underscore');
 
 var readArgs = require('./read-args.js');

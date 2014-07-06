@@ -7,15 +7,21 @@ module.exports = function() {
 
   if (args.length === 0) {
     showUsageAndExit();
+    process.exit(1);
+    return;
   }
 
-  var căutări = args.map(function(căutare) {
-    return căutare.split(':');
+  var searches = args.map(function(pair) {
+    return pair.split(':');
   });
 
-  return _(căutări).object();
+  return convertToHash(searches);
 };
 
+
+function convertToHash(arrayOfArrays) {
+  return _(arrayOfArrays).object();
+}
 
 function showUsageAndExit() {
   console.log(
@@ -24,6 +30,4 @@ function showUsageAndExit() {
     '  ' + process.argv[1] + ' "text de căutat:curtea de apel" ...' +
     '\n'
   );
-
-  process.exit(1);
 }

@@ -13,7 +13,7 @@ function header(context) {
   var headerLine = '='.repeat(headerText.length);
 
   return headerText + '\n' + headerLine + '\n';
-};
+}
 
 function contents(results) {
   var dbNames = Object.keys(strings);
@@ -24,17 +24,21 @@ function contents(results) {
 
     return formatResult(title, internalName, result);
   }).join('');
-};
+}
 
 function formatResult(title, internalName, data) {
+  var parsedData;
   var header = formatResultTitle(title);
   var contents = '';
 
   try {
-    var parsedData = JSON.parse(data);
-    contents = formatParsedResult(internalName, parsedData);
+    parsedData = JSON.parse(data);
   } catch(e) {
     contents = formatUnparsableResult(e, internalName, data);
+  }
+
+  if (!!parsedData) {
+    contents = formatParsedResult(internalName, parsedData);
   }
 
   return header + contents + '\n';

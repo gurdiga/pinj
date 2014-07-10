@@ -18,8 +18,8 @@ var formatResults = require('./format-results');
 
     parallelize({
       cereriÎnInstanţă: cereriÎnInstanţă(query, curteaDeApel),
-      agendaŞedinţelor: agendaŞedinţelor(query, curteaDeApel),
-      hotărîrileInstanţei: hotărîrileInstanţei(query, curteaDeApel),
+      agendaŞedinţelor: agendaŞedinţelor(query),
+      hotărîrileInstanţei: hotărîrileInstanţei(query),
       proceduriDeInsolvabilitate: proceduriDeInsolvabilitate(query, curteaDeApel),
       citaţiiÎnInstanţă: citaţiiÎnInstanţă(query, curteaDeApel)
     }, printResults({
@@ -69,7 +69,7 @@ function cereriÎnInstanţă(query, curteaDeApel) {
   };
 }
 
-function agendaŞedinţelor(query, curteaDeApel, callback) {
+function agendaŞedinţelor(query) {
   var url = 'http://instante.justice.md/apps/agenda_judecata/inst/cac/agenda_grid.php';
   var searchOptions = {
     'sidx': 'data_inregistrare asc, data_inregistrare',
@@ -87,7 +87,7 @@ function agendaŞedinţelor(query, curteaDeApel, callback) {
   };
 }
 
-function hotărîrileInstanţei(query, curteaDeApel) {
+function hotărîrileInstanţei(query) {
   var url = 'http://instante.justice.md/apps/hotariri_judecata/inst/cac/db_hot_grid.php';
   var searchOptions = {
     'sidx': 'id',
@@ -95,7 +95,7 @@ function hotărîrileInstanţei(query, curteaDeApel) {
     'filters': JSON.stringify({
       'groupOp': 'AND',
       'rules': [
-        {'field':'denumire_dosar','op':'cn','data':'romanescu constantin'}
+        {'field': 'denumire_dosar', 'op': 'cn', 'data': query}
       ]
     })
   };
@@ -105,7 +105,7 @@ function hotărîrileInstanţei(query, curteaDeApel) {
   };
 }
 
-function proceduriDeInsolvabilitate(query, curteaDeApel) {
+function proceduriDeInsolvabilitate(query) {
   var url = 'http://instante.justice.md/apps/hotariri_judecata/inst/cac/db_hot_grid-i.php';
   var searchOptions = {
     'sidx': 'id',
@@ -123,7 +123,7 @@ function proceduriDeInsolvabilitate(query, curteaDeApel) {
   };
 }
 
-function citaţiiÎnInstanţă(query, curteaDeApel) {
+function citaţiiÎnInstanţă(query) {
   var url = 'http://instante.justice.md/apps/citatii_judecata/citatii_grid.php';
   var searchOptions = {
     'sidx': 'judecatoria_vizata desc, judecatoria_vizata',

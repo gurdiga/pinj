@@ -1,9 +1,8 @@
 'use strict';
 
 var _ = require('underscore');
-var async = require('async');
-var forEach = async.eachSeries;
-var parallelize = async.parallel;
+var forEach = require('async').eachSeries;
+var parallelize = require('async').parallel;
 var sections = require('./meta').sections;
 var queries = getQueries();
 

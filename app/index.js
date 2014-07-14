@@ -1,17 +1,14 @@
 'use strict';
 
+var _ = require('underscore');
 var async = require('async');
 var forEach = async.eachSeries;
 var parallelize = async.parallel;
+var sections = require('./meta').sections;
 var queries = getQueries();
 
 forEach(queries, function(query, callback) {
-  parallelize({
-    cereriÎnInstanţă: require('./sections/cereriÎnInstanţă')(query),
-    agendaŞedinţelor: require('./sections/agendaŞedinţelor')(query),
-    hotărîrileInstanţei: require('./sections/hotărîrileInstanţei')(query),
-    citaţiiÎnInstanţă: require('./sections/citaţiiÎnInstanţă')(query)
-  }, printResults(query, callback));
+  parallelize(sectionQueries(query), printResults(query, callback));
 });
 
 
@@ -25,6 +22,15 @@ function getQueries() {
   }
 
   return args;
+}
+
+function sectionQueries(query) {
+  return _.chain(sections)
+    .map(function(data, sectionId) {
+      return [sectionId, require('./sections/' + sectionId)(query)];
+    })
+    .object()
+    .value();
 }
 
 function showUsageAndExit() {

@@ -1,6 +1,6 @@
 'use strict';
 
-var instanţe = require('../instanţe');
+var instanţe = require('../meta').instanţe;
 var apiCalls = require('./common/apiCalls');
 var moduleName = require('./common/moduleName');
 

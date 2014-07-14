@@ -16,6 +16,9 @@ each section, id in strings
               if item.show
                 td!= row.cell[item.cellIndex]
 
-  if results[id].error
-    p
-      code= 'Eroare la extragerea datelor pentru “' + section.title + '”'
+  if results[id].errors
+    // if should go
+    each name in results[id].errors
+      p Eroare la extragerea datelor pentru:
+      ul
+        li= name

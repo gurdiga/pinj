@@ -1,6 +1,17 @@
 {
   "cereriÎnInstanţă": {
     "title": "Cereri în instanţă",
+    "urlFormat": "http://instante.justice.md/apps/cereri_pendinte/cereri_grid.php#url-unic:%s",
+    "searchOptions": {
+      "sidx": "site_name desc, site_name",
+      "sord": "desc",
+      "filters": {
+        "groupOp": "AND",
+        "rules": [
+          {"field": "parti_dosar", "op": "cn", "data": "%QUERY%"}
+        ]
+      }
+    },
     "columnTitles": [
       {
         "title": "Părţile",
@@ -46,6 +57,17 @@
   },
   "agendaŞedinţelor": {
     "title": "Agenda şedinţelor",
+    "urlFormat": "http://instante.justice.md/apps/agenda_judecata/inst/%s/agenda_grid.php",
+    "searchOptions": {
+      "sidx": "data_inregistrare asc, data_inregistrare",
+      "sord": "asc",
+      "filters": {
+        "groupOp": "AND",
+        "rules": [
+          {"field": "denumire_dosar", "op": "cn", "data": "%QUERY%"}
+        ]
+      }
+    },
     "columnTitles": [
       {
         "title": "Părţile",
@@ -101,6 +123,17 @@
   },
   "hotărîrileInstanţei": {
     "title": "Hotărîrile instanţei",
+    "urlFormat": "http://instante.justice.md/apps/hotariri_judecata/inst/%s/db_hot_grid.php",
+    "searchOptions": {
+      "sidx": "id",
+      "sord": "asc",
+      "filters": {
+        "groupOp": "AND",
+        "rules": [
+          {"field": "denumire_dosar", "op": "cn", "data": "%QUERY%"}
+        ]
+      }
+    },
     "columnTitles": [
       {
         "title": "Denumirea dosarului",
@@ -141,6 +174,18 @@
   },
   "citaţiiÎnInstanţă": {
     "title": "Citaţii în instanţă",
+    "urlFormat": "http://instante.justice.md/apps/citatii_judecata/citatii_grid.php#url-unic%s",
+    "searchOptions": {
+      "sidx": "judecatoria_vizata desc, judecatoria_vizata",
+      "sord": "desc",
+      "filters": {
+        "groupOp": "OR",
+        "rules": [
+          {"field": "reclamantul", "op": "cn", "data": "%QUERY%"},
+          {"field": "persoana_citata", "op": "cn", "data": "%QUERY%"}
+        ]
+      }
+    },
     "columnTitles": [
       {
         "title": "Persoana vizată",
@@ -216,36 +261,6 @@
         "title": "Data publicării",
         "cellIndex": 11,
         "show": true
-      }
-    ]
-  },
-  "proceduriDeInsolvabilitate": {
-    "title": "Proceduri de insolvabilitate",
-    "columnTitles": [
-      {
-        "title": "Denumirea dosarului",
-        "cellIndex": 3,
-        "show": true
-      },
-      {
-        "title": "Numărul dosarului",
-        "cellIndex": 2,
-        "show": true
-      },
-      {
-        "title": "Tipul dosarului",
-        "cellIndex": 4,
-        "show": true
-      },
-      {
-        "title": "Data pronunţării",
-        "cellIndex": 1,
-        "show": true
-      },
-      {
-        "title": "SKIP",
-        "cellIndex": 0,
-        "show": false
       }
     ]
   }

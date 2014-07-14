@@ -1,5 +1,5 @@
 each section, id in strings
-  if results[id].rows
+  if results[id].rows.length > 0
     h2= section.title
     table
       thead
@@ -16,7 +16,7 @@ each section, id in strings
               if item.show
                 td!= row.cell[item.cellIndex]
 
-  if results[id].errors
+  if results[id].errors.length > 0
     // if should go
     each name in results[id].errors
       p Eroare la extragerea datelor pentru:

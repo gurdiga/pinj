@@ -8,6 +8,8 @@ var _ = require('underscore');
 var readArgs = require('./read-args.js');
 var queryApi = require('./query-api');
 var formatResults = require('./format-results');
+var agendaŞedinţelor = require('./sections/agendaŞedinţelor');
+
 
 (function main() {
   var searches = readArgs();
@@ -50,7 +52,7 @@ function formatError(err) {
   return err;
 }
 
-function cereriÎnInstanţă(query, curteaDeApel) {
+function cereriÎnInstanţă(query) {
   var url = 'http://instante.justice.md/apps/cereri_pendinte/cereri_grid.php';
   var searchOptions = {
     'sidx': 'site_name desc, site_name',
@@ -58,26 +60,7 @@ function cereriÎnInstanţă(query, curteaDeApel) {
     'filters': JSON.stringify({
       'groupOp': 'AND',
       'rules': [
-        {'field': 'parti_dosar', 'op': 'cn', 'data': query},
-        {'field': 'site_name', 'op': 'eq', 'data': curteaDeApel}
-      ]
-    })
-  };
-
-  return function(callback) {
-    queryApi(url, searchOptions, callback);
-  };
-}
-
-function agendaŞedinţelor(query) {
-  var url = 'http://instante.justice.md/apps/agenda_judecata/inst/cac/agenda_grid.php';
-  var searchOptions = {
-    'sidx': 'data_inregistrare asc, data_inregistrare',
-    'sord': 'asc',
-    'filters': JSON.stringify({
-      'groupOp': 'AND',
-      'rules': [
-        {'field': 'denumire_dosar', 'op': 'cn', 'data': query}
+        {'field': 'parti_dosar', 'op': 'cn', 'data': query}
       ]
     })
   };

@@ -7,7 +7,7 @@ module.exports = function(url, searchOptions, callback) {
   var defaultSearchOptions = {
     '_search': true,
     'nd': Date.now(),
-    'rows': 50,
+    'rows': 500,
     'page': 1,
     'filters': '{}'
   };
@@ -17,8 +17,12 @@ module.exports = function(url, searchOptions, callback) {
   request({
     uri: url,
     method: 'POST',
+    json: true,
     form: searchOptions
   }, function(err, res, body) {
-    callback(err, body);
+    if (err) console.error(url, err);
+    if (res.statusCode !== 200) console.error('HTTP', res.statusCode, url);
+
+    callback(null, body);
   });
 };

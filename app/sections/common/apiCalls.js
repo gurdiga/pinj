@@ -3,12 +3,12 @@
 var format = require('util').format;
 var _ = require('underscore');
 var serialize = require('async').series;
-var strings = require('../../strings');
+var sections = require('../../meta').sections;
 var queryApi = require('../../query-api');
 var passResultsTo = require('./passResultsTo');
 
 module.exports = function apiCalls(sectionId, query, instanţe) {
-  var urlFormat = strings[sectionId].urlFormat;
+  var urlFormat = sections[sectionId].urlFormat;
   var searchOptions = prepareSearchOptions(sectionId, query);
 
   var calls = _.chain(instanţe)
@@ -28,7 +28,7 @@ module.exports = function apiCalls(sectionId, query, instanţe) {
 
 
 function prepareSearchOptions(sectionId, query) {
-  var searchOptions = strings[sectionId].searchOptions;
+  var searchOptions = sections[sectionId].searchOptions;
 
   searchOptions.filters = JSON.stringify(searchOptions.filters).replace(/%QUERY%/g, query);
 

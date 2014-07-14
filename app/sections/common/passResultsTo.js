@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('underscore');
-var instanţe = require('../../instanţe');
+var instanţe = require('../../meta').instanţe;
 
 module.exports = function passResultsTo(callback, sectionName, query) {
   return function(err, results) {

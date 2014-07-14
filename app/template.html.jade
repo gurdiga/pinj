@@ -1,0 +1,21 @@
+each section, id in strings
+  if results[id].rows
+    h2= section.title
+    table
+      thead
+        tr
+          th #
+          each item in section.columnTitles
+            if item.show
+              th= item.title
+      tbody
+        each row, i in results[id].rows
+          tr
+            td= i + 1
+            each item, i in section.columnTitles
+              if item.show
+                td!= row.cell[item.cellIndex]
+
+  if results[id].error
+    p
+      code= 'Eroare la extragerea datelor pentru “' + section.title + '”'

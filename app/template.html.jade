@@ -6,17 +6,17 @@ each result, query in results
       table
         thead
           tr
-            th #
+            th(style=css.th) #
             each item in section.columnTitles
               if item.show
                 th(style=css.th)= item.title
         tbody
           each row, i in result[id].rows
             tr
-              td= i + 1
+              td(style=css.td)= i + 1
               each item, i in section.columnTitles
                 if item.show
-                  td!= row.cell[item.cellIndex]
+                  td(style=css.td)!= row.cell[item.cellIndex]
 
     if result[id].errors.length > 0
       // if should go

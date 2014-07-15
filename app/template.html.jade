@@ -9,7 +9,7 @@ each result, query in results
             th #
             each item in section.columnTitles
               if item.show
-                th= item.title
+                th(style=css.th)= item.title
         tbody
           each row, i in result[id].rows
             tr

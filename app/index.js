@@ -5,7 +5,7 @@ var async = require('async');
 var taskList = require('./task-list');
 
 var globalQueries = prepareGlobalQueries();
-async.series(globalQueries, printResults);
+async.series(globalQueries, sendResults);
 
 
 function prepareGlobalQueries() {
@@ -46,12 +46,14 @@ function showUsageAndExit() {
   process.exit(1);
 }
 
-function printResults(err, results) {
+function sendResults(err, results) {
+  var sendEmails = require('./send-emails');
   var formatResults = require('./format-results');
 
   if (err) {
-    console.error('printResults error:', err);
+    console.error('sendResults error:', err);
   } else {
-    console.log(formatResults({ 'results': results }));
+    var htmlContent = formatResults({ 'results': results });
+    sendEmails(['gurdiga@gmail.com'], htmlContent);
   }
 }

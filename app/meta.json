@@ -26,7 +26,7 @@
         },
         {
           "title": "Instanţa",
-          "cellIndex": 999,
+          "cellIndex": 6,
           "show": true
         },
         {
@@ -149,7 +149,7 @@
         {
           "title": "PDF",
           "cellIndex": 0,
-          "show": true
+          "show": false
         },
         {
           "title": "SKIP",
@@ -195,7 +195,7 @@
         },
         {
           "title": "Calitatea procesuală",
-          "cellIndex": "???",
+          "cellIndex": "999",
           "show": true
         },
         {
@@ -210,7 +210,7 @@
         },
         {
           "title": "Instanţa",
-          "cellIndex": 999,
+          "cellIndex": 7,
           "show": true
         },
         {

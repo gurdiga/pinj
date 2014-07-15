@@ -1,24 +1,26 @@
-each section, id in sections
-  if results[id].rows.length > 0
-    h2= section.title
-    table
-      thead
-        tr
-          th #
-          each item in section.columnTitles
-            if item.show
-              th= item.title
-      tbody
-        each row, i in results[id].rows
+each result, query in results
+  h3= query
+  each section, id in sections
+    if result[id].rows.length > 0
+      h4= section.title
+      table
+        thead
           tr
-            td= i + 1
-            each item, i in section.columnTitles
+            th #
+            each item in section.columnTitles
               if item.show
-                td!= row.cell[item.cellIndex]
+                th= item.title
+        tbody
+          each row, i in result[id].rows
+            tr
+              td= i + 1
+              each item, i in section.columnTitles
+                if item.show
+                  td!= row.cell[item.cellIndex]
 
-  if results[id].errors.length > 0
-    // if should go
-    each name in results[id].errors
-      p Eroare la extragerea datelor pentru:
-      ul
-        li= name
+    if result[id].errors.length > 0
+      // if should go
+      each name in result[id].errors
+        p Eroare la extragerea datelor pentru:
+        ul
+          li= name

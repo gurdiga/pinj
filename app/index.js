@@ -2,6 +2,7 @@
 
 var _ = require('underscore');
 var async = require('async');
+var taskList = require('./task-list');
 
 var globalQueries = prepareGlobalQueries();
 async.series(globalQueries, printResults);
@@ -33,15 +34,6 @@ function doSectionQuery(query) {
   return function(sectionId) {
     return require('./sections/' + sectionId)(query);
   };
-}
-
-function taskList(labels, iterator) {
-  return _.chain(labels)
-    .map(function(label) {
-      return [label, iterator(label)];
-    })
-    .object()
-    .value();
 }
 
 function showUsageAndExit() {

@@ -3,8 +3,11 @@
 var format = require('util').format;
 var _ = require('underscore');
 var async = require('async');
+
 var sections = require('./meta').sections;
 var instanţe = require('./meta').instanţe;
+
+var clone = require('./clone');
 var queryApi = require('./query-api');
 
 module.exports = function querySection(sectionId, query, instanţe) {
@@ -28,7 +31,7 @@ module.exports = function querySection(sectionId, query, instanţe) {
 
 
 function prepareSearchOptions(sectionId, query) {
-  var searchOptions = sections[sectionId].searchOptions;
+  var searchOptions = clone(sections[sectionId].searchOptions);
 
   searchOptions.filters = JSON.stringify(searchOptions.filters).replace(/%QUERY%/g, query);
 

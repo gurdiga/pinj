@@ -2,7 +2,7 @@
 
 var format = require('util').format;
 var _ = require('underscore');
-var serialize = require('async').series;
+var async = require('async');
 var sections = require('./meta').sections;
 var instanţe = require('./meta').instanţe;
 var queryApi = require('./query-api');
@@ -22,7 +22,7 @@ module.exports = function querySection(sectionId, query, instanţe) {
     .value();
 
   return function(callback) {
-    serialize(apiQueries, passResultsTo(callback, sectionId, query));
+    async.series(apiQueries, passResultsTo(callback, sectionId, query));
   };
 };
 

@@ -1,9 +1,12 @@
 {
   "th": {
     "text-align": "left",
-    "vertical-align": "top"
+    "vertical-align": "top",
+    "padding": "3px 5px",
+    "boder-bottom": "1px solid #ccc"
   },
   "td": {
-    "vertical-align": "top"
+    "vertical-align": "top",
+    "padding": "3px 5px"
   }
 }

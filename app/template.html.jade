@@ -18,9 +18,7 @@ each result, query in results
                 if item.show
                   td(style=css.td)!= row.cell[item.cellIndex]
 
-    if result[id].errors.length > 0
-      // if should go
-      each name in result[id].errors
-        p Eroare la extragerea datelor pentru:
-        ul
-          li= name
+    each name in result[id].errors
+      p Eroare la extragerea datelor pentru:
+      ul
+        li= name

@@ -18,7 +18,14 @@ module.exports = function querySection(sectionId, query, instanţe) {
     .map(function(denumire, id) {
       return [id, function(callback) {
         var url = format(urlFormat, id);
-        queryApi(url, searchOptions, callback);
+
+        queryApi(url, searchOptions, function(err, result) {
+          _(result.rows).each(function(row) {
+            row.cell[100] = denumire;
+          });
+
+          return callback(err, result);
+        });
       }];
     })
     .object()

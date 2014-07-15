@@ -21,7 +21,7 @@ function sendEmail(content, transport) {
         from: SENDER_EMAIL,
         to: email,
         subject: 'PINJ',
-        text: 'Please use an email capable of rendering HTML messages',
+        text: 'Please use an email program capable of rendering HTML messages',
         html: content
       }, function(err, response) {
         if (err) console.error('err', err, response);
@@ -37,9 +37,7 @@ function sendEmail(content, transport) {
 
 function closeTransport(transport) {
   return function(err, results) {
+    /*jshint unused:false*/
     transport.close();
-
-    console.log('err', err);
-    console.log('results', results);
   };
 }

@@ -28,22 +28,22 @@ function prepareApiQuery(sectionId, query) {
       var url = format(sections[sectionId].urlFormat, courtId);
 
       queryApi(url, searchOptions, function(err, result) {
-        preprocess(result, sectionId, courtId);
+        preprocess(result, query, sectionId, courtId);
         return callback(err, result);
       });
     };
   };
 }
 
-function preprocess(result, sectionId, courtId) {
+function preprocess(result, query, sectionId, courtId) {
   var operationsPerSection = {
     'cereriÎnInstanţă': function() {
     },
-    'agendaŞedinţelor': function(row, sectionId, courtId) {
+    'agendaŞedinţelor': function(row, query, sectionId, courtId) {
       var courtName = courts[courtId];
       row.cell[100] = courtName;
     },
-    'hotărîrileInstanţei': function(row, sectionId, courtId) {
+    'hotărîrileInstanţei': function(row, query, sectionId, courtId) {
       var pdfUrlFormat = 'http://instante.justice.md/apps/hotariri_judecata/inst/%s/%s';
       var pdfLink = row.cell[0];
       var hrefRegExp = /a href="([^"]+)"/;
@@ -54,12 +54,28 @@ function preprocess(result, sectionId, courtId) {
         row.cell[101] = fullPdfUrl;
       }
     },
-    'citaţiiÎnInstanţă': function() {
+    'citaţiiÎnInstanţă': function(row, query) {
+      var name, role;
+
+      var accuser = row.cell[6];
+      var culprit = row.cell[4];
+      var foundInCulprit = culprit.indexOf(query) > -1;
+
+      if (foundInCulprit) {
+        name = culprit;
+        role = 'pîrît';
+      } else {
+        name = accuser;
+        role = 'reclamant';
+      }
+
+      row.cell[102] = name;
+      row.cell[103] = role;
     }
   };
 
   _(result.rows).each(function(row) {
-    operationsPerSection[sectionId](row, sectionId, courtId);
+    operationsPerSection[sectionId](row, query, sectionId, courtId);
   });
 }
 

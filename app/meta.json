@@ -191,12 +191,12 @@
       "columnTitles": [
         {
           "title": "Persoana vizată",
-          "cellIndex": "query",
+          "cellIndex": 102,
           "show": true
         },
         {
           "title": "Calitatea procesuală",
-          "cellIndex": "999",
+          "cellIndex": 103,
           "show": true
         },
         {
@@ -240,29 +240,24 @@
           "show": false
         },
         {
-          "title": "Instanţa de judecată",
-          "cellIndex": 7,
-          "show": true
-        },
-        {
           "title": "Judecător",
           "cellIndex": 8,
-          "show": true
+          "show": false
         },
         {
           "title": "Persoana responsabilă",
           "cellIndex": 9,
-          "show": true
+          "show": false
         },
         {
           "title": "Contacte",
           "cellIndex": 10,
-          "show": true
+          "show": false
         },
         {
           "title": "Data publicării",
           "cellIndex": 11,
-          "show": true
+          "show": false
         }
       ]
     }

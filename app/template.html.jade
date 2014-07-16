@@ -3,7 +3,7 @@ each result, query in results
   each section, id in sections
     if result[id].rows.length > 0
       h4= section.title
-      table
+      table(style=css.table)
         thead
           tr
             th(style=css.th) #
@@ -12,15 +12,23 @@ each result, query in results
                 th(style=css.th)= item.title
         tbody
           each row, i in result[id].rows
-            tr
-              td(style=css.td)= i + 1
-              each item, i in section.columnTitles
-                if item.show
-                  if item.link
-                    td(style=css.td)
-                      a(href=row.cell[item.cellIndex])= item.title
-                  else
-                    td(style=css.td)!= row.cell[item.cellIndex]
+            if i < MAX_ROWS
+              tr
+                td(style=css.td)= i + 1
+                each item, i in section.columnTitles
+                  if item.show
+                    if item.link
+                      td(style=css.td)
+                        a(href=row.cell[item.cellIndex])= item.title
+                    else
+                      td(style=css.td)!= row.cell[item.cellIndex]
+            if i == MAX_ROWS
+              tr
+                td(style=css['td.too-many-rows'], colspan=row.cell.length)
+                  span Sunt prea multe rezultate pentru a fi incluse în email:&#32;
+                  span= result[id].rows.length
+                  span . Puteţi lista toate rezultatele pe&#32;
+                  a(href="http://instante.justice.md/cms/") Portalul Instanţelor Naţionale de Judecată
 
     each name in result[id].errors
       p Eroare la extragerea datelor pentru:

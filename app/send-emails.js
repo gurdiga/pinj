@@ -3,11 +3,15 @@
 var SENDER_EMAIL = 'info@pinj.pentru.md';
 
 var nodemailer = require('nodemailer');
+var transportInit = require('nodemailer-smtp-transport');
+
 var async = require('async');
 var taskList = require('./task-list');
 
 module.exports = function sendEmails(emails, content) {
-  var transport = nodemailer.createTransport('Sendmail');
+  var transportOptions = {
+  };
+  var transport = nodemailer.createTransport(transportInit(transportOptions));
 
   var emailSendingTasks = taskList(emails, sendEmail(content, transport));
   async.series(emailSendingTasks, closeTransport(transport));

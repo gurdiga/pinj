@@ -1,6 +1,7 @@
 setup:
 	@npm install \
 		nodemailer@0.7.1 \
+		jade@1.4.0 \
 		async@0.9.0 \
 		request@2.36.0 \
 		underscore@1.6.0 \

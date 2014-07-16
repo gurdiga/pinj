@@ -1,12 +1,20 @@
 {
+  "table": {
+    "border-collapse": "collapse"
+  },
   "th": {
     "text-align": "left",
     "vertical-align": "top",
     "padding": "3px 5px",
-    "boder-bottom": "1px solid #ccc"
+    "border": "1px solid #ccc"
   },
   "td": {
     "vertical-align": "top",
-    "padding": "3px 5px"
+    "padding": "3px 5px",
+    "border": "1px solid #ccc"
+  },
+  "td.too-many-rows": {
+    "color": "red",
+    "font-size": "smaller"
   }
 }

@@ -10,6 +10,7 @@ module.exports = function formatResults(data) {
 
   _(data).extend(jadeOptions);
 
+  data.MAX_ROWS = 20;
   data.sections = meta.sections;
   data.css = prepareCSS(templateCss);
 

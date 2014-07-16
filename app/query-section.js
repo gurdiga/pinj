@@ -5,37 +5,63 @@ var _ = require('underscore');
 var async = require('async');
 
 var sections = require('./meta').sections;
-var instanţe = require('./meta').instanţe;
 
 var clone = require('./clone');
 var queryApi = require('./query-api');
+var taskList = require('./task-list');
+var courts = require('./meta').instanţe;
 
-module.exports = function querySection(sectionId, query, instanţe) {
-  var urlFormat = sections[sectionId].urlFormat;
-  var searchOptions = prepareSearchOptions(sectionId, query);
-
-  var apiQueries = _.chain(instanţe)
-    .map(function(denumire, id) {
-      return [id, function(callback) {
-        var url = format(urlFormat, id);
-
-        queryApi(url, searchOptions, function(err, result) {
-          _(result.rows).each(function(row) {
-            row.cell[100] = denumire;
-          });
-
-          return callback(err, result);
-        });
-      }];
-    })
-    .object()
-    .value();
+module.exports = function querySection(sectionId, query, courts) {
+  var courtsIds = _(courts).keys();
 
   return function(callback) {
+    var apiQueries = taskList(courtsIds, prepareApiQuery(sectionId, query));
     async.series(apiQueries, passResultsTo(callback, sectionId, query));
   };
 };
 
+
+function prepareApiQuery(sectionId, query) {
+  return function queryCourt(courtId) {
+    return function(callback) {
+      var searchOptions = prepareSearchOptions(sectionId, query);
+      var url = format(sections[sectionId].urlFormat, courtId);
+
+      queryApi(url, searchOptions, function(err, result) {
+        appendAdditionalFields(result, sectionId, courtId);
+        return callback(err, result);
+      });
+    };
+  };
+}
+
+function appendAdditionalFields(result, sectionId, courtId) {
+  var additionsPerSection = {
+    'cereriÎnInstanţă': function() {
+    },
+    'agendaŞedinţelor': function(row, sectionId, courtId) {
+      var courtName = courts[courtId];
+      row.cell[100] = courtName;
+    },
+    'hotărîrileInstanţei': function(row, sectionId, courtId) {
+      var pdfUrlFormat = 'http://instante.justice.md/apps/hotariri_judecata/inst/%s/%s';
+      var pdfLink = row.cell[0];
+      var hrefRegExp = /a href="([^"]+)"/;
+
+      if (hrefRegExp.test(pdfLink)) {
+        var relativePdfUrl = pdfLink.match(hrefRegExp)[1];
+        var fullPdfUrl = format(pdfUrlFormat, courtId, relativePdfUrl);
+        row.cell[101] = fullPdfUrl;
+      }
+    },
+    'citaţiiÎnInstanţă': function() {
+    }
+  };
+
+  _(result.rows).each(function(row) {
+    additionsPerSection[sectionId](row, sectionId, courtId);
+  });
+}
 
 function prepareSearchOptions(sectionId, query) {
   var searchOptions = clone(sections[sectionId].searchOptions);
@@ -58,7 +84,7 @@ function passResultsTo(callback, sectionId, query) {
           if (result.rows) rows = rows.concat(result.rows);
         } else {
           console.error(id, result);
-          errors.push(instanţe[id]);
+          errors.push(courts[id]);
         }
       });
     }

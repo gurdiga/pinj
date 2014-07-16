@@ -148,8 +148,9 @@
         },
         {
           "title": "PDF",
-          "cellIndex": 0,
-          "show": false
+          "cellIndex": 101,
+          "link": true,
+          "show": true
         },
         {
           "title": "SKIP",

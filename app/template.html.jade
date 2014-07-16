@@ -16,7 +16,11 @@ each result, query in results
               td(style=css.td)= i + 1
               each item, i in section.columnTitles
                 if item.show
-                  td(style=css.td)!= row.cell[item.cellIndex]
+                  if item.link
+                    td(style=css.td)
+                      a(href=row.cell[item.cellIndex])= item.title
+                  else
+                    td(style=css.td)!= row.cell[item.cellIndex]
 
     each name in result[id].errors
       p Eroare la extragerea datelor pentru:

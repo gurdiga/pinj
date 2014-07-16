@@ -28,15 +28,15 @@ function prepareApiQuery(sectionId, query) {
       var url = format(sections[sectionId].urlFormat, courtId);
 
       queryApi(url, searchOptions, function(err, result) {
-        appendAdditionalFields(result, sectionId, courtId);
+        preprocess(result, sectionId, courtId);
         return callback(err, result);
       });
     };
   };
 }
 
-function appendAdditionalFields(result, sectionId, courtId) {
-  var additionsPerSection = {
+function preprocess(result, sectionId, courtId) {
+  var operationsPerSection = {
     'cereriÎnInstanţă': function() {
     },
     'agendaŞedinţelor': function(row, sectionId, courtId) {
@@ -59,7 +59,7 @@ function appendAdditionalFields(result, sectionId, courtId) {
   };
 
   _(result.rows).each(function(row) {
-    additionsPerSection[sectionId](row, sectionId, courtId);
+    operationsPerSection[sectionId](row, sectionId, courtId);
   });
 }
 

@@ -1,7 +1,6 @@
 'use strict';
 
 var _ = require('underscore');
-var timedTask = require('./timed-task');
 
 module.exports = function taskList(taskLabels, taskFactory) {
   return _.chain(taskLabels)
@@ -17,3 +16,14 @@ module.exports = function taskList(taskLabels, taskFactory) {
     .object()
     .value();
 };
+
+
+function timedTask(f, label) {
+  return function(callback) {
+    console.time(label);
+    return f(function(err, results) {
+      console.timeEnd(label);
+      return callback(err, results);
+    });
+  };
+}

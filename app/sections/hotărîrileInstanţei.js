@@ -1,15 +1,15 @@
 'use strict';
 
 var clone = require('../clone');
-var instanţe = require('../meta').instanţe;
+var courts = require('../meta').courts;
 var querySection = require('../query-section');
 
 module.exports = function hotărîrileInstanţei(query) {
-  instanţe = clone(instanţe);
+  courts = clone(courts);
 
   // pare să nu fie implementată pentru Slobozia
   // http://instante.justice.md/cms/curtea-de-apel-bender/jslb-menu
-  delete instanţe.jslb;
+  delete courts.jslb;
 
-  return querySection('hotărîrileInstanţei', query, instanţe);
+  return querySection('hotărîrileInstanţei', query, courts);
 };

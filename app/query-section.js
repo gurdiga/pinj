@@ -9,7 +9,7 @@ var sections = require('./meta').sections;
 var clone = require('./clone');
 var queryApi = require('./query-api');
 var taskList = require('./task-list');
-var courts = require('./meta').instanţe;
+var courts = require('./meta').courts;
 
 module.exports = function querySection(sectionId, query, courts) {
   var courtsIds = _(courts).keys();

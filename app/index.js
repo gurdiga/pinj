@@ -53,7 +53,8 @@ function sendResults(err, results) {
   if (err) {
     console.error('sendResults error:', err);
   } else {
+    var recipients = require('../recipients.json');
     var htmlContent = formatResults({ 'results': results });
-    sendEmails(['gurdiga@gmail.com'], htmlContent);
+    sendEmails(recipients, htmlContent);
   }
 }

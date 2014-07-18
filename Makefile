@@ -5,10 +5,9 @@ SHELL = /bin/sh
 default: jshint test
 
 test:
-	#clear; node app/index.js "Romanescu Constantin" "Cebanu Valentina"
-	@clear; node app/index.js "Romanescu Constantin"
+	@clear; node app/index.js
 
 export
-	JSHINT_FILES = $(shell find app -name '*.js' -or -name '*.json' | sort)
+	JSHINT_FILES = input.json $(shell find app -name '*.js' -or -name '*.json' | sort)
 
 include $(shell find makefiles -name '*.mk' | sort)

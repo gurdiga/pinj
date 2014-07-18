@@ -3,14 +3,15 @@
 var _ = require('underscore');
 var async = require('async');
 var taskList = require('./task-list');
+var input = require('../input');
 
-var globalQueries = prepareGlobalQueries();
-async.series(globalQueries, sendResults);
+_(input).each(function(queries, email) {
+  var globalQueries = prepareGlobalQueries(queries);
+  async.series(globalQueries, sendResultsTo(email));
+});
 
 
-function prepareGlobalQueries() {
-  var queries = process.argv.slice(2);
-
+function prepareGlobalQueries(queries) {
   if (queries.length === 0) showUsageAndExit();
 
   return taskList(queries, doSectionQueries);
@@ -46,15 +47,16 @@ function showUsageAndExit() {
   process.exit(1);
 }
 
-function sendResults(err, results) {
-  var sendEmails = require('./send-emails');
-  var formatResults = require('./format-results');
+function sendResultsTo(email) {
+  return function(err, results) {
+    var sendEmail = require('./send-email');
+    var formatResults = require('./format-results');
 
-  if (err) {
-    console.error('sendResults error:', err);
-  } else {
-    var recipients = require('../recipients.json');
-    var htmlContent = formatResults({ 'results': results });
-    sendEmails(recipients, htmlContent);
-  }
+    if (err) {
+      console.error('sendResultsTo error:', err);
+    } else {
+      var htmlContent = formatResults({'results': results});
+      sendEmail(email, htmlContent);
+    }
+  };
 }

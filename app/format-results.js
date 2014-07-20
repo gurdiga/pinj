@@ -14,7 +14,7 @@ module.exports = function formatResults(data) {
   data.sections = meta.sections;
   data.css = prepareCSS(templateCss);
 
-  return jade.renderFile('app/template.html.jade', data);
+  return jade.renderFile(__dirname + '/template.html.jade', data);
 };
 
 

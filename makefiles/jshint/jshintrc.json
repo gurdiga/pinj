@@ -22,6 +22,7 @@
     "console": false,
     "module": false,
     "require": false,
-    "process": false
+    "process": false,
+    "__dirname": false
   }
 }

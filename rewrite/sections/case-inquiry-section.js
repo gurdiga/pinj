@@ -3,20 +3,80 @@
 function CaseInquirySection() {
 }
 
+CaseInquirySection.title = 'Cereri în instanţă';
+
+CaseInquirySection.columnTitles = [{
+    'title': 'Părţile',
+    'cellIndex': 2,
+    'show': true
+  }, {
+    'title': 'Tipul dosarului',
+    'cellIndex': 3,
+    'show': true
+  }, {
+    'title': 'Instanţa',
+    'cellIndex': 6,
+    'show': true
+  }, {
+    'title': 'Categoria dosarului',
+    'cellIndex': 4,
+    'show': true
+  }, {
+    'title': 'Statutul dosarului',
+    'cellIndex': 5,
+    'show': true
+  }, {
+    'title': 'Numărul dosarului',
+    'cellIndex': 1,
+    'show': true
+  }, {
+    'title': 'SKIP',
+    'cellIndex': 0,
+    'show': false
+  }, {
+    'title': 'Data actualizării',
+    'cellIndex': 6,
+    'show': false
+  }
+];
+
 CaseInquirySection.prototype.toString = function() {
   return 'CaseInquirySection';
 };
 
+CaseInquirySection.getUrl = function() {
+  return 'http://instante.justice.md/apps/cereri_pendinte/cereri_grid.php';
+};
+
+CaseInquirySection.getFormData = function(clientName) {
+  var searchOptions = {
+    '_search': true,
+    'nd': Date.now(),
+    'rows': 500,
+    'page': 1,
+    'sidx': 'site_name desc, site_name',
+    'sord': 'desc',
+    'filters': {
+      'groupOp': 'AND',
+      'rules': [
+        {'field': 'nr_dosar', 'op': 'cn', 'data': (new Date()).getFullYear()},
+        {'field': 'parti_dosar', 'op': 'cn', 'data': clientName}
+      ]
+    }
+  };
+
+  searchOptions.filters = JSON.stringify(searchOptions.filters);
+
+  return searchOptions;
+};
+
 CaseInquirySection.prototype.inquireAbout = function(clientName) {
-  console.log('CaseInquirySection inquireAbout', clientName);
+  var httpPost = require('../utils/http-post');
 
-  var forEach = require('../utils/for-each');
-  var Courts = require('../courts');
-  var courtIds = Courts.getIds();
+  var url = CaseInquirySection.getUrl();
+  var formData = CaseInquirySection.getFormData(clientName);
 
-  return forEach(courtIds).inParallel(function(courtId) {
-    return forEach.todo('Query court ' + courtId + '’s API for ' + clientName);
-  });
+  return httpPost(url, formData);
 };
 
 module.exports = CaseInquirySection;

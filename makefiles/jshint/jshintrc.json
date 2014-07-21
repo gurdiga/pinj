@@ -19,10 +19,15 @@
   "-W030": true,
 
   "globals": {
+    "global": false,
     "console": false,
     "module": false,
     "require": false,
     "process": false,
-    "__dirname": false
+    "__dirname": false,
+
+    "describe": false,
+    "beforeEach": false,
+    "it": false
   }
 }

@@ -6,6 +6,7 @@ function Emailer() {
 Emailer.prototype.send = function(params) {
   var results = params.results;
   var address = params.address;
+  //console.log('results', JSON.stringify(results, null, ' '));
 
   // TODO: get the Jade template rendered
 

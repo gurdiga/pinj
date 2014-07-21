@@ -63,4 +63,8 @@ Courts.getIds = function() {
   return _(list).keys();
 };
 
+Courts.getName = function(courtId) {
+  return list[courtId];
+};
+
 module.exports = Courts;

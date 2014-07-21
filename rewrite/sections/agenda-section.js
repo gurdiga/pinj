@@ -3,20 +3,50 @@
 function AgendaSection() {
 }
 
-AgendaSection.title = 'Agenda şedinţelor';
-AgendaSection.urlFormat = 'http://instante.justice.md/apps/agenda_judecata/inst/%s/agenda_grid.php';
+AgendaSection.prototype.inquireAbout = function(clientName) {
+  var httpPost = require('../utils/http-post');
+  var forEach = require('../utils/for-each');
+  var Courts = require('../courts');
+  var getRows = require('./common/get-rows');
 
-AgendaSection.searchOptions = {
-  'sidx': 'data_inregistrare asc, data_inregistrare',
-  'sord': 'asc',
-  'filters': {
-    'groupOp': 'AND',
-    'rules': [
-      {'field': 'data_sedinta', 'op': 'cn', 'data': '%CURRENT_YEAR%'},
-      {'field': 'denumire_dosar', 'op': 'cn', 'data': '%QUERY%'}
-    ]
-  }
+  var courtIds = Courts.getIds();
+
+  return forEach(courtIds).inParallel(function(courtId) {
+    var url = AgendaSection.getUrl(courtId);
+    var formData = AgendaSection.getFormData(clientName);
+
+    return httpPost(url, formData);
+  })
+  .then(getRows);
 };
+
+AgendaSection.getUrl = function(courtId) {
+  return 'http://instante.justice.md/apps/agenda_judecata/inst/' + courtId + '/agenda_grid.php';
+};
+
+AgendaSection.getFormData = function(clientName) {
+  var searchOptions = {
+    '_search': true,
+    'nd': Date.now(),
+    'rows': 500,
+    'page': 1,
+    'sidx': 'data_inregistrare asc, data_inregistrare',
+    'sord': 'asc',
+    'filters': {
+      'groupOp': 'AND',
+      'rules': [
+        {'field': 'data_sedinta', 'op': 'cn', 'data': (new Date()).getFullYear()},
+        {'field': 'denumire_dosar', 'op': 'cn', 'data': clientName}
+      ]
+    }
+  };
+
+  searchOptions.filters = JSON.stringify(searchOptions.filters);
+
+  return searchOptions;
+};
+
+AgendaSection.title = 'Agenda şedinţelor';
 
 AgendaSection.columnTitles = [{
     'title': 'Părţile',
@@ -63,18 +93,6 @@ AgendaSection.columnTitles = [{
 
 AgendaSection.prototype.toString = function() {
   return 'AgendaSection';
-};
-
-AgendaSection.prototype.inquireAbout = function(clientName) {
-  console.log('AgendaSection inquireAbout', clientName);
-
-  var forEach = require('../utils/for-each');
-  var Courts = require('../courts');
-  var courtIds = Courts.getIds();
-
-  return forEach(courtIds).inParallel(function(courtId) {
-    return forEach.todo('Query court ' + courtId + '’s API for ' + clientName);
-  });
 };
 
 module.exports = AgendaSection;

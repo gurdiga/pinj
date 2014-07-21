@@ -9,6 +9,7 @@
         "filters": {
           "groupOp": "AND",
           "rules": [
+            {"field": "nr_dosar", "op": "cn", "data": "%CURRENT_YEAR%"},
             {"field": "parti_dosar", "op": "cn", "data": "%QUERY%"}
           ]
         }
@@ -65,6 +66,7 @@
         "filters": {
           "groupOp": "AND",
           "rules": [
+            {"field": "data_sedinta", "op": "cn", "data": "%CURRENT_YEAR%"},
             {"field": "denumire_dosar", "op": "cn", "data": "%QUERY%"}
           ]
         }
@@ -131,6 +133,7 @@
         "filters": {
           "groupOp": "AND",
           "rules": [
+            {"field": "nr_dosar", "op": "cn", "data": "%CURRENT_YEAR%"},
             {"field": "denumire_dosar", "op": "cn", "data": "%QUERY%"}
           ]
         }

@@ -21,7 +21,7 @@ each result, query in results
                       td(style=css.td)
                         a(href=row.cell[item.cellIndex])= item.title
                     else
-                      td(style=css.td)!= row.cell[item.cellIndex]
+                      td(style=css.td)!= row.cell[item.cellIndex].trim()
             if i == MAX_ROWS
               tr
                 td(style=css['td.too-many-rows'], colspan=row.cell.length)

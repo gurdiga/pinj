@@ -1,12 +1,8 @@
 'use strict';
 
-var format = require('util').format;
 var _ = require('underscore');
 var async = require('async');
 
-var sections = require('./meta').sections;
-
-var clone = require('./clone');
 var queryApi = require('./query-api');
 var taskList = require('./task-list');
 var courts = require('./meta').courts;
@@ -24,67 +20,22 @@ module.exports = function querySection(sectionId, query, courts) {
 function prepareApiQuery(sectionId, query) {
   return function queryCourt(courtId) {
     return function(callback) {
-      var searchOptions = prepareSearchOptions(sectionId, query);
-      var url = format(sections[sectionId].urlFormat, courtId);
+      var section = require('./sections/' + sectionId);
+      var searchOptions = section.getSearchOptions(query);
+      var url = section.getUrl(courtId);
 
       queryApi(url, searchOptions, function(err, result) {
         preprocess(result, query, sectionId, courtId);
         return callback(err, result);
       });
+
+      function preprocess(result, query, sectionId, courtId) {
+        _(result.rows).each(function(row) {
+          section.preprocess(row, query, sectionId, courtId);
+        });
+      }
     };
   };
-}
-
-function preprocess(result, query, sectionId, courtId) {
-  var operationsPerSection = {
-    'cereriÎnInstanţă': function() {
-    },
-    'agendaŞedinţelor': function(row, query, sectionId, courtId) {
-      var courtName = courts[courtId];
-      row.cell[100] = courtName;
-    },
-    'hotărîrileInstanţei': function(row, query, sectionId, courtId) {
-      var pdfUrlFormat = 'http://instante.justice.md/apps/hotariri_judecata/inst/%s/%s';
-      var pdfLink = row.cell[0];
-      var hrefRegExp = /a href="([^"]+)"/;
-
-      if (hrefRegExp.test(pdfLink)) {
-        var relativePdfUrl = pdfLink.match(hrefRegExp)[1];
-        var fullPdfUrl = format(pdfUrlFormat, courtId, relativePdfUrl);
-        row.cell[101] = fullPdfUrl;
-      }
-    },
-    'citaţiiÎnInstanţă': function(row, query) {
-      var name, role;
-
-      var accuser = row.cell[6];
-      var culprit = row.cell[4];
-      var foundInCulprit = culprit.indexOf(query) > -1;
-
-      if (foundInCulprit) {
-        name = culprit;
-        role = 'pîrît';
-      } else {
-        name = accuser;
-        role = 'reclamant';
-      }
-
-      row.cell[102] = name;
-      row.cell[103] = role;
-    }
-  };
-
-  _(result.rows).each(function(row) {
-    operationsPerSection[sectionId](row, query, sectionId, courtId);
-  });
-}
-
-function prepareSearchOptions(sectionId, query) {
-  var searchOptions = clone(sections[sectionId].searchOptions);
-
-  searchOptions.filters = JSON.stringify(searchOptions.filters).replace(/%QUERY%/g, query);
-
-  return searchOptions;
 }
 
 function passResultsTo(callback, sectionId, query) {

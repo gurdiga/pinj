@@ -33,7 +33,7 @@ function prepareSectionQueries(query) {
 
 function doSectionQuery(query) {
   return function(sectionId) {
-    return require('./sections/' + sectionId)(query);
+    return require('./sections/' + sectionId).query(query);
   };
 }
 

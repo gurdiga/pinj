@@ -28,21 +28,16 @@ function forEach(items) {
     return _.chain(items)
       .map(function(item) {
         return [item, function(callback) {
-          thenable.call(thisObject, item).then(function(result) {
+          thenable.call(thisObject, item)
+          .then(function(result) {
             callback(null, result);
-          });
+          })
+          .catch(callback);
         }];
       })
       .object()
       .value();
   }
 }
-
-forEach.todo = function(text) {
-  console.log('TODO:', text);
-  var deferred = Q.defer();
-  deferred.resolve();
-  return deferred.promise;
-};
 
 module.exports = forEach;

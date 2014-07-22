@@ -5,22 +5,27 @@ function SummonsSection() {
 
 SummonsSection.prototype.inquireAbout = function(clientName) {
   var forEach = require('../utils/for-each');
-  var httpPost = require('../utils/http-post');
-
-  // TODO
-  // - import the data augmentation code from the old version
+  var extractRows = require('./common/extract-rows');
 
   var url = SummonsSection.getUrl();
   var fieldNames = ['persoana_citata', 'reclamantul'];
 
-  return forEach(fieldNames).inParallel(function(fieldName) {
+  return forEach(fieldNames)
+    .inParallel(getResults)
+    .then(extractRows)
+    .then(function(rows) {
+      // TODO:
+      // - import the data augmentation code from the old version
+      return rows;
+    });
+
+  function getResults(fieldName) {
+    var httpPost = require('../utils/http-post');
+
     var formData = SummonsSection.getFormData(fieldName, clientName);
+
     return httpPost(url, formData);
-  })
-  .then(function(results) {
-    // TODO: extract rows
-    return results;
-  });
+  }
 };
 
 SummonsSection.getUrl = function() {

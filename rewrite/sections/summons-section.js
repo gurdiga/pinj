@@ -3,6 +3,52 @@
 function SummonsSection() {
 }
 
+SummonsSection.prototype.inquireAbout = function(clientName) {
+  var forEach = require('../utils/for-each');
+  var httpPost = require('../utils/http-post');
+
+  // TODO
+  // - import the data augmentation code from the old version
+
+  var url = SummonsSection.getUrl();
+  var fieldNames = ['persoana_citata', 'reclamantul'];
+
+  return forEach(fieldNames).inParallel(function(fieldName) {
+    var formData = SummonsSection.getFormData(fieldName, clientName);
+    return httpPost(url, formData);
+  })
+  .then(function(results) {
+    // TODO: extract rows
+    return results;
+  });
+};
+
+SummonsSection.getUrl = function() {
+  return 'http://instante.justice.md/apps/citatii_judecata/citatii_grid.php';
+};
+
+SummonsSection.getFormData = function(fieldName, clientName) {
+  var searchOptions = {
+    '_search': true,
+    'nd': Date.now(),
+    'rows': 500,
+    'page': 1,
+    'sidx': 'judecatoria_vizata desc, judecatoria_vizata',
+    'sord': 'desc',
+    'filters': {
+      'groupOp': 'AND',
+      'rules': [
+        {'field': 'data_sedinta', 'op': 'cn', 'data': (new Date()).getFullYear()},
+        {'field': fieldName, 'op': 'cn', 'data': clientName}
+      ]
+    }
+  };
+
+  searchOptions.filters = JSON.stringify(searchOptions.filters);
+
+  return searchOptions;
+};
+
 SummonsSection.title = 'Citaţii în instanţă';
 
 SummonsSection.columnTitles = [{
@@ -66,45 +112,6 @@ SummonsSection.columnTitles = [{
 
 SummonsSection.prototype.toString = function() {
   return 'SummonsSection';
-};
-
-SummonsSection.getUrl = function() {
-  return 'http://instante.justice.md/apps/citatii_judecata/citatii_grid.php';
-};
-
-SummonsSection.getFormData = function(clientName) {
-  var searchOptions = {
-    '_search': true,
-    'nd': Date.now(),
-    'rows': 500,
-    'page': 1,
-    'sidx': 'judecatoria_vizata desc, judecatoria_vizata',
-    'sord': 'desc',
-    'filters': {
-      'groupOp': 'OR',
-      'rules': [
-        {'field': 'reclamantul', 'op': 'cn', 'data': clientName},
-        {'field': 'persoana_citata', 'op': 'cn', 'data': clientName}
-      ]
-    }
-  };
-
-  searchOptions.filters = JSON.stringify(searchOptions.filters);
-
-  return searchOptions;
-};
-
-SummonsSection.prototype.inquireAbout = function(clientName) {
-  var httpPost = require('../utils/http-post');
-
-  // TODO
-  // - add filter by year??
-  // - import the data augmentation code from the old version
-
-  var url = SummonsSection.getUrl();
-  var formData = SummonsSection.getFormData(clientName);
-
-  return httpPost(url, formData);
 };
 
 module.exports = SummonsSection;

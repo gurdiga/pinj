@@ -1,5 +1,17 @@
 'use strict';
 
+var Courts = {};
+
+Courts.getIds = function() {
+  var _ = require('underscore');
+
+  return _(list).keys();
+};
+
+Courts.getName = function(courtId) {
+  return list[courtId];
+};
+
 var list = {
   'cac': 'Curtea de Apel Chişinău',
   'jb': 'Judecătoria Botanica',
@@ -53,18 +65,6 @@ var list = {
   'jco': 'Judecătoria Comrat',
   'jcg': 'Judecătoria Ceadîr-Lunga',
   'jvl': 'Judecătoria Vulcăneşti'
-};
-
-var Courts = {};
-
-Courts.getIds = function() {
-  var _ = require('underscore');
-
-  return _(list).keys();
-};
-
-Courts.getName = function(courtId) {
-  return list[courtId];
 };
 
 module.exports = Courts;

@@ -4,10 +4,6 @@ function SentenceSection() {
 }
 
 SentenceSection.prototype.inquireAbout = function(clientName) {
-  var forEach = require('../utils/for-each');
-  var extractRows = require('./common/extract-rows');
-  var Courts = require('../courts');
-
   var courtIds = Courts.getIds();
 
   return forEach(courtIds)
@@ -15,8 +11,6 @@ SentenceSection.prototype.inquireAbout = function(clientName) {
     .then(extractRows);
 
   function getResults(courtId) {
-    var httpPost = require('../utils/http-post');
-
     var url = SentenceSection.getUrl(courtId);
     var formData = SentenceSection.getFormData(clientName);
 
@@ -89,3 +83,8 @@ SentenceSection.prototype.toString = function() {
 };
 
 module.exports = SentenceSection;
+
+var forEach = require('../utils/for-each');
+var extractRows = require('./common/extract-rows');
+var Courts = require('../courts');
+var httpPost = require('../utils/http-post');

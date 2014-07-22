@@ -4,9 +4,6 @@ function SummonsSection() {
 }
 
 SummonsSection.prototype.inquireAbout = function(clientName) {
-  var forEach = require('../utils/for-each');
-  var extractRows = require('./common/extract-rows');
-
   var url = SummonsSection.getUrl();
   var fieldNames = ['persoana_citata', 'reclamantul'];
 
@@ -20,8 +17,6 @@ SummonsSection.prototype.inquireAbout = function(clientName) {
     });
 
   function getResults(fieldName) {
-    var httpPost = require('../utils/http-post');
-
     var formData = SummonsSection.getFormData(fieldName, clientName);
 
     return httpPost(url, formData);
@@ -120,3 +115,7 @@ SummonsSection.prototype.toString = function() {
 };
 
 module.exports = SummonsSection;
+
+var forEach = require('../utils/for-each');
+var extractRows = require('./common/extract-rows');
+var httpPost = require('../utils/http-post');

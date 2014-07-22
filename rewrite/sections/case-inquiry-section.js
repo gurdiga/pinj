@@ -4,13 +4,9 @@ function CaseInquirySection() {
 }
 
 CaseInquirySection.prototype.inquireAbout = function(clientName) {
-  var extractRows = require('./common/extract-rows');
-
   return getResults().then(extractRows);
 
   function getResults() {
-    var httpPost = require('../utils/http-post');
-
     var url = CaseInquirySection.getUrl();
     var formData = CaseInquirySection.getFormData(clientName);
 
@@ -86,3 +82,6 @@ CaseInquirySection.prototype.toString = function() {
 };
 
 module.exports = CaseInquirySection;
+
+var extractRows = require('./common/extract-rows');
+var httpPost = require('../utils/http-post');

@@ -4,10 +4,6 @@ function AgendaSection() {
 }
 
 AgendaSection.prototype.inquireAbout = function(clientName) {
-  var forEach = require('../utils/for-each');
-  var extractRows = require('./common/extract-rows');
-  var Courts = require('../courts');
-
   var courtIds = Courts.getIds();
 
   return forEach(courtIds)
@@ -15,8 +11,6 @@ AgendaSection.prototype.inquireAbout = function(clientName) {
     .then(extractRows);
 
   function getResults(courtId) {
-    var httpPost = require('../utils/http-post');
-
     var url = AgendaSection.getUrl(courtId);
     var formData = AgendaSection.getFormData(clientName);
 
@@ -100,3 +94,8 @@ AgendaSection.prototype.toString = function() {
 };
 
 module.exports = AgendaSection;
+
+var forEach = require('../utils/for-each');
+var extractRows = require('./common/extract-rows');
+var Courts = require('../courts');
+var httpPost = require('../utils/http-post');

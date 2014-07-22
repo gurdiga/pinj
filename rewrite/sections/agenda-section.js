@@ -4,20 +4,24 @@ function AgendaSection() {
 }
 
 AgendaSection.prototype.inquireAbout = function(clientName) {
-  var httpPost = require('../utils/http-post');
   var forEach = require('../utils/for-each');
+  var extractRows = require('./common/extract-rows');
   var Courts = require('../courts');
-  var getRows = require('./common/get-rows');
 
   var courtIds = Courts.getIds();
 
-  return forEach(courtIds).inParallel(function(courtId) {
+  return forEach(courtIds)
+    .inParallel(getResults)
+    .then(extractRows);
+
+  function getResults(courtId) {
+    var httpPost = require('../utils/http-post');
+
     var url = AgendaSection.getUrl(courtId);
     var formData = AgendaSection.getFormData(clientName);
 
     return httpPost(url, formData);
-  })
-  .then(getRows);
+  }
 };
 
 AgendaSection.getUrl = function(courtId) {

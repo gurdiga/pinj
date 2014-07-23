@@ -36,9 +36,13 @@ AgendaSection.prototype.inquireAbout = function(clientName) {
   function flattenResults(results) {
     var reduce = require('underscore').reduce;
 
-    return reduce(results, function(allRows, theseRows) {
+    var allRows = reduce(results, function(allRows, theseRows) {
       return allRows.concat(theseRows);
     }, []);
+
+    allRows.columns = AgendaSection.columns;
+
+    return allRows;
   }
 };
 
@@ -68,45 +72,45 @@ AgendaSection.getFormData = function(clientName) {
   return searchOptions;
 };
 
-AgendaSection.columnTitles = [{
-    'title': 'Părţile',
-    'cellIndex': 5,
+AgendaSection.columns = [{
+    'title': 'Părţile dosarului',
+    'index': 5,
     'show': true
   }, {
     'title': 'Data şedinţei',
-    'cellIndex': 1,
+    'index': 1,
     'show': true
   }, {
     'title': 'Ora şedinţei',
-    'cellIndex': 2,
+    'index': 2,
     'show': true
   }, {
     'title': 'Instanţa',
-    'cellIndex': 100,
+    'index': 'courtName',
     'show': true
   }, {
     'title': 'Sala şedinţei',
-    'cellIndex': 7,
+    'index': 7,
     'show': true
   }, {
     'title': 'Numărul dosarului',
-    'cellIndex': 4,
+    'index': 4,
     'show': true
   }, {
     'title': 'SKIP',
-    'cellIndex': 0,
+    'index': 0,
     'show': false
   }, {
     'title': 'Tipul dosarului',
-    'cellIndex': 3,
+    'index': 3,
     'show': false
   }, {
     'title': 'Tipul şedinţei',
-    'cellIndex': 6,
+    'index': 6,
     'show': false
   }, {
     'title': 'Data actualizării',
-    'cellIndex': 8,
+    'index': 8,
     'show': false
   }
 ];

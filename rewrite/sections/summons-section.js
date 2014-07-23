@@ -25,7 +25,11 @@ SummonsSection.prototype.inquireAbout = function(clientName) {
     }
 
     function augmentRows(rows) {
-      rows.forEach(function(row) {
+      rows.forEach(setNameAndRole);
+
+      return rows;
+
+      function setNameAndRole(row) {
         var name, role;
 
         var accuser = row[6];
@@ -42,18 +46,20 @@ SummonsSection.prototype.inquireAbout = function(clientName) {
 
         row.name = name;
         row.role = role;
-      });
-
-      return rows;
+      }
     }
   }
 
   function flattenResults(results) {
     var reduce = require('underscore').reduce;
 
-    return reduce(results, function(allRows, theseRows) {
+    var allRows = reduce(results, function(allRows, theseRows) {
       return allRows.concat(theseRows);
     }, []);
+
+    allRows.columns = SummonsSection.columns;
+
+    return allRows;
   }
 };
 
@@ -83,61 +89,61 @@ SummonsSection.getFormData = function(fieldName, clientName) {
   return searchOptions;
 };
 
-SummonsSection.columnTitles = [{
+SummonsSection.columns = [{
     'title': 'Persoana vizată',
-    'cellIndex': 102,
+    'index': 'name',
     'show': true
   }, {
     'title': 'Calitatea procesuală',
-    'cellIndex': 103,
+    'index': 'role',
     'show': true
   }, {
     'title': 'Data şedinţei',
-    'cellIndex': 2,
+    'index': 2,
     'show': true
   }, {
     'title': 'Ora şedinţei',
-    'cellIndex': 3,
+    'index': 3,
     'show': true
   }, {
     'title': 'Instanţa',
-    'cellIndex': 7,
+    'index': 7,
     'show': true
   }, {
     'title': 'Obiectul examinării',
-    'cellIndex': 5,
+    'index': 5,
     'show': true
   }, {
     'title': 'Numărul dosarului',
-    'cellIndex': 1,
+    'index': 1,
     'show': true
   }, {
     'title': 'SKIP',
-    'cellIndex': 0,
+    'index': 0,
     'show': false
   }, {
     'title': 'Pîrît',
-    'cellIndex': 4,
+    'index': 4,
     'show': false
   }, {
     'title': 'Reclamant',
-    'cellIndex': 6,
+    'index': 6,
     'show': false
   }, {
     'title': 'Judecător',
-    'cellIndex': 8,
+    'index': 8,
     'show': false
   }, {
     'title': 'Persoana responsabilă',
-    'cellIndex': 9,
+    'index': 9,
     'show': false
   }, {
     'title': 'Contacte',
-    'cellIndex': 10,
+    'index': 10,
     'show': false
   }, {
     'title': 'Data publicării',
-    'cellIndex': 11,
+    'index': 11,
     'show': false
   }
 ];

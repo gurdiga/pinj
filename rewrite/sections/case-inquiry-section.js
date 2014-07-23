@@ -11,12 +11,18 @@ CaseInquirySection.prototype.inquireAbout = function(clientName) {
     var formData = CaseInquirySection.getFormData(clientName);
 
     return httpPost(url, formData)
-      .then(extractRows);
+      .then(extractRows)
+      .then(augmentRows);
 
     function extractRows(result) {
       return result.rows.map(function(row) {
         return row.cell;
       });
+    }
+
+    function augmentRows(rows) {
+      rows.columns = CaseInquirySection.columns;
+      return rows;
     }
   }
 };
@@ -47,37 +53,37 @@ CaseInquirySection.getFormData = function(clientName) {
   return searchOptions;
 };
 
-CaseInquirySection.columnTitles = [{
+CaseInquirySection.columns = [{
     'title': 'Părţile',
-    'cellIndex': 2,
+    'index': 2,
     'show': true
   }, {
     'title': 'Tipul dosarului',
-    'cellIndex': 3,
+    'index': 3,
     'show': true
   }, {
     'title': 'Instanţa',
-    'cellIndex': 6,
+    'index': 6,
     'show': true
   }, {
     'title': 'Categoria dosarului',
-    'cellIndex': 4,
+    'index': 4,
     'show': true
   }, {
     'title': 'Statutul dosarului',
-    'cellIndex': 5,
+    'index': 5,
     'show': true
   }, {
     'title': 'Numărul dosarului',
-    'cellIndex': 1,
+    'index': 1,
     'show': true
   }, {
     'title': 'SKIP',
-    'cellIndex': 0,
+    'index': 0,
     'show': false
   }, {
     'title': 'Data actualizării',
-    'cellIndex': 6,
+    'index': 6,
     'show': false
   }
 ];

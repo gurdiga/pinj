@@ -1,9 +1,8 @@
 'use strict';
 
-function CaseInquirySection() {
-}
+var CaseInquirySection = {};
 
-CaseInquirySection.prototype.inquireAbout = function(clientName) {
+CaseInquirySection.inquireAbout = function(clientName) {
   return getResults()
       .then(attachColumns(columns));
 
@@ -79,7 +78,7 @@ var columns = [{
   }
 ];
 
-CaseInquirySection.prototype.toString = function() {
+CaseInquirySection.toString = function() {
   return 'Cereri în instanţă';
 };
 

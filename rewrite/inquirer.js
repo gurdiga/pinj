@@ -8,10 +8,10 @@ var SentenceSection = require('./sections/sentence-section');
 var Inquirer = {};
 
 var sections = [
-  new AgendaSection(),
-  new CaseInquirySection(),
-  new SummonsSection(),
-  new SentenceSection()
+  AgendaSection,
+  CaseInquirySection,
+  SummonsSection,
+  SentenceSection
 ];
 
 Inquirer.inquireAbout = function(clientNames) {

@@ -1,0 +1,35 @@
+each sections, name in results
+  h3= name
+
+  each rows, sectionName in sections
+    if rows.length > 0
+      h4= sectionName
+
+      table(style=css.table)
+        thead
+          tr
+            th(style=css.th) #
+            each column in rows.columns
+              if column.show
+                th(style=css.th)= column.title
+        tbody
+          each row, i in rows
+
+            if i < MAX_ROWS_PER_SECTION
+              tr
+                td(style=css.td)= i + 1
+                each column, i in rows.columns
+                  if column.show
+                    if column.link
+                      td(style=css.td)
+                        a(href=row[column.index])= column.title
+                    else
+                      td(style=css.td)= row[column.index].trim()
+
+            if i == MAX_ROWS_PER_SECTION
+              tr
+                td(style=css['td.too-many-rows'], colspan=row.length)
+                  span Sunt prea multe rezultate pentru a fi incluse în email:&#32;
+                  span= rows.length
+                  span . Puteţi lista toate rezultatele pe&#32;
+                  a(href="http://instante.justice.md/cms/") Portalul Instanţelor Naţionale de Judecată

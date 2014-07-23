@@ -44,9 +44,13 @@ SentenceSection.prototype.inquireAbout = function(clientName) {
   function flattenResults(results) {
     var reduce = require('underscore').reduce;
 
-    return reduce(results, function(allRows, theseRows) {
+    var allRows = reduce(results, function(allRows, theseRows) {
       return allRows.concat(theseRows);
     }, []);
+
+    allRows.columns = SentenceSection.columns;
+
+    return allRows;
   }
 
 };
@@ -81,34 +85,34 @@ SentenceSection.getFormData = function(clientName) {
   return searchOptions;
 };
 
-SentenceSection.columnTitles = [{
+SentenceSection.columns = [{
     'title': 'Denumirea dosarului',
-    'cellIndex': 3,
+    'index': 3,
     'show': true
   }, {
     'title': 'Numărul dosarului',
-    'cellIndex': 2,
+    'index': 2,
     'show': true
   }, {
     'title': 'PDF',
-    'cellIndex': 101,
+    'index': 'pdfUrl',
     'link': true,
     'show': true
   }, {
     'title': 'SKIP',
-    'cellIndex': 0,
+    'index': 0,
     'show': false
   }, {
     'title': 'Data pronunţării',
-    'cellIndex': 1,
+    'index': 1,
     'show': false
   }, {
     'title': 'Tipul dosarului',
-    'cellIndex': 4,
+    'index': 4,
     'show': false
   }, {
     'title': 'SKIP',
-    'cellIndex': 5,
+    'index': 5,
     'show': false
   }
 ];

@@ -1,25 +1,30 @@
 'use strict';
 
-var Lawyer = require('./lawyer');
-var Inquirer = require('./inquirer');
+var _ = require('underscore');
 
-var lawyer = new Lawyer({
-  email: 'gurdiga@gmail.com',
-  clientNames: ['Romanescu Constantin', 'Cebanu Valentina']
-});
+var input = require('../input');
 
-var inquirer = new Inquirer();
+_(input).each(function(clientNames, email) {
+  var Lawyer = require('./lawyer');
+  var Inquirer = require('./inquirer');
 
-inquirer.inquireAbout(lawyer.getClientNames())
-.then(function(results) {
-  var Emailer = require('./emailer');
-  var emailer = new Emailer();
-
-  emailer.send({
-    results: results,
-    address: lawyer.email
+  var lawyer = new Lawyer({
+    email: email,
+    clientNames: clientNames
   });
-})
-.catch(function(err) {
-  console.error(err.stack);
+
+  var inquirer = new Inquirer();
+
+  inquirer
+    .inquireAbout(lawyer.getClientNames())
+    .then(function(results) {
+      var Emailer = require('./emailer');
+      var emailer = new Emailer();
+
+      //console.log(JSON.stringify(results, null, '  '));
+      emailer.send(results, lawyer.email);
+    })
+    .catch(function(err) {
+      console.error(err.stack);
+    });
 });

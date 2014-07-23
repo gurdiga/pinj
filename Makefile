@@ -3,9 +3,9 @@ SHELL = /bin/sh
 .ONESHELL:
 
 default: jshint
-	@node rewrite
+	@node app
 
 export
-	JSHINT_FILES = input.json $(shell find app -name '*.js' -or -name '*.json' | sort) $(shell find rewrite -name '*.js' -or -name '*.json' | sort)
+	JSHINT_FILES = input.json $(shell find app -name '*.js' -or -name '*.json' | sort)
 
 include $(shell find makefiles -name '*.mk' | sort)

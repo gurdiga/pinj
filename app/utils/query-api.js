@@ -19,6 +19,8 @@ function queryAPI(apiRequestOptions) {
   function passResponseDataTo(deferred) {
     return function(err, res, body) {
       if (err) console.error(err, apiRequestOptions);
+
+      res = res || {statusCode: -1};
       if (res.statusCode !== 200) console.error('HTTP', res.statusCode, apiRequestOptions);
 
       deferred.resolve(prepareBody(body));

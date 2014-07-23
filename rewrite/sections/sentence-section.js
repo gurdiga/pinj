@@ -1,9 +1,8 @@
 'use strict';
 
-function SentenceSection() {
-}
+var SentenceSection = {};
 
-SentenceSection.prototype.inquireAbout = function(clientName) {
+SentenceSection.inquireAbout = function(clientName) {
   var courtIds = Courts.getIds().filter(exclude(['jslb']));
 
   return forEach(courtIds)
@@ -93,7 +92,7 @@ var columns = [{
   }
 ];
 
-SentenceSection.prototype.toString = function() {
+SentenceSection.toString = function() {
   return 'Hotărîrile instanţei';
 };
 

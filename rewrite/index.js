@@ -1,7 +1,6 @@
 'use strict';
 
 var _ = require('underscore');
-
 var input = require('../input');
 
 _(input).each(function(clientNames, email) {

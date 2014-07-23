@@ -1,9 +1,8 @@
 'use strict';
 
-function SummonsSection() {
-}
+var SummonsSection = {};
 
-SummonsSection.prototype.inquireAbout = function(clientName) {
+SummonsSection.inquireAbout = function(clientName) {
   var fieldNames = ['persoana_citata', 'reclamantul'];
 
   return forEach(fieldNames)
@@ -126,7 +125,7 @@ var columns = [{
   }
 ];
 
-SummonsSection.prototype.toString = function() {
+SummonsSection.toString = function() {
   return 'Citaţii în instanţă';
 };
 

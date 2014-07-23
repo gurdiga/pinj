@@ -1,9 +1,8 @@
 'use strict';
 
-function AgendaSection() {
-}
+var AgendaSection = {};
 
-AgendaSection.prototype.inquireAbout = function(clientName) {
+AgendaSection.inquireAbout = function(clientName) {
   var courtIds = Courts.getIds().filter(exclude(['jslb']));
 
   return forEach(courtIds)
@@ -98,7 +97,7 @@ var columns = [{
   }
 ];
 
-AgendaSection.prototype.toString = function() {
+AgendaSection.toString = function() {
   return 'Agenda şedinţelor';
 };
 

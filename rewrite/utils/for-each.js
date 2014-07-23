@@ -1,9 +1,5 @@
 'use strict';
 
-var _ = require('underscore');
-var async = require('async');
-var Q = require('q');
-
 function forEach(items) {
   return {
     inSeries: asyncRun('series'),
@@ -41,3 +37,8 @@ function forEach(items) {
 }
 
 module.exports = forEach;
+
+var _ = require('underscore');
+var async = require('async');
+var Q = require('q');
+

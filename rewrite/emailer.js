@@ -19,10 +19,10 @@ Emailer.send = function(results, address) {
 
 function formatAsHTML(results) {
   var templateContext = {
-    'results' : results,
+    'results': results,
     'MAX_ROWS_PER_SECTION': 20,
-    'pretty'  : true,
-    'css'     : prepareCSS()
+    'pretty': true,
+    'css': prepareCSS()
   };
 
   return jade.renderFile(__dirname + '/email-template.html.jade', templateContext);

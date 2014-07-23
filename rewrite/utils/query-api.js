@@ -1,9 +1,5 @@
 'use strict';
 
-var assert = require('assert');
-var Q = require('q');
-var request = require('request');
-
 function queryAPI(apiRequestOptions) {
   assert(!!apiRequestOptions, 'queryAPI: apiRequestOptions are required');
   assert('url' in apiRequestOptions, 'queryAPI: “url” member is required.');
@@ -17,9 +13,7 @@ function queryAPI(apiRequestOptions) {
   };
 
   var deferred = Q.defer();
-
   request(requestOptions, passResponseDataTo(deferred));
-
   return deferred.promise;
 
   function passResponseDataTo(deferred) {
@@ -42,3 +36,7 @@ function queryAPI(apiRequestOptions) {
 }
 
 module.exports = queryAPI;
+
+var assert = require('assert');
+var Q = require('q');
+var request = require('request');

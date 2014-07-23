@@ -9,7 +9,7 @@ SummonsSection.prototype.inquireAbout = function(clientName) {
   return forEach(fieldNames)
     .inParallel(getResults)
     .then(flattenResults)
-    .then(attachColumns(SummonsSection));
+    .then(attachColumns(SummonsSection.columns));
 
   function getResults(fieldName) {
     var apiRequestOptions = SummonsSection.getAPIOptions(fieldName, clientName);

@@ -5,7 +5,7 @@ function CaseInquirySection() {
 
 CaseInquirySection.prototype.inquireAbout = function(clientName) {
   return getResults()
-      .then(attachColumns(CaseInquirySection));
+      .then(attachColumns(CaseInquirySection.columns));
 
   function getResults() {
     var apiRequestOptions = CaseInquirySection.getAPIOptions(clientName);

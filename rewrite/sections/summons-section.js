@@ -53,35 +53,31 @@ SummonsSection.prototype.inquireAbout = function(clientName) {
 
 SummonsSection.getAPIOptions = function(fieldName, clientName) {
   return {
-    url: SummonsSection.getUrl(),
-    searchOptions: SummonsSection.getFormData(fieldName, clientName)
-  };
-};
-
-SummonsSection.getUrl = function() {
-  return 'http://instante.justice.md/apps/citatii_judecata/citatii_grid.php';
-};
-
-SummonsSection.getFormData = function(fieldName, clientName) {
-  var searchOptions = {
-    '_search': true,
-    'nd': Date.now(),
-    'rows': 500,
-    'page': 1,
-    'sidx': 'judecatoria_vizata desc, judecatoria_vizata',
-    'sord': 'desc',
-    'filters': {
-      'groupOp': 'AND',
-      'rules': [
-        {'field': 'data_sedinta', 'op': 'cn', 'data': (new Date()).getFullYear()},
-        {'field': fieldName, 'op': 'cn', 'data': clientName}
-      ]
-    }
+    url: 'http://instante.justice.md/apps/citatii_judecata/citatii_grid.php',
+    searchOptions: getSearchOptions(fieldName, clientName)
   };
 
-  searchOptions.filters = JSON.stringify(searchOptions.filters);
+  function getSearchOptions(fieldName, clientName) {
+    var searchOptions = {
+      '_search': true,
+      'nd': Date.now(),
+      'rows': 500,
+      'page': 1,
+      'sidx': 'judecatoria_vizata desc, judecatoria_vizata',
+      'sord': 'desc',
+      'filters': {
+        'groupOp': 'AND',
+        'rules': [
+          {'field': 'data_sedinta', 'op': 'cn', 'data': (new Date()).getFullYear()},
+          {'field': fieldName, 'op': 'cn', 'data': clientName}
+        ]
+      }
+    };
 
-  return searchOptions;
+    searchOptions.filters = JSON.stringify(searchOptions.filters);
+
+    return searchOptions;
+  }
 };
 
 SummonsSection.columns = [{

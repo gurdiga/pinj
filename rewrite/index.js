@@ -7,6 +7,7 @@ var input = require('../input');
 _(input).each(function(clientNames, email) {
   var Lawyer = require('./lawyer');
   var Inquirer = require('./inquirer');
+  var Emailer = require('./emailer');
 
   var lawyer = new Lawyer({
     email: email,
@@ -18,11 +19,7 @@ _(input).each(function(clientNames, email) {
   inquirer
     .inquireAbout(lawyer.getClientNames())
     .then(function(results) {
-      var Emailer = require('./emailer');
-      var emailer = new Emailer();
-
-      //console.log(JSON.stringify(results, null, '  '));
-      emailer.send(results, lawyer.email);
+      Emailer.send(results, lawyer.email);
     })
     .catch(function(err) {
       console.error(err.stack);

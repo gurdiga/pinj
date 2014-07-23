@@ -1,18 +1,13 @@
 'use strict';
 
-var _ = require('underscore');
-var input = require('../input');
+var forEach = require('./utils/for-each');
+var lawyers = require('../input');
 
-_(input).each(function(clientNames, email) {
-  var lawyer = {
-    email: email,
-    clientNames: clientNames
-  };
-
+forEach(lawyers).inSeries(function(lawyer) {
   var Inquirer = require('./inquirer');
   var Emailer = require('./emailer');
 
-  Inquirer
+  return Inquirer
     .inquireAbout(lawyer.clientNames)
     .then(function(results) {
       Emailer.send(results, lawyer.email);

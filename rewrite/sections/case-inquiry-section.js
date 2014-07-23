@@ -4,13 +4,20 @@ function CaseInquirySection() {
 }
 
 CaseInquirySection.prototype.inquireAbout = function(clientName) {
-  return getResults().then(extractRows);
+  return getResults();
 
   function getResults() {
     var url = CaseInquirySection.getUrl();
     var formData = CaseInquirySection.getFormData(clientName);
 
-    return httpPost(url, formData);
+    return httpPost(url, formData)
+      .then(extractRows);
+
+    function extractRows(result) {
+      return result.rows.map(function(row) {
+        return row.cell;
+      });
+    }
   }
 };
 
@@ -39,8 +46,6 @@ CaseInquirySection.getFormData = function(clientName) {
 
   return searchOptions;
 };
-
-CaseInquirySection.title = 'Cereri în instanţă';
 
 CaseInquirySection.columnTitles = [{
     'title': 'Părţile',
@@ -78,10 +83,9 @@ CaseInquirySection.columnTitles = [{
 ];
 
 CaseInquirySection.prototype.toString = function() {
-  return 'CaseInquirySection';
+  return 'Cereri în instanţă';
 };
 
 module.exports = CaseInquirySection;
 
-var extractRows = require('./common/extract-rows');
 var httpPost = require('../utils/http-post');

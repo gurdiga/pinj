@@ -9,17 +9,51 @@ SummonsSection.prototype.inquireAbout = function(clientName) {
 
   return forEach(fieldNames)
     .inParallel(getResults)
-    .then(extractRows)
-    .then(function(rows) {
-      // TODO:
-      // - import the data augmentation code from the old version
-      return rows;
-    });
+    .then(flattenResults);
 
   function getResults(fieldName) {
     var formData = SummonsSection.getFormData(fieldName, clientName);
 
-    return httpPost(url, formData);
+    return httpPost(url, formData)
+      .then(extractRows)
+      .then(augmentRows);
+
+    function extractRows(result) {
+      return result.rows.map(function(row) {
+        return row.cell;
+      });
+    }
+
+    function augmentRows(rows) {
+      rows.forEach(function(row) {
+        var name, role;
+
+        var accuser = row[6];
+        var culprit = row[4];
+        var foundInCulprit = culprit.indexOf(clientName) > -1;
+
+        if (foundInCulprit) {
+          name = culprit;
+          role = 'pîrît';
+        } else {
+          name = accuser;
+          role = 'reclamant';
+        }
+
+        row.name = name;
+        row.role = role;
+      });
+
+      return rows;
+    }
+  }
+
+  function flattenResults(results) {
+    var reduce = require('underscore').reduce;
+
+    return reduce(results, function(allRows, theseRows) {
+      return allRows.concat(theseRows);
+    }, []);
   }
 };
 
@@ -48,8 +82,6 @@ SummonsSection.getFormData = function(fieldName, clientName) {
 
   return searchOptions;
 };
-
-SummonsSection.title = 'Citaţii în instanţă';
 
 SummonsSection.columnTitles = [{
     'title': 'Persoana vizată',
@@ -111,11 +143,10 @@ SummonsSection.columnTitles = [{
 ];
 
 SummonsSection.prototype.toString = function() {
-  return 'SummonsSection';
+  return 'Citaţii în instanţă';
 };
 
 module.exports = SummonsSection;
 
 var forEach = require('../utils/for-each');
-var extractRows = require('./common/extract-rows');
 var httpPost = require('../utils/http-post');

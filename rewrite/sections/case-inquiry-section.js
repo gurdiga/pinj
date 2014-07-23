@@ -8,14 +8,14 @@ CaseInquirySection.prototype.inquireAbout = function(clientName) {
       .then(attachColumns(columns));
 
   function getResults() {
-    var apiRequestOptions = CaseInquirySection.getAPIOptions(clientName);
+    var apiRequestOptions = getAPIOptions(clientName);
 
     return queryAPI(apiRequestOptions)
       .then(extractRows());
   }
 };
 
-CaseInquirySection.getAPIOptions = function(clientName) {
+function getAPIOptions(clientName) {
   return {
     url: 'http://instante.justice.md/apps/cereri_pendinte/cereri_grid.php',
     searchOptions: getSearchOptions(clientName)
@@ -42,7 +42,7 @@ CaseInquirySection.getAPIOptions = function(clientName) {
 
     return searchOptions;
   }
-};
+}
 
 var columns = [{
     'title': 'Părţile',

@@ -10,17 +10,10 @@ SentenceSection.prototype.inquireAbout = function(clientName) {
     .inParallel(getResults)
     .then(flattenResults);
 
-  function exclude(courtIdsToExclude) {
-    return function iterator(courtId) {
-      return courtIdsToExclude.indexOf(courtId) === -1;
-    };
-  }
-
   function getResults(courtId) {
-    var url = SentenceSection.getUrl(courtId);
-    var formData = SentenceSection.getFormData(clientName);
+    var apiRequestOptions = SentenceSection.getAPIOptions(courtId, clientName);
 
-    return httpPost(url, formData)
+    return queryAPI(apiRequestOptions)
       .then(extractRows)
       .then(augmentRows);
 
@@ -59,6 +52,13 @@ SentenceSection.prototype.inquireAbout = function(clientName) {
     return allRows;
   }
 
+};
+
+SentenceSection.getAPIOptions = function(courtId, clientName) {
+  return {
+    url: SentenceSection.getUrl(courtId),
+    searchOptions: SentenceSection.getFormData(clientName)
+  };
 };
 
 SentenceSection.getUrl = function(courtId) {
@@ -132,4 +132,5 @@ module.exports = SentenceSection;
 var format = require('util').format;
 var forEach = require('../utils/for-each');
 var Courts = require('../courts');
-var httpPost = require('../utils/http-post');
+var queryAPI = require('../utils/query-api');
+var exclude = require('../utils/exclude');

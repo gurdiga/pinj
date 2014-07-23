@@ -4,7 +4,6 @@ function SummonsSection() {
 }
 
 SummonsSection.prototype.inquireAbout = function(clientName) {
-  var url = SummonsSection.getUrl();
   var fieldNames = ['persoana_citata', 'reclamantul'];
 
   return forEach(fieldNames)
@@ -12,9 +11,9 @@ SummonsSection.prototype.inquireAbout = function(clientName) {
     .then(flattenResults);
 
   function getResults(fieldName) {
-    var formData = SummonsSection.getFormData(fieldName, clientName);
+    var apiRequestOptions = SummonsSection.getAPIOptions(fieldName, clientName);
 
-    return httpPost(url, formData)
+    return queryAPI(apiRequestOptions)
       .then(extractRows)
       .then(augmentRows);
 
@@ -61,6 +60,13 @@ SummonsSection.prototype.inquireAbout = function(clientName) {
 
     return allRows;
   }
+};
+
+SummonsSection.getAPIOptions = function(fieldName, clientName) {
+  return {
+    url: SummonsSection.getUrl(),
+    searchOptions: SummonsSection.getFormData(fieldName, clientName)
+  };
 };
 
 SummonsSection.getUrl = function() {
@@ -155,4 +161,4 @@ SummonsSection.prototype.toString = function() {
 module.exports = SummonsSection;
 
 var forEach = require('../utils/for-each');
-var httpPost = require('../utils/http-post');
+var queryAPI = require('../utils/query-api');

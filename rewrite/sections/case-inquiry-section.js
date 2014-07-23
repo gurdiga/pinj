@@ -11,13 +11,7 @@ CaseInquirySection.prototype.inquireAbout = function(clientName) {
     var apiRequestOptions = CaseInquirySection.getAPIOptions(clientName);
 
     return queryAPI(apiRequestOptions)
-      .then(extractRows);
-
-    function extractRows(result) {
-      return result.rows.map(function(row) {
-        return row.cell;
-      });
-    }
+      .then(extractRows());
   }
 };
 
@@ -93,3 +87,4 @@ module.exports = CaseInquirySection;
 
 var queryAPI = require('../utils/query-api');
 var attachColumns = require('../utils/attach-columns');
+var extractRows = require('../utils/extract-rows');

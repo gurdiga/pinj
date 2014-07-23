@@ -13,23 +13,14 @@ AgendaSection.prototype.inquireAbout = function(clientName) {
 
   function getResults(courtId) {
     var apiRequestOptions = AgendaSection.getAPIOptions(courtId, clientName);
+    var courtName = Courts.getName(courtId);
 
     return queryAPI(apiRequestOptions)
-      .then(extractRows)
-      .then(augmentRows);
+      .then(extractRows(addCourtName));
 
-    function extractRows(result) {
-      return result.rows.map(function(row) {
-        return row.cell;
-      });
-    }
-
-    function augmentRows(rows) {
-      rows.forEach(function(row) {
-        row.courtName = Courts.getName(courtId);
-      });
-
-      return rows;
+    function addCourtName(row) {
+      row.courtName = courtName;
+      return row;
     }
   }
 
@@ -119,3 +110,4 @@ var queryAPI = require('../utils/query-api');
 var exclude = require('../utils/exclude');
 var flattenResults = require('../utils/flatten-results');
 var attachColumns = require('../utils/attach-columns');
+var extractRows = require('../utils/extract-rows');

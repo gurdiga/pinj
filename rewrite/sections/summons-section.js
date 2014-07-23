@@ -15,38 +15,25 @@ SummonsSection.prototype.inquireAbout = function(clientName) {
     var apiRequestOptions = SummonsSection.getAPIOptions(fieldName, clientName);
 
     return queryAPI(apiRequestOptions)
-      .then(extractRows)
-      .then(augmentRows);
+      .then(extractRows(setNameAndRole));
 
-    function extractRows(result) {
-      return result.rows.map(function(row) {
-        return row.cell;
-      });
-    }
+    function setNameAndRole(row) {
+      var name, role;
 
-    function augmentRows(rows) {
-      rows.forEach(setNameAndRole);
+      var accuser = row[6];
+      var culprit = row[4];
+      var foundInCulprit = culprit.indexOf(clientName) > -1;
 
-      return rows;
-
-      function setNameAndRole(row) {
-        var name, role;
-
-        var accuser = row[6];
-        var culprit = row[4];
-        var foundInCulprit = culprit.indexOf(clientName) > -1;
-
-        if (foundInCulprit) {
-          name = culprit;
-          role = 'pîrît';
-        } else {
-          name = accuser;
-          role = 'reclamant';
-        }
-
-        row.name = name;
-        row.role = role;
+      if (foundInCulprit) {
+        name = culprit;
+        role = 'pîrît';
+      } else {
+        name = accuser;
+        role = 'reclamant';
       }
+
+      row.name = name;
+      row.role = role;
     }
   }
 };
@@ -149,3 +136,4 @@ var forEach = require('../utils/for-each');
 var queryAPI = require('../utils/query-api');
 var flattenResults = require('../utils/flatten-results');
 var attachColumns = require('../utils/attach-columns');
+var extractRows = require('../utils/extract-rows');

@@ -15,29 +15,19 @@ SentenceSection.prototype.inquireAbout = function(clientName) {
     var apiRequestOptions = SentenceSection.getAPIOptions(courtId, clientName);
 
     return queryAPI(apiRequestOptions)
-      .then(extractRows)
-      .then(augmentRows);
+      .then(extractRows(addPdfUrl));
 
-    function extractRows(result) {
-      return result.rows.map(function(row) {
-        return row.cell;
-      });
-    }
+    function addPdfUrl(row) {
+      var pdfUrlFormat = 'http://instante.justice.md/apps/hotariri_judecata/inst/%s/%s';
+      var pdfLink = row[0];
+      var hrefRegExp = /a href="([^"]+)"/;
 
-    var pdfUrlFormat = 'http://instante.justice.md/apps/hotariri_judecata/inst/%s/%s';
+      if (hrefRegExp.test(pdfLink)) {
+        var relativePdfUrl = pdfLink.match(hrefRegExp)[1];
+        row.pdfUrl = format(pdfUrlFormat, courtId, relativePdfUrl);
+      }
 
-    function augmentRows(rows) {
-      rows.forEach(function(row) {
-        var pdfLink = row[0];
-        var hrefRegExp = /a href="([^"]+)"/;
-
-        if (hrefRegExp.test(pdfLink)) {
-          var relativePdfUrl = pdfLink.match(hrefRegExp)[1];
-          row.pdfUrl = format(pdfUrlFormat, courtId, relativePdfUrl);
-        }
-      });
-
-      return rows;
+      return row;
     }
   }
 };
@@ -116,3 +106,4 @@ var queryAPI = require('../utils/query-api');
 var exclude = require('../utils/exclude');
 var flattenResults = require('../utils/flatten-results');
 var attachColumns = require('../utils/attach-columns');
+var extractRows = require('../utils/extract-rows');

@@ -23,35 +23,31 @@ CaseInquirySection.prototype.inquireAbout = function(clientName) {
 
 CaseInquirySection.getAPIOptions = function(clientName) {
   return {
-    url: CaseInquirySection.getUrl(),
-    searchOptions: CaseInquirySection.getFormData(clientName)
-  };
-};
-
-CaseInquirySection.getUrl = function() {
-  return 'http://instante.justice.md/apps/cereri_pendinte/cereri_grid.php';
-};
-
-CaseInquirySection.getFormData = function(clientName) {
-  var searchOptions = {
-    '_search': true,
-    'nd': Date.now(),
-    'rows': 500,
-    'page': 1,
-    'sidx': 'site_name desc, site_name',
-    'sord': 'desc',
-    'filters': {
-      'groupOp': 'AND',
-      'rules': [
-        {'field': 'nr_dosar', 'op': 'cn', 'data': (new Date()).getFullYear()},
-        {'field': 'parti_dosar', 'op': 'cn', 'data': clientName}
-      ]
-    }
+    url: 'http://instante.justice.md/apps/cereri_pendinte/cereri_grid.php',
+    searchOptions: getSearchOptions(clientName)
   };
 
-  searchOptions.filters = JSON.stringify(searchOptions.filters);
+  function getSearchOptions(clientName) {
+    var searchOptions = {
+      '_search': true,
+      'nd': Date.now(),
+      'rows': 500,
+      'page': 1,
+      'sidx': 'site_name desc, site_name',
+      'sord': 'desc',
+      'filters': {
+        'groupOp': 'AND',
+        'rules': [
+          {'field': 'nr_dosar', 'op': 'cn', 'data': (new Date()).getFullYear()},
+          {'field': 'parti_dosar', 'op': 'cn', 'data': clientName}
+        ]
+      }
+    };
 
-  return searchOptions;
+    searchOptions.filters = JSON.stringify(searchOptions.filters);
+
+    return searchOptions;
+  }
 };
 
 CaseInquirySection.columns = [{

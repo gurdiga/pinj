@@ -37,35 +37,31 @@ AgendaSection.prototype.inquireAbout = function(clientName) {
 
 AgendaSection.getAPIOptions = function(courtId, clientName) {
   return {
-    url: this.getUrl(courtId),
-    searchOptions: this.getSearchOptions(clientName)
-  };
-};
-
-AgendaSection.getUrl = function(courtId) {
-  return 'http://instante.justice.md/apps/agenda_judecata/inst/' + courtId + '/agenda_grid.php';
-};
-
-AgendaSection.getSearchOptions = function(clientName) {
-  var searchOptions = {
-    '_search': true,
-    'nd': Date.now(),
-    'rows': 500,
-    'page': 1,
-    'sidx': 'data_inregistrare asc, data_inregistrare',
-    'sord': 'asc',
-    'filters': {
-      'groupOp': 'AND',
-      'rules': [
-        {'field': 'data_sedinta', 'op': 'cn', 'data': (new Date()).getFullYear()},
-        {'field': 'denumire_dosar', 'op': 'cn', 'data': clientName}
-      ]
-    }
+    url: 'http://instante.justice.md/apps/agenda_judecata/inst/' + courtId + '/agenda_grid.php',
+    searchOptions: getSearchOptions(clientName)
   };
 
-  searchOptions.filters = JSON.stringify(searchOptions.filters);
+  function getSearchOptions(clientName) {
+    var searchOptions = {
+      '_search': true,
+      'nd': Date.now(),
+      'rows': 500,
+      'page': 1,
+      'sidx': 'data_inregistrare asc, data_inregistrare',
+      'sord': 'asc',
+      'filters': {
+        'groupOp': 'AND',
+        'rules': [
+          {'field': 'data_sedinta', 'op': 'cn', 'data': (new Date()).getFullYear()},
+          {'field': 'denumire_dosar', 'op': 'cn', 'data': clientName}
+        ]
+      }
+    };
 
-  return searchOptions;
+    searchOptions.filters = JSON.stringify(searchOptions.filters);
+
+    return searchOptions;
+  }
 };
 
 AgendaSection.columns = [{

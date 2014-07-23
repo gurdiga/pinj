@@ -24,9 +24,9 @@ SentenceSection.prototype.inquireAbout = function(clientName) {
       });
     }
 
-    function augmentRows(rows) {
-      var pdfUrlFormat = SentenceSection.getPdfUrlFormat();
+    var pdfUrlFormat = 'http://instante.justice.md/apps/hotariri_judecata/inst/%s/%s';
 
+    function augmentRows(rows) {
       rows.forEach(function(row) {
         var pdfLink = row[0];
         var hrefRegExp = /a href="([^"]+)"/;
@@ -44,39 +44,31 @@ SentenceSection.prototype.inquireAbout = function(clientName) {
 
 SentenceSection.getAPIOptions = function(courtId, clientName) {
   return {
-    url: SentenceSection.getUrl(courtId),
-    searchOptions: SentenceSection.getFormData(clientName)
-  };
-};
-
-SentenceSection.getUrl = function(courtId) {
-  return 'http://instante.justice.md/apps/hotariri_judecata/inst/' + courtId + '/db_hot_grid.php';
-};
-
-SentenceSection.getPdfUrlFormat = function() {
-  return 'http://instante.justice.md/apps/hotariri_judecata/inst/%s/%s';
-};
-
-SentenceSection.getFormData = function(clientName) {
-  var searchOptions = {
-    '_search': true,
-    'nd': Date.now(),
-    'rows': 500,
-    'page': 1,
-    'sidx': 'id',
-    'sord': 'asc',
-    'filters': {
-      'groupOp': 'AND',
-      'rules': [
-        {'field': 'nr_dosar', 'op': 'cn', 'data': (new Date()).getFullYear()},
-        {'field': 'denumire_dosar', 'op': 'cn', 'data': clientName}
-      ]
-    }
+    url: 'http://instante.justice.md/apps/hotariri_judecata/inst/' + courtId + '/db_hot_grid.php',
+    searchOptions: getSearchOptions(clientName)
   };
 
-  searchOptions.filters = JSON.stringify(searchOptions.filters);
+  function getSearchOptions(clientName) {
+    var searchOptions = {
+      '_search': true,
+      'nd': Date.now(),
+      'rows': 500,
+      'page': 1,
+      'sidx': 'id',
+      'sord': 'asc',
+      'filters': {
+        'groupOp': 'AND',
+        'rules': [
+          {'field': 'nr_dosar', 'op': 'cn', 'data': (new Date()).getFullYear()},
+          {'field': 'denumire_dosar', 'op': 'cn', 'data': clientName}
+        ]
+      }
+    };
 
-  return searchOptions;
+    searchOptions.filters = JSON.stringify(searchOptions.filters);
+
+    return searchOptions;
+  }
 };
 
 SentenceSection.columns = [{

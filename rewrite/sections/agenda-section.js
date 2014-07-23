@@ -9,7 +9,7 @@ AgendaSection.prototype.inquireAbout = function(clientName) {
   return forEach(courtIds)
     .inParallel(getResults)
     .then(flattenResults)
-    .then(attachColumns(AgendaSection));
+    .then(attachColumns(AgendaSection.columns));
 
   function getResults(courtId) {
     var apiRequestOptions = AgendaSection.getAPIOptions(courtId, clientName);

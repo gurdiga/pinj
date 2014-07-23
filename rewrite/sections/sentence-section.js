@@ -9,7 +9,7 @@ SentenceSection.prototype.inquireAbout = function(clientName) {
   return forEach(courtIds)
     .inParallel(getResults)
     .then(flattenResults)
-    .then(attachColumns(SentenceSection));
+    .then(attachColumns(SentenceSection.columns));
 
   function getResults(courtId) {
     var apiRequestOptions = SentenceSection.getAPIOptions(courtId, clientName);

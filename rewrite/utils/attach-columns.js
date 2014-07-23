@@ -1,8 +1,8 @@
 'use strict';
 
-function attachColumns(Section) {
+function attachColumns(columns) {
   return function(rows) {
-    rows.columns = Section.columns;
+    rows.columns = columns;
     return rows;
   };
 }

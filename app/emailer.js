@@ -8,7 +8,7 @@ Emailer.send = function(results, address) {
   transport.sendMail({
     from: 'info@pinj.pentru.md',
     to: address,
-    subject: 'PINJ v.1',
+    subject: 'PINJ',
     text: 'Please use an email program capable of rendering HTML messages',
     html: html
   }, function(err, response) {

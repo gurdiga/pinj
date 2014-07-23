@@ -8,7 +8,8 @@ SentenceSection.prototype.inquireAbout = function(clientName) {
 
   return forEach(courtIds)
     .inParallel(getResults)
-    .then(flattenResults);
+    .then(flattenResults)
+    .then(attachColumns(SentenceSection));
 
   function getResults(courtId) {
     var apiRequestOptions = SentenceSection.getAPIOptions(courtId, clientName);
@@ -39,19 +40,6 @@ SentenceSection.prototype.inquireAbout = function(clientName) {
       return rows;
     }
   }
-
-  function flattenResults(results) {
-    var reduce = require('underscore').reduce;
-
-    var allRows = reduce(results, function(allRows, theseRows) {
-      return allRows.concat(theseRows);
-    }, []);
-
-    allRows.columns = SentenceSection.columns;
-
-    return allRows;
-  }
-
 };
 
 SentenceSection.getAPIOptions = function(courtId, clientName) {
@@ -134,3 +122,5 @@ var forEach = require('../utils/for-each');
 var Courts = require('../courts');
 var queryAPI = require('../utils/query-api');
 var exclude = require('../utils/exclude');
+var flattenResults = require('../utils/flatten-results');
+var attachColumns = require('../utils/attach-columns');

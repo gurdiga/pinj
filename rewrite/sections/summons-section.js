@@ -8,7 +8,8 @@ SummonsSection.prototype.inquireAbout = function(clientName) {
 
   return forEach(fieldNames)
     .inParallel(getResults)
-    .then(flattenResults);
+    .then(flattenResults)
+    .then(attachColumns(SummonsSection));
 
   function getResults(fieldName) {
     var apiRequestOptions = SummonsSection.getAPIOptions(fieldName, clientName);
@@ -47,18 +48,6 @@ SummonsSection.prototype.inquireAbout = function(clientName) {
         row.role = role;
       }
     }
-  }
-
-  function flattenResults(results) {
-    var reduce = require('underscore').reduce;
-
-    var allRows = reduce(results, function(allRows, theseRows) {
-      return allRows.concat(theseRows);
-    }, []);
-
-    allRows.columns = SummonsSection.columns;
-
-    return allRows;
   }
 };
 
@@ -162,3 +151,5 @@ module.exports = SummonsSection;
 
 var forEach = require('../utils/for-each');
 var queryAPI = require('../utils/query-api');
+var flattenResults = require('../utils/flatten-results');
+var attachColumns = require('../utils/attach-columns');

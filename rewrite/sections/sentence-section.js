@@ -9,7 +9,7 @@ SentenceSection.prototype.inquireAbout = function(clientName) {
   return forEach(courtIds)
     .inParallel(getResults)
     .then(flattenResults)
-    .then(attachColumns(SentenceSection.columns));
+    .then(attachColumns(columns));
 
   function getResults(courtId) {
     var apiRequestOptions = SentenceSection.getAPIOptions(courtId, clientName);
@@ -61,7 +61,7 @@ SentenceSection.getAPIOptions = function(courtId, clientName) {
   }
 };
 
-SentenceSection.columns = [{
+var columns = [{
     'title': 'Denumirea dosarului',
     'index': 3,
     'show': true

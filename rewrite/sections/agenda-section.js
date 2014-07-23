@@ -9,7 +9,7 @@ AgendaSection.prototype.inquireAbout = function(clientName) {
   return forEach(courtIds)
     .inParallel(getResults)
     .then(flattenResults)
-    .then(attachColumns(AgendaSection.columns));
+    .then(attachColumns(columns));
 
   function getResults(courtId) {
     var apiRequestOptions = AgendaSection.getAPIOptions(courtId, clientName);
@@ -55,7 +55,7 @@ AgendaSection.getAPIOptions = function(courtId, clientName) {
   }
 };
 
-AgendaSection.columns = [{
+var columns = [{
     'title': 'Părţile dosarului',
     'index': 5,
     'show': true

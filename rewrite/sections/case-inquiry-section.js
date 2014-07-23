@@ -5,7 +5,7 @@ function CaseInquirySection() {
 
 CaseInquirySection.prototype.inquireAbout = function(clientName) {
   return getResults()
-      .then(attachColumns(CaseInquirySection.columns));
+      .then(attachColumns(columns));
 
   function getResults() {
     var apiRequestOptions = CaseInquirySection.getAPIOptions(clientName);
@@ -44,7 +44,7 @@ CaseInquirySection.getAPIOptions = function(clientName) {
   }
 };
 
-CaseInquirySection.columns = [{
+var columns = [{
     'title': 'Părţile',
     'index': 2,
     'show': true

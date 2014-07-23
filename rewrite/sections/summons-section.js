@@ -9,7 +9,7 @@ SummonsSection.prototype.inquireAbout = function(clientName) {
   return forEach(fieldNames)
     .inParallel(getResults)
     .then(flattenResults)
-    .then(attachColumns(SummonsSection.columns));
+    .then(attachColumns(columns));
 
   function getResults(fieldName) {
     var apiRequestOptions = SummonsSection.getAPIOptions(fieldName, clientName);
@@ -67,7 +67,7 @@ SummonsSection.getAPIOptions = function(fieldName, clientName) {
   }
 };
 
-SummonsSection.columns = [{
+var columns = [{
     'title': 'Persoana vizată',
     'index': 'name',
     'show': true

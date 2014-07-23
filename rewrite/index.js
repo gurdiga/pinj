@@ -5,7 +5,7 @@ var Inquirer = require('./inquirer');
 
 var lawyer = new Lawyer({
   email: 'gurdiga@gmail.com',
-  clientNames: ['Romanescu Constantin']
+  clientNames: ['Romanescu Constantin', 'Cebanu Valentina']
 });
 
 var inquirer = new Inquirer();
@@ -20,6 +20,6 @@ inquirer.inquireAbout(lawyer.getClientNames())
     address: lawyer.email
   });
 })
-.fail(function(err) {
+.catch(function(err) {
   console.error(err.stack);
 });

@@ -8,18 +8,55 @@ SentenceSection.prototype.inquireAbout = function(clientName) {
 
   return forEach(courtIds)
     .inParallel(getResults)
-    .then(extractRows);
+    .then(flattenResults);
 
   function getResults(courtId) {
     var url = SentenceSection.getUrl(courtId);
     var formData = SentenceSection.getFormData(clientName);
 
-    return httpPost(url, formData);
+    return httpPost(url, formData)
+      .then(extractRows)
+      .then(augmentRows);
+
+    function extractRows(result) {
+      return result.rows.map(function(row) {
+        return row.cell;
+      });
+    }
+
+    function augmentRows(rows) {
+      var pdfUrlFormat = SentenceSection.getPdfUrlFormat();
+
+      rows.forEach(function(row) {
+        var pdfLink = row[0];
+        var hrefRegExp = /a href="([^"]+)"/;
+
+        if (hrefRegExp.test(pdfLink)) {
+          var relativePdfUrl = pdfLink.match(hrefRegExp)[1];
+          row.pdfUrl = format(pdfUrlFormat, courtId, relativePdfUrl);
+        }
+      });
+
+      return rows;
+    }
   }
+
+  function flattenResults(results) {
+    var reduce = require('underscore').reduce;
+
+    return reduce(results, function(allRows, theseRows) {
+      return allRows.concat(theseRows);
+    }, []);
+  }
+
 };
 
 SentenceSection.getUrl = function(courtId) {
   return 'http://instante.justice.md/apps/hotariri_judecata/inst/' + courtId + '/db_hot_grid.php';
+};
+
+SentenceSection.getPdfUrlFormat = function() {
+  return 'http://instante.justice.md/apps/hotariri_judecata/inst/%s/%s';
 };
 
 SentenceSection.getFormData = function(clientName) {
@@ -43,8 +80,6 @@ SentenceSection.getFormData = function(clientName) {
 
   return searchOptions;
 };
-
-SentenceSection.title = 'Hotărîrile instanţei';
 
 SentenceSection.columnTitles = [{
     'title': 'Denumirea dosarului',
@@ -79,12 +114,12 @@ SentenceSection.columnTitles = [{
 ];
 
 SentenceSection.prototype.toString = function() {
-  return 'SentenceSection';
+  return 'Hotărîrile instanţei';
 };
 
 module.exports = SentenceSection;
 
+var format = require('util').format;
 var forEach = require('../utils/for-each');
-var extractRows = require('./common/extract-rows');
 var Courts = require('../courts');
 var httpPost = require('../utils/http-post');

@@ -8,13 +8,37 @@ AgendaSection.prototype.inquireAbout = function(clientName) {
 
   return forEach(courtIds)
     .inParallel(getResults)
-    .then(extractRows);
+    .then(flattenResults);
 
   function getResults(courtId) {
     var url = AgendaSection.getUrl(courtId);
     var formData = AgendaSection.getFormData(clientName);
 
-    return httpPost(url, formData);
+    return httpPost(url, formData)
+      .then(extractRows)
+      .then(augmentRows);
+
+    function extractRows(result) {
+      return result.rows.map(function(row) {
+        return row.cell;
+      });
+    }
+
+    function augmentRows(rows) {
+      rows.forEach(function(row) {
+        row.courtName = Courts.getName(courtId);
+      });
+
+      return rows;
+    }
+  }
+
+  function flattenResults(results) {
+    var reduce = require('underscore').reduce;
+
+    return reduce(results, function(allRows, theseRows) {
+      return allRows.concat(theseRows);
+    }, []);
   }
 };
 
@@ -43,8 +67,6 @@ AgendaSection.getFormData = function(clientName) {
 
   return searchOptions;
 };
-
-AgendaSection.title = 'Agenda şedinţelor';
 
 AgendaSection.columnTitles = [{
     'title': 'Părţile',
@@ -90,12 +112,11 @@ AgendaSection.columnTitles = [{
 ];
 
 AgendaSection.prototype.toString = function() {
-  return 'AgendaSection';
+  return 'Agenda şedinţelor';
 };
 
 module.exports = AgendaSection;
 
 var forEach = require('../utils/for-each');
-var extractRows = require('./common/extract-rows');
 var Courts = require('../courts');
 var httpPost = require('../utils/http-post');

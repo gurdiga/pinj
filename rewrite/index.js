@@ -14,9 +14,7 @@ _(input).each(function(clientNames, email) {
     clientNames: clientNames
   });
 
-  var inquirer = new Inquirer();
-
-  inquirer
+  Inquirer
     .inquireAbout(lawyer.getClientNames())
     .then(function(results) {
       Emailer.send(results, lawyer.email);

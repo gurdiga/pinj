@@ -4,11 +4,17 @@ function SentenceSection() {
 }
 
 SentenceSection.prototype.inquireAbout = function(clientName) {
-  var courtIds = Courts.getIds();
+  var courtIds = Courts.getIds().filter(exclude(['jslb']));
 
   return forEach(courtIds)
     .inParallel(getResults)
     .then(flattenResults);
+
+  function exclude(courtIdsToExclude) {
+    return function iterator(courtId) {
+      return courtIdsToExclude.indexOf(courtId) === -1;
+    };
+  }
 
   function getResults(courtId) {
     var url = SentenceSection.getUrl(courtId);

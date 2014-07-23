@@ -4,24 +4,19 @@ function CaseInquirySection() {
 }
 
 CaseInquirySection.prototype.inquireAbout = function(clientName) {
-  return getResults();
+  return getResults()
+      .then(attachColumns(CaseInquirySection));
 
   function getResults() {
     var apiRequestOptions = CaseInquirySection.getAPIOptions(clientName);
 
     return queryAPI(apiRequestOptions)
-      .then(extractRows)
-      .then(augmentRows);
+      .then(extractRows);
 
     function extractRows(result) {
       return result.rows.map(function(row) {
         return row.cell;
       });
-    }
-
-    function augmentRows(rows) {
-      rows.columns = CaseInquirySection.columns;
-      return rows;
     }
   }
 };
@@ -101,3 +96,4 @@ CaseInquirySection.prototype.toString = function() {
 module.exports = CaseInquirySection;
 
 var queryAPI = require('../utils/query-api');
+var attachColumns = require('../utils/attach-columns');

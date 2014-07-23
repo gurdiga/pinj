@@ -4,17 +4,16 @@ var _ = require('underscore');
 var input = require('../input');
 
 _(input).each(function(clientNames, email) {
-  var Lawyer = require('./lawyer');
+  var lawyer = {
+    email: email,
+    clientNames: clientNames
+  };
+
   var Inquirer = require('./inquirer');
   var Emailer = require('./emailer');
 
-  var lawyer = new Lawyer({
-    email: email,
-    clientNames: clientNames
-  });
-
   Inquirer
-    .inquireAbout(lawyer.getClientNames())
+    .inquireAbout(lawyer.clientNames)
     .then(function(results) {
       Emailer.send(results, lawyer.email);
     })

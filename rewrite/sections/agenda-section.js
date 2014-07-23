@@ -10,17 +10,10 @@ AgendaSection.prototype.inquireAbout = function(clientName) {
     .inParallel(getResults)
     .then(flattenResults);
 
-  function exclude(courtIdsToExclude) {
-    return function iterator(courtId) {
-      return courtIdsToExclude.indexOf(courtId) === -1;
-    };
-  }
-
   function getResults(courtId) {
-    var url = AgendaSection.getUrl(courtId);
-    var formData = AgendaSection.getFormData(clientName);
+    var apiRequestOptions = AgendaSection.getAPIOptions(courtId, clientName);
 
-    return httpPost(url, formData)
+    return queryAPI(apiRequestOptions)
       .then(extractRows)
       .then(augmentRows);
 
@@ -52,11 +45,18 @@ AgendaSection.prototype.inquireAbout = function(clientName) {
   }
 };
 
+AgendaSection.getAPIOptions = function(courtId, clientName) {
+  return {
+    url: this.getUrl(courtId),
+    searchOptions: this.getSearchOptions(clientName)
+  };
+};
+
 AgendaSection.getUrl = function(courtId) {
   return 'http://instante.justice.md/apps/agenda_judecata/inst/' + courtId + '/agenda_grid.php';
 };
 
-AgendaSection.getFormData = function(clientName) {
+AgendaSection.getSearchOptions = function(clientName) {
   var searchOptions = {
     '_search': true,
     'nd': Date.now(),
@@ -129,4 +129,5 @@ module.exports = AgendaSection;
 
 var forEach = require('../utils/for-each');
 var Courts = require('../courts');
-var httpPost = require('../utils/http-post');
+var queryAPI = require('../utils/query-api');
+var exclude = require('../utils/exclude');

@@ -7,10 +7,9 @@ CaseInquirySection.prototype.inquireAbout = function(clientName) {
   return getResults();
 
   function getResults() {
-    var url = CaseInquirySection.getUrl();
-    var formData = CaseInquirySection.getFormData(clientName);
+    var apiRequestOptions = CaseInquirySection.getAPIOptions(clientName);
 
-    return httpPost(url, formData)
+    return queryAPI(apiRequestOptions)
       .then(extractRows)
       .then(augmentRows);
 
@@ -25,6 +24,13 @@ CaseInquirySection.prototype.inquireAbout = function(clientName) {
       return rows;
     }
   }
+};
+
+CaseInquirySection.getAPIOptions = function(clientName) {
+  return {
+    url: CaseInquirySection.getUrl(),
+    searchOptions: CaseInquirySection.getFormData(clientName)
+  };
 };
 
 CaseInquirySection.getUrl = function() {
@@ -94,4 +100,4 @@ CaseInquirySection.prototype.toString = function() {
 
 module.exports = CaseInquirySection;
 
-var httpPost = require('../utils/http-post');
+var queryAPI = require('../utils/query-api');

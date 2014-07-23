@@ -3,11 +3,11 @@
   "version": "0.0.0",
   "dependencies": {
     "async": "0.9.0",
-    "jade": "1.4.2",
-    "nodemailer": "1.0.3",
+    "jade": "1.5.0",
+    "nodemailer": "1.0.4",
     "nodemailer-smtp-transport": "0.1.12",
     "q": "1.0.1",
-    "request": "2.37.0",
+    "request": "2.38.0",
     "underscore": "1.6.0"
   },
   "devDependencies": {

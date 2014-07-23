@@ -12,7 +12,7 @@ SentenceSection.prototype.inquireAbout = function(clientName) {
     .then(attachColumns(columns));
 
   function getResults(courtId) {
-    var apiRequestOptions = SentenceSection.getAPIOptions(courtId, clientName);
+    var apiRequestOptions = getAPIOptions(courtId, clientName);
 
     return queryAPI(apiRequestOptions)
       .then(extractRows(addPdfUrl));
@@ -32,7 +32,7 @@ SentenceSection.prototype.inquireAbout = function(clientName) {
   }
 };
 
-SentenceSection.getAPIOptions = function(courtId, clientName) {
+function getAPIOptions(courtId, clientName) {
   return {
     url: 'http://instante.justice.md/apps/hotariri_judecata/inst/' + courtId + '/db_hot_grid.php',
     searchOptions: getSearchOptions(clientName)
@@ -59,7 +59,7 @@ SentenceSection.getAPIOptions = function(courtId, clientName) {
 
     return searchOptions;
   }
-};
+}
 
 var columns = [{
     'title': 'Denumirea dosarului',

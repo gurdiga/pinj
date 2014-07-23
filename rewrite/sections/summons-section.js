@@ -12,7 +12,7 @@ SummonsSection.prototype.inquireAbout = function(clientName) {
     .then(attachColumns(columns));
 
   function getResults(fieldName) {
-    var apiRequestOptions = SummonsSection.getAPIOptions(fieldName, clientName);
+    var apiRequestOptions = getAPIOptions(fieldName, clientName);
 
     return queryAPI(apiRequestOptions)
       .then(extractRows(setNameAndRole));
@@ -38,7 +38,7 @@ SummonsSection.prototype.inquireAbout = function(clientName) {
   }
 };
 
-SummonsSection.getAPIOptions = function(fieldName, clientName) {
+function getAPIOptions(fieldName, clientName) {
   return {
     url: 'http://instante.justice.md/apps/citatii_judecata/citatii_grid.php',
     searchOptions: getSearchOptions(fieldName, clientName)
@@ -65,7 +65,7 @@ SummonsSection.getAPIOptions = function(fieldName, clientName) {
 
     return searchOptions;
   }
-};
+}
 
 var columns = [{
     'title': 'Persoana vizată',

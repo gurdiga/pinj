@@ -12,7 +12,7 @@ AgendaSection.prototype.inquireAbout = function(clientName) {
     .then(attachColumns(columns));
 
   function getResults(courtId) {
-    var apiRequestOptions = AgendaSection.getAPIOptions(courtId, clientName);
+    var apiRequestOptions = getAPIOptions(courtId, clientName);
     var courtName = Courts.getName(courtId);
 
     return queryAPI(apiRequestOptions)
@@ -26,7 +26,7 @@ AgendaSection.prototype.inquireAbout = function(clientName) {
 
 };
 
-AgendaSection.getAPIOptions = function(courtId, clientName) {
+function getAPIOptions(courtId, clientName) {
   return {
     url: 'http://instante.justice.md/apps/agenda_judecata/inst/' + courtId + '/agenda_grid.php',
     searchOptions: getSearchOptions(clientName)
@@ -53,7 +53,7 @@ AgendaSection.getAPIOptions = function(courtId, clientName) {
 
     return searchOptions;
   }
-};
+}
 
 var columns = [{
     'title': 'Părţile dosarului',

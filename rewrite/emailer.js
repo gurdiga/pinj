@@ -1,9 +1,8 @@
 'use strict';
 
-function Emailer() {
-}
+var Emailer = {};
 
-Emailer.prototype.send = function(results, address) {
+Emailer.send = function(results, address) {
   var html = formatAsHTML(results);
 
   transport.sendMail({

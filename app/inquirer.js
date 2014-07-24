@@ -21,7 +21,7 @@ Inquirer.inquireAbout = function(clientNames) {
     return forEach(sections).inParallel(function(section) {
       return section.inquireAbout(clientName);
     });
-  }, this);
+  });
 };
 
 module.exports = Inquirer;

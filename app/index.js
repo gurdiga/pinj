@@ -5,14 +5,18 @@ var lawyers = require('../input');
 
 forEach(lawyers).inSeries(function(lawyer) {
   var Inquirer = require('./inquirer');
-  var Emailer = require('./emailer');
+  var EmailFormatter = require('./email/formatter');
+  var EmailSender = require('./email/sender');
 
   return Inquirer
     .inquireAbout(lawyer.clientNames)
     .then(function(results) {
-      return Emailer.send(results, lawyer.email);
+      return EmailFormatter.formatAsHTML(results);
+    })
+    .then(function(htmlContent) {
+      return EmailSender.send(lawyer.email, htmlContent);
     })
     .catch(function(err) {
-      console.error(err.stack);
+      console.error('Oh my! I’ve got an error!', err.stack);
     });
 });

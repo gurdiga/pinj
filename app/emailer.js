@@ -3,6 +3,7 @@
 var Emailer = {};
 
 Emailer.send = function(results, address) {
+  var deferred = Q.defer();
   var html = formatAsHTML(results);
 
   transport.sendMail({
@@ -11,10 +12,12 @@ Emailer.send = function(results, address) {
     subject: 'Informaţii PINJ',
     text: 'Please use an email program capable of rendering HTML messages',
     html: html
-  }, function(err, response) {
-    if (err) console.error('err', err, response);
-    else console.log('sent to', address, html.length);
+  }, function(err) {
+    if (err) deferred.reject(err);
+    else deferred.resolve();
   });
+
+  return deferred.promise;
 };
 
 function formatAsHTML(results) {
@@ -47,5 +50,6 @@ module.exports = Emailer;
 
 var nodemailer = require('nodemailer');
 var transport = nodemailer.createTransport(require('nodemailer-smtp-transport')({}));
+var Q = require('q');
 var _ = require('underscore');
 var jade = require('jade');

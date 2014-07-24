@@ -10,7 +10,7 @@ forEach(lawyers).inSeries(function(lawyer) {
   return Inquirer
     .inquireAbout(lawyer.clientNames)
     .then(function(results) {
-      Emailer.send(results, lawyer.email);
+      return Emailer.send(results, lawyer.email);
     })
     .catch(function(err) {
       console.error(err.stack);

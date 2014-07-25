@@ -24,7 +24,12 @@ function forEach(items) {
     return _.chain(items)
       .map(function(item) {
         return [item, function(callback) {
-          thenable.call(thisObject, item)
+          var promise = thenable.call(thisObject, item);
+
+          assert(typeof promise === 'object', 'A thenable should return a promise object.');
+          assert('then' in promise, 'A promise must have the “then” method.');
+
+          promise
           .then(function(result) {
             callback(null, result);
           })
@@ -41,4 +46,5 @@ module.exports = forEach;
 var _ = require('underscore');
 var async = require('async');
 var Q = require('q');
+var assert = require('assert');
 

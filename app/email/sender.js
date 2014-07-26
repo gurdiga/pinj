@@ -12,14 +12,8 @@ EmailSender.send = function(address, htmlContent) {
   };
 
   var transport = getTransport();
-  var deferred = Q.defer();
 
-  transport.sendMail(emailOptions, function(err) {
-    if (err) deferred.reject(new Error(err));
-    else deferred.resolve();
-  });
-
-  return deferred.promise;
+  return Q.ninvoke(transport, 'sendMail', emailOptions);
 };
 
 function getTransport() {

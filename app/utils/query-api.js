@@ -41,4 +41,5 @@ module.exports = queryAPI;
 
 var assert = require('assert');
 var Q = require('q');
+Q.longStackSupport = true;
 var request = require('request');

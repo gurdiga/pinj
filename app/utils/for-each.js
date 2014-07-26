@@ -46,5 +46,6 @@ module.exports = forEach;
 var _ = require('underscore');
 var async = require('async');
 var Q = require('q');
+Q.longStackSupport = true;
 var assert = require('assert');
 

@@ -33,3 +33,4 @@ module.exports = EmailSender;
 
 var nodemailer = require('nodemailer');
 var Q = require('q');
+Q.longStackSupport = true;

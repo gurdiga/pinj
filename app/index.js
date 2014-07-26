@@ -18,10 +18,10 @@ forEach(lawyerEmails).inSeries(function(lawyerEmail) {
       return EmailFormatter.formatAsHTML(results);
     })
     .then(function(htmlContent) {
-      //console.log('sending %s bytes to %s', htmlContent.length, lawyerEmail);
       return EmailSender.send(lawyerEmail, htmlContent);
     })
     .catch(function(err) {
+      if (err.message === 'No news') return;
       console.error('Oh my! I’ve got an error!', err.stack);
     });
 });

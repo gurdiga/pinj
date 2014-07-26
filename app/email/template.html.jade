@@ -2,9 +2,9 @@ each sections, name in results
   h3= name
 
   each rows, sectionName in sections
-    h4= sectionName
-
     if rows.length > 0
+      h4= sectionName
+
       table(style=css.table)
         thead
           tr
@@ -33,5 +33,3 @@ each sections, name in results
                   span= rows.length
                   span . Puteţi lista toate rezultatele pe&#32;
                   a(href="http://instante.justice.md/cms/") Portalul Instanţelor Naţionale de Judecată
-    if rows.length === 0
-      p Nimic nou.

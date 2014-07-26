@@ -77,11 +77,7 @@ var path = require('path');
   var key = 'test-key';
   var value = [{a: 1}, {a: 2}, {a: 3}];
 
-  Storage.clear();
   Storage.set(key, value);
   assert.deepEqual(Storage.get(key), value, 'Storage can store and retrieve by key an array of objects');
   assert.strictEqual(Storage.get('unset'), undefined, 'Storage.get(key) returns undefined if key not found');
-
-  Storage.clear();
-  assert.strictEqual(Storage.get(key), undefined, 'Storage.clear() deletes everything');
 }());

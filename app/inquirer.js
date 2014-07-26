@@ -15,20 +15,17 @@ var sections = [
 ];
 
 Inquirer.inquireAbout = function(clientNames) {
-  var forEach = require('./utils/for-each');
-
   return forEach(clientNames)
     .inSeries(function(clientName) {
       return forEach(sections).inParallel(function(section) {
         return section.inquireAbout(clientName);
       });
     })
-    .then(excludeAllOldRows);
+    .then(excludeAllOldRows)
+    .then(stopIfNoNews);
 };
 
 function excludeAllOldRows(results) {
-  var _ = require('underscore');
-
   _(results).each(function(sections, clientName) {
     _(sections).each(function(rows, sectionName) {
       excludeOldRows(rows, clientName, sectionName);
@@ -36,6 +33,24 @@ function excludeAllOldRows(results) {
   });
 
   return results;
+}
+
+function stopIfNoNews(results) {
+  if (noNews(results)) throw new Error('No news');
+
+  return results;
+}
+
+function noNews(results) {
+  return _.chain(results)
+    .map(function(sections) {
+      return _(sections).map(function(rows) {
+        return rows;
+      });
+    })
+    .flatten()
+    .isEmpty()
+    .value();
 }
 
 function excludeOldRows(currentRows, clientName, sectionName) {
@@ -78,6 +93,8 @@ function stringify(array) {
 }
 
 var Storage = require('./storage');
+var _ = require('underscore');
+var forEach = require('./utils/for-each');
 
 module.exports = Inquirer;
 
@@ -86,8 +103,6 @@ module.exports = Inquirer;
 
   var clientName = 'Cutărescu Ion';
   var sectionName = AgendaSection.toString();
-
-  Storage.clear();
 
   var rowsOnDay1 = [[1], [2], [3]];
   excludeOldRows(rowsOnDay1, clientName, sectionName);
@@ -108,5 +123,25 @@ module.exports = Inquirer;
   var rowsOnDay5 = [[5], [6]];
   excludeOldRows(rowsOnDay5, clientName, sectionName);
   assert.deepEqual(rowsOnDay5, [[5], [6]], 'leaves the new rows');
+
+  var emptyResults = {
+    'Romanescu Constantin': {
+      'Agenda şedinţelor': [],
+      'Hotărîrile instanţei': []
+    }
+  };
+
+  assert(noNews(emptyResults), 'noNews: returns true when there is no row in any section');
+
+  var nonEmptyResults = {
+    'Romanescu Constantin': {
+      'Citaţii în instanţă': [
+        ['some', 'data']
+      ],
+      'Hotărîrile instanţei': []
+    }
+  };
+
+  assert(!noNews(nonEmptyResults), 'noNews: returns false when there are any rows in any section');
 
 }());

@@ -1,6 +1,8 @@
 'use strict';
 
 var Storage = {};
+module.exports = Storage;
+
 var root = __dirname + '/storage/';
 
 Storage.set = function(key, value) {
@@ -64,6 +66,10 @@ function preparePath(filePath) {
   return nodeFs.mkdirSync(path.dirname(filePath), mode, recursive);
 }
 
+var fs = require('fs');
+var crypto = require('crypto');
+var nodeFs = require('node-fs');
+var path = require('path');
 
 (function selfTest() {
   var assert = require('assert');
@@ -79,11 +85,3 @@ function preparePath(filePath) {
   Storage.clear();
   assert.strictEqual(Storage.get(key), undefined, 'Storage.clear() deletes everything');
 }());
-
-
-module.exports = Storage;
-
-var fs = require('fs');
-var crypto = require('crypto');
-var nodeFs = require('node-fs');
-var path = require('path');

@@ -23,7 +23,7 @@ function forEach(items) {
   function prepareAsyncTasks(items, thenable, thisObject) {
     return _.chain(items)
       .map(function(item) {
-        return [item, function(callback) {
+        return [item, timedTask(function(callback) {
           var promise = thenable.call(thisObject, item);
 
           assert(typeof promise === 'object', 'A thenable should return a promise object.');
@@ -34,11 +34,21 @@ function forEach(items) {
             callback(null, result);
           })
           .catch(callback);
-        }];
+        }, item.toString())];
       })
       .object()
       .value();
   }
+}
+
+function timedTask(f, label) {
+  return function(callback) {
+    console.time(label);
+    return f(function(err, results) {
+      console.timeEnd(label);
+      return callback(err, results);
+    });
+  };
 }
 
 module.exports = forEach;
@@ -48,4 +58,3 @@ var async = require('async');
 var Q = require('q');
 Q.longStackSupport = true;
 var assert = require('assert');
-

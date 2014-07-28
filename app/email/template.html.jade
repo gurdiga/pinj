@@ -24,7 +24,7 @@ each sections, name in results
                       td(style=css.td)
                         a(href=row[column.index])= column.title
                     else
-                      td(style=css.td)= row[column.index].trim()
+                      td(style=css.td)!= row[column.index].trim()
 
             if i == MAX_ROWS_PER_SECTION
               tr

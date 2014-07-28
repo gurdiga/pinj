@@ -22,6 +22,7 @@ Inquirer.inquireAbout = function(clientNames) {
       });
     })
     .then(excludeAllOldRows)
+    .then(excludeEmptyResults)
     .then(stopIfNoNews);
 };
 
@@ -30,6 +31,18 @@ function excludeAllOldRows(results) {
     _(sections).each(function(rows, sectionName) {
       excludeOldRows(rows, clientName, sectionName);
     });
+  });
+
+  return results;
+}
+
+function excludeEmptyResults(results) {
+  _(results).each(function(sections, clientName) {
+    _(sections).each(function(rows, sectionName) {
+      if (_(rows).isEmpty()) delete results[clientName][sectionName];
+    });
+
+    if (_(results[clientName]).isEmpty()) delete results[clientName];
   });
 
   return results;
@@ -101,47 +114,64 @@ module.exports = Inquirer;
 (function selfTest() {
   var assert = require('assert');
 
-  var clientName = 'Cutărescu Ion';
-  var sectionName = AgendaSection.toString();
+  (function testExcludeOldRows() {
+    var clientName = 'Cutărescu Ion';
+    var sectionName = AgendaSection.toString();
 
-  var rowsOnDay1 = [[1], [2], [3]];
-  excludeOldRows(rowsOnDay1, clientName, sectionName);
-  assert.deepEqual(rowsOnDay1, [[1], [2], [3]], 'Initially do not remove any rows, since there are no old ones.');
+    var rowsOnDay1 = [[1], [2], [3]];
+    excludeOldRows(rowsOnDay1, clientName, sectionName);
+    assert.deepEqual(rowsOnDay1, [[1], [2], [3]], 'Initially do not remove any rows, since there are no old ones.');
 
-  var rowsOnDay2 = [[1], [2], [3], [4]];
-  excludeOldRows(rowsOnDay2, clientName, sectionName);
-  assert.deepEqual(rowsOnDay2, [[4]], 'removes old rows');
+    var rowsOnDay2 = [[1], [2], [3], [4]];
+    excludeOldRows(rowsOnDay2, clientName, sectionName);
+    assert.deepEqual(rowsOnDay2, [[4]], 'removes old rows');
 
-  var rowsOnDay3 = [[1], [2], [3], [4]];
-  excludeOldRows(rowsOnDay3, clientName, sectionName);
-  assert.deepEqual(rowsOnDay3, [], 'empties rows when all of them are old');
+    var rowsOnDay3 = [[1], [2], [3], [4]];
+    excludeOldRows(rowsOnDay3, clientName, sectionName);
+    assert.deepEqual(rowsOnDay3, [], 'empties rows when all of them are old');
 
-  var rowsOnDay4 = [];
-  excludeOldRows(rowsOnDay4, clientName, sectionName);
-  assert.deepEqual(rowsOnDay4, [], 'given no rows ignore old ones');
+    var rowsOnDay4 = [];
+    excludeOldRows(rowsOnDay4, clientName, sectionName);
+    assert.deepEqual(rowsOnDay4, [], 'given no rows ignore old ones');
 
-  var rowsOnDay5 = [[5], [6]];
-  excludeOldRows(rowsOnDay5, clientName, sectionName);
-  assert.deepEqual(rowsOnDay5, [[5], [6]], 'leaves the new rows');
+    var rowsOnDay5 = [[5], [6]];
+    excludeOldRows(rowsOnDay5, clientName, sectionName);
+    assert.deepEqual(rowsOnDay5, [[5], [6]], 'leaves the new rows');
+  }());
 
-  var emptyResults = {
-    'Romanescu Constantin': {
-      'Agenda şedinţelor': [],
-      'Hotărîrile instanţei': []
-    }
-  };
+  (function testExcludeEmptyResults() {
+    var emptyResults = {
+      'Romanescu Constantin': {
+        'Agenda şedinţelor': [],
+        'Hotărîrile instanţei': []
+      }
+    };
 
-  assert(noNews(emptyResults), 'noNews: returns true when there is no row in any section');
+    excludeEmptyResults(emptyResults);
+    assert.deepEqual(emptyResults, {});
+  }());
 
-  var nonEmptyResults = {
-    'Romanescu Constantin': {
-      'Citaţii în instanţă': [
-        ['some', 'data']
-      ],
-      'Hotărîrile instanţei': []
-    }
-  };
 
-  assert(!noNews(nonEmptyResults), 'noNews: returns false when there are any rows in any section');
+  (function testNoNews() {
+    var emptyResults = {
+      'Romanescu Constantin': {
+        'Agenda şedinţelor': [],
+        'Hotărîrile instanţei': []
+      }
+    };
+
+    assert(noNews(emptyResults), 'noNews: returns true when there is no row in any section');
+
+    var nonEmptyResults = {
+      'Romanescu Constantin': {
+        'Citaţii în instanţă': [
+          ['some', 'data']
+        ],
+        'Hotărîrile instanţei': []
+      }
+    };
+
+    assert(!noNews(nonEmptyResults), 'noNews: returns false when there are any rows in any section');
+  }());
 
 }());

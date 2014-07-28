@@ -21,7 +21,11 @@ forEach(lawyerEmails).inSeries(function(lawyerEmail) {
       return EmailSender.send(lawyerEmail, htmlContent);
     })
     .catch(function(err) {
-      if (err.message === 'No news') return;
+      if (err.message === 'No news') {
+        console.log('No news');
+        return;
+      }
+
       console.error('Oh my! I’ve got an error!', err.stack);
     });
 });

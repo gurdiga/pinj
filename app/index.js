@@ -7,6 +7,7 @@ var lawyerEmails = _(input).keys();
 
 forEach(lawyerEmails).inSeries(function(lawyerEmail) {
   var Inquirer = require('./inquirer');
+  var Curator = require('./curator');
   var EmailFormatter = require('./email/formatter');
   var EmailSender = require('./email/sender');
 
@@ -14,6 +15,9 @@ forEach(lawyerEmails).inSeries(function(lawyerEmail) {
 
   return Inquirer
     .inquireAbout(clientNames)
+    .then(function(results) {
+      return Curator.curate(results).for(lawyerEmail);
+    })
     .then(function(results) {
       return EmailFormatter.formatAsHTML(results);
     })

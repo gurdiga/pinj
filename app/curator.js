@@ -5,6 +5,7 @@ var Curator = {};
 Curator.curate = function(results) {
   return {
     'for': function(lawyerEmail) {
+        disregardUnusedColumns(results);
         excludeAllOldRows(results, lawyerEmail);
         excludeEmptyResults(results);
         stopIfNoNews(results);
@@ -13,6 +14,39 @@ Curator.curate = function(results) {
     }
   };
 };
+
+function disregardUnusedColumns(results) {
+  var visibleColumns;
+
+  _(results).each(function(sections) {
+    _(sections).each(function(rows) {
+      visibleColumns = getVisibleColumns(rows.columns);
+      _(rows).each(nullifyUnusedCells(visibleColumns));
+    });
+  });
+
+  return results;
+}
+
+function nullifyUnusedCells(visibleColumns) {
+  return function(row) {
+    _.chain(row)
+      .omit(visibleColumns)
+      .each(function(v, i) {
+        row[i] = null;
+      });
+  };
+}
+
+function getVisibleColumns(columns) {
+  return columns
+    .filter(function(column) {
+      return column.show;
+    })
+    .map(function(column) {
+      return column.index.toString();
+    });
+}
 
 function excludeAllOldRows(results, lawyerEmail) {
   _(results).each(function(sections, clientName) {
@@ -100,6 +134,15 @@ module.exports = Curator;
 
 (function selfTest() {
   var assert = require('assert');
+
+  (function testNullifyUnusedCells() {
+    var visibleColumns = ['0', '2'];
+    var row = [1, 2, 3];
+    var expectedRow = [1, null, 3];
+
+    nullifyUnusedCells(visibleColumns)(row);
+    assert.deepEqual(row, expectedRow, 'Nullifies the columns that are not shown');
+  }());
 
   (function testExcludeOldRows() {
     var clientName = 'Cutărescu Ion';

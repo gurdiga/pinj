@@ -131,8 +131,8 @@ SummonsSection.toString = function() {
 
 module.exports = SummonsSection;
 
-var forEach = require('../utils/for-each');
-var queryAPI = require('../utils/query-api');
-var flattenResults = require('../utils/flatten-results');
-var attachColumns = require('../utils/attach-columns');
-var extractRows = require('../utils/extract-rows');
+var forEach = require('../../util/for-each');
+var queryAPI = require('../../util/query-api');
+var flattenResults = require('../../util/flatten-results');
+var attachColumns = require('../../util/attach-columns');
+var extractRows = require('../../util/extract-rows');

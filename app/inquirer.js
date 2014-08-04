@@ -1,9 +1,9 @@
 'use strict';
 
-var AgendaSection = require('./sections/agenda-section');
-var CaseInquirySection = require('./sections/case-inquiry-section');
-var SummonsSection = require('./sections/summons-section');
-var SentenceSection = require('./sections/sentence-section');
+var AgendaSection = require('./district-courts/sections/agenda-section');
+var CaseInquirySection = require('./district-courts/sections/case-inquiry-section');
+var SummonsSection = require('./district-courts/sections/summons-section');
+var SentenceSection = require('./district-courts/sections/sentence-section');
 
 var Inquirer = {};
 
@@ -15,14 +15,13 @@ var sections = [
 ];
 
 Inquirer.inquireAbout = function(clientNames) {
-  return forEach(clientNames)
-    .inSeries(function(clientName) {
+  return forEach(clientNames).inSeries(function(clientName) {
       return forEach(sections).inParallel(function(section) {
         return section.inquireAbout(clientName);
       });
     });
 };
 
-var forEach = require('./utils/for-each');
+var forEach = require('./util/for-each');
 
 module.exports = Inquirer;

@@ -9,7 +9,7 @@ default: test
 	@node app
 
 test: jshint
-	@node app/storage.js
+	@node app/util/storage.js
 	@node app/curator.js
 
 include $(shell find makefiles -name '*.mk' | sort)

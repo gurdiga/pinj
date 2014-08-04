@@ -103,10 +103,10 @@ AgendaSection.toString = function() {
 
 module.exports = AgendaSection;
 
-var forEach = require('../utils/for-each');
+var forEach = require('../../util/for-each');
 var Courts = require('../courts');
-var queryAPI = require('../utils/query-api');
-var exclude = require('../utils/exclude');
-var flattenResults = require('../utils/flatten-results');
-var attachColumns = require('../utils/attach-columns');
-var extractRows = require('../utils/extract-rows');
+var queryAPI = require('../../util/query-api');
+var exclude = require('../../util/exclude');
+var flattenResults = require('../../util/flatten-results');
+var attachColumns = require('../../util/attach-columns');
+var extractRows = require('../../util/extract-rows');

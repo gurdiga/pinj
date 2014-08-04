@@ -127,7 +127,7 @@ function stringify(array) {
   });
 }
 
-var Storage = require('./storage');
+var Storage = require('./util/storage');
 var _ = require('underscore');
 
 module.exports = Curator;

@@ -84,6 +84,6 @@ CaseInquirySection.toString = function() {
 
 module.exports = CaseInquirySection;
 
-var queryAPI = require('../utils/query-api');
-var attachColumns = require('../utils/attach-columns');
-var extractRows = require('../utils/extract-rows');
+var queryAPI = require('../../util/query-api');
+var attachColumns = require('../../util/attach-columns');
+var extractRows = require('../../util/extract-rows');

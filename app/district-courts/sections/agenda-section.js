@@ -3,7 +3,8 @@
 var AgendaSection = {};
 
 AgendaSection.inquireAbout = function(clientName) {
-  var courtIds = Courts.getIds().filter(exclude(['jslb']));
+  var courtIds = Courts.getIds();
+  courtIds = _(courtIds).without('jslb');
 
   return forEach(courtIds)
     .inParallel(getResults)
@@ -103,10 +104,10 @@ AgendaSection.toString = function() {
 
 module.exports = AgendaSection;
 
+var _ = require('underscore');
 var forEach = require('../../util/for-each');
 var Courts = require('../courts');
 var queryAPI = require('../../util/query-api');
-var exclude = require('../../util/exclude');
 var flattenResults = require('../../util/flatten-results');
 var attachColumns = require('../../util/attach-columns');
 var extractRows = require('../../util/extract-rows');

@@ -5,8 +5,9 @@ function extractRows(augmentEachRow) {
 
   return function(result) {
     return result.rows.map(function(row) {
+      var id = row.id;
       row = row.cell;
-      return augmentEachRow(row);
+      return augmentEachRow(row, id);
     });
   };
 }

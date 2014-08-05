@@ -56,7 +56,15 @@ function excludeAllOldRows(results, lawyerEmail) {
     client.results.forEach(function(level) {
       level.results.forEach(function(section) {
         section.results.forEach(function(court) {
-          excludeOldRows(court.results, client.label, section.label, lawyerEmail);
+          var cacheKey = [
+            lawyerEmail,
+            client.label,
+            level.label,
+            section.label,
+            court.label
+          ].join(' ');
+
+          excludeOldRows(court.results, cacheKey);
         });
       });
     });
@@ -85,8 +93,7 @@ function stopIfNoNews(results) {
   if (results.length === 0) throw new Error('No news');
 }
 
-function excludeOldRows(currentRows, clientName, sectionName, lawyerEmail) {
-  var cacheKey = clientName + sectionName + lawyerEmail;
+function excludeOldRows(currentRows, cacheKey) {
   var previousRows = Storage.get(cacheKey) || [];
   var oldRowIndexes = rowsIn(currentRows).thatExistIn(previousRows);
 

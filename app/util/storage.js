@@ -3,7 +3,7 @@
 var Storage = {};
 module.exports = Storage;
 
-var root = __dirname + '/storage/';
+var root = __dirname + '/../storage/';
 
 Storage.set = function(key, value) {
   var filePath = getFilePath(key);

@@ -7,7 +7,6 @@ SummonsSection.inquireAbout = function(clientName) {
 
   return forEach(fieldNames)
     .inParallel(getResults)
-    .then(flattenResults)
     .then(attachColumns(columns));
 
   function getResults(fieldName) {
@@ -133,6 +132,5 @@ module.exports = SummonsSection;
 
 var forEach = require('../../util/for-each');
 var queryAPI = require('../../util/query-api');
-var flattenResults = require('../../util/flatten-results');
 var attachColumns = require('../../util/attach-columns');
 var extractRows = require('../../util/extract-rows');

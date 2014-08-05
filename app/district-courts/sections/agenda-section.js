@@ -8,7 +8,6 @@ AgendaSection.inquireAbout = function(clientName) {
 
   return forEach(courtIds)
     .inParallel(getResults)
-    .then(flattenResults)
     .then(attachColumns(columns));
 
   function getResults(courtId) {
@@ -108,6 +107,5 @@ var _ = require('underscore');
 var forEach = require('../../util/for-each');
 var Courts = require('../courts');
 var queryAPI = require('../../util/query-api');
-var flattenResults = require('../../util/flatten-results');
 var attachColumns = require('../../util/attach-columns');
 var extractRows = require('../../util/extract-rows');

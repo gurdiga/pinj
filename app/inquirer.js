@@ -1,27 +1,24 @@
 'use strict';
 
-var AgendaSection = require('./district-courts/sections/agenda-section');
-var CaseInquirySection = require('./district-courts/sections/case-inquiry-section');
-var SummonsSection = require('./district-courts/sections/summons-section');
-var SentenceSection = require('./district-courts/sections/sentence-section');
-
 var Inquirer = {};
 
-var sections = [
-  AgendaSection,
-  CaseInquirySection,
-  SummonsSection,
-  SentenceSection
-];
-
 Inquirer.inquireAbout = function(clientNames) {
+  var levels = [
+    DistrictCourts,
+    SupremeCourt
+  ];
+
   return forEach(clientNames).inSeries(function(clientName) {
+    return forEach(levels).inParallel(function(sections) {
       return forEach(sections).inParallel(function(section) {
         return section.inquireAbout(clientName);
       });
     });
+  });
 };
 
 var forEach = require('./util/for-each');
+var DistrictCourts = require('./district-courts');
+var SupremeCourt = require('./supreme-court');
 
 module.exports = Inquirer;

@@ -1,35 +1,40 @@
-each sections, name in results
-  h3= name
+each client in results
+  h2= client.label
 
-  each rows, sectionName in sections
-    if rows.length > 0
-      h4= sectionName
+  each level in client.results
+    h3= level.label
+
+    each section in level.results
+      - recordCount = 1
+      h4= section.label
 
       table(style=css.table)
         thead
           tr
             th(style=css.th) #
-            each column in rows.columns
+            each column in section.results.columns
               if column.show
                 th(style=css.th)= column.title
         tbody
-          each row, i in rows
+          each court in section.results
+            each row in court.results
+              if recordCount <= MAX_ROWS_PER_SECTION
+                tr
+                  td(style=css.td)= recordCount
+                  each column in section.results.columns
+                    if column.show
+                      if column.link
+                        td(style=css.td)
+                          a(href=row[column.index])= column.title
+                      else
+                        td(style=css.td)!= row[column.index].trim()
 
-            if i < MAX_ROWS_PER_SECTION
-              tr
-                td(style=css.td)= i + 1
-                each column, i in rows.columns
-                  if column.show
-                    if column.link
-                      td(style=css.td)
-                        a(href=row[column.index])= column.title
-                    else
-                      td(style=css.td)!= row[column.index].trim()
+              if recordCount > MAX_ROWS_PER_SECTION
+                tr
+                  td(style=css['td.too-many-rows'], colspan=row.length)
+                    span Sunt prea multe rezultate pentru a fi incluse în email:&#32;
+                    span= court.results.length
+                    span . Puteţi lista toate rezultatele pe&#32;
+                    a(href="http://instante.justice.md/cms/") Portalul Instanţelor Naţionale de Judecată
 
-            if i == MAX_ROWS_PER_SECTION
-              tr
-                td(style=css['td.too-many-rows'], colspan=row.length)
-                  span Sunt prea multe rezultate pentru a fi incluse în email:&#32;
-                  span= rows.length
-                  span . Puteţi lista toate rezultatele pe&#32;
-                  a(href="http://instante.justice.md/cms/") Portalul Instanţelor Naţionale de Judecată
+              - recordCount++

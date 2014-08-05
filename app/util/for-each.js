@@ -13,7 +13,7 @@ function forEach(items) {
 
       async[flowType](asyncTasks, function(err, results) {
         if (err) deferred.reject(err);
-        else deferred.resolve(results);
+        else deferred.resolve(zip(items, results));
       });
 
       return deferred.promise;
@@ -38,6 +38,17 @@ function forEach(items) {
       })
       .object()
       .value();
+  }
+
+  function zip(items, results) {
+    return items.map(function(item) {
+      var label = item.toString();
+
+      return {
+        'label': label,
+        'results': results[label]
+      };
+    });
   }
 }
 

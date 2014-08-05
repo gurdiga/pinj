@@ -3,8 +3,11 @@
 var CaseInquirySection = {};
 
 CaseInquirySection.inquireAbout = function(clientName) {
-  return getResults()
-      .then(attachColumns(columns));
+  var courts = ['all'];
+
+  return forEach(courts)
+    .inSeries(getResults)
+    .then(attachColumns(columns));
 
   function getResults() {
     var apiRequestOptions = getAPIOptions(clientName);
@@ -84,6 +87,7 @@ CaseInquirySection.toString = function() {
 
 module.exports = CaseInquirySection;
 
+var forEach = require('../../util/for-each');
 var queryAPI = require('../../util/query-api');
 var attachColumns = require('../../util/attach-columns');
 var extractRows = require('../../util/extract-rows');

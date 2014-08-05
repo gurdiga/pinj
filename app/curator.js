@@ -5,9 +5,10 @@ var Curator = {};
 Curator.curate = function(results) {
   return {
     'for': function(lawyerEmail) {
+        compact(results);
         disregardUnusedColumns(results);
         excludeAllOldRows(results, lawyerEmail);
-        excludeEmptyResults(results);
+        compact(results);
         stopIfNoNews(results);
 
         return results;
@@ -16,12 +17,14 @@ Curator.curate = function(results) {
 };
 
 function disregardUnusedColumns(results) {
-  var visibleColumns;
-
-  _(results).each(function(sections) {
-    _(sections).each(function(rows) {
-      visibleColumns = getVisibleColumns(rows.columns);
-      _(rows).each(nullifyUnusedCells(visibleColumns));
+  results.forEach(function(client) {
+    client.results.forEach(function(level) {
+      level.results.forEach(function(section) {
+        var visibleColumns = getVisibleColumns(section.results.columns);
+        section.results.forEach(function(court) {
+          court.results.forEach(nullifyUnusedCells(visibleColumns));
+        });
+      });
     });
   });
 
@@ -49,43 +52,37 @@ function getVisibleColumns(columns) {
 }
 
 function excludeAllOldRows(results, lawyerEmail) {
-  _(results).each(function(sections, clientName) {
-    _(sections).each(function(rows, sectionName) {
-      excludeOldRows(rows, clientName, sectionName, lawyerEmail);
+  results.forEach(function(client) {
+    client.results.forEach(function(level) {
+      level.results.forEach(function(section) {
+        section.results.forEach(function(court) {
+          excludeOldRows(court.results, client.label, section.label, lawyerEmail);
+        });
+      });
     });
   });
 
   return results;
 }
 
-function excludeEmptyResults(results) {
-  _(results).each(function(sections, clientName) {
-    _(sections).each(function(rows, sectionName) {
-      if (_(rows).isEmpty()) delete results[clientName][sectionName];
-    });
+function compact(items) {
+  var emptyItems = [];
 
-    if (_(results[clientName]).isEmpty()) delete results[clientName];
+  items.forEach(function(item, i) {
+    if (!('results' in item)) return;
+    if (item.results.length > 0) compact(item.results);
+    if (item.results.length === 0) emptyItems.push(i);
   });
 
-  return results;
+  emptyItems.reverse().forEach(function(i) {
+    items.splice(i, 1);
+  });
+
+  return items;
 }
 
 function stopIfNoNews(results) {
-  if (noNews(results)) throw new Error('No news');
-
-  return results;
-}
-
-function noNews(results) {
-  return _.chain(results)
-    .map(function(sections) {
-      return _(sections).map(function(rows) {
-        return rows;
-      });
-    })
-    .flatten()
-    .isEmpty()
-    .value();
+  if (results.length === 0) throw new Error('No news');
 }
 
 function excludeOldRows(currentRows, clientName, sectionName, lawyerEmail) {
@@ -144,6 +141,58 @@ module.exports = Curator;
     assert.deepEqual(row, expectedRow, 'Nullifies the columns that are not shown');
   }());
 
+  (function() {
+    var items = [];
+
+    assert.deepEqual(compact(items), []);
+
+    items = [{
+      'label': 'ceva',
+      'results': []
+    }];
+    assert.deepEqual(compact(items), []);
+
+    items = [{
+      'label': 'level11',
+      'results': [
+        {
+          'label': 'level21',
+          'results': []
+        }, {
+          'label': 'level22',
+          'results': []
+        }
+      ]
+    }];
+    assert.deepEqual(compact(items), []);
+
+    items = [{
+      'label': 'level11',
+      'results': [
+        {
+          'label': 'level21',
+          'results': []
+        }, {
+          'label': 'level22',
+          'results': [
+            [' --- this is not empty --- ']
+          ]
+        }
+      ]
+    }];
+    assert.deepEqual(compact(items), [{
+      'label': 'level11',
+      'results': [
+        {
+          'label': 'level22',
+          'results': [
+            [' --- this is not empty --- ']
+          ]
+        }
+      ]
+    }]);
+  }());
+
   (function testExcludeOldRows() {
     var clientName = 'Cutărescu Ion';
     var sectionName = 'AgendaSection';
@@ -167,41 +216,6 @@ module.exports = Curator;
     var rowsOnDay5 = [[5], [6]];
     excludeOldRows(rowsOnDay5, clientName, sectionName);
     assert.deepEqual(rowsOnDay5, [[5], [6]], 'leaves the new rows');
-  }());
-
-  (function testExcludeEmptyResults() {
-    var emptyResults = {
-      'Romanescu Constantin': {
-        'Agenda şedinţelor': [],
-        'Hotărîrile instanţei': []
-      }
-    };
-
-    excludeEmptyResults(emptyResults);
-    assert.deepEqual(emptyResults, {});
-  }());
-
-
-  (function testNoNews() {
-    var emptyResults = {
-      'Romanescu Constantin': {
-        'Agenda şedinţelor': [],
-        'Hotărîrile instanţei': []
-      }
-    };
-
-    assert(noNews(emptyResults), 'noNews: returns true when there is no row in any section');
-
-    var nonEmptyResults = {
-      'Romanescu Constantin': {
-        'Citaţii în instanţă': [
-          ['some', 'data']
-        ],
-        'Hotărîrile instanţei': []
-      }
-    };
-
-    assert(!noNews(nonEmptyResults), 'noNews: returns false when there are any rows in any section');
   }());
 
 }());

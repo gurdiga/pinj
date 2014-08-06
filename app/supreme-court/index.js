@@ -1,5 +1,6 @@
 'use strict';
 
+var CaseInquirySection = require('./sections/case-inquiry-section');
 var CriminalPlenumAgendaSection = require('./sections/criminal-plenum-agenda-section');
 var CriminalCollegeAgendaSection = require('./sections/criminal-college-agenda-section');
 var CivilianCollegeAgendaSection = require('./sections/civilian-college-agenda-section');
@@ -8,12 +9,13 @@ var CivilianCollegeSentenceSection = require('./sections/civilian-college-senten
 var CriminalCollegeSentenceSection = require('./sections/criminal-college-sentence-section');
 
 var SupremeCourt = [
-  CriminalPlenumAgendaSection,
-  CriminalCollegeAgendaSection,
+  CaseInquirySection,
   CivilianCollegeAgendaSection,
-  CriminalPlenumSentenceSection,
+  CriminalCollegeAgendaSection,
+  CriminalPlenumAgendaSection,
   CivilianCollegeSentenceSection,
-  CriminalCollegeSentenceSection
+  CriminalCollegeSentenceSection,
+  CriminalPlenumSentenceSection
 ];
 
 SupremeCourt.toString = function() {

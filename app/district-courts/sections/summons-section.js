@@ -3,9 +3,9 @@
 var SummonsSection = {};
 
 SummonsSection.inquireAbout = function(clientName) {
-  var fieldNames = ['persoana_citata', 'reclamantul'];
+  var fieldSearches = ['persoana_citata', 'reclamantul'];
 
-  return forEach(fieldNames)
+  return forEach(fieldSearches)
     .inParallel(getResults)
     .then(attachColumns(columns));
 

@@ -2,7 +2,7 @@
 
 var EmailFormatter = {};
 
-EmailFormatter.formatAsHTML = function(results) {
+EmailFormatter.formatAsHTML = function formatAsHTML(results) {
   var templateContext = {
     'results': results,
     'MAX_ROWS_PER_SECTION': 20,

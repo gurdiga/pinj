@@ -2,7 +2,7 @@
 
 var EmailSender = {};
 
-EmailSender.send = function(address, htmlContent) {
+EmailSender.send = function send(address, htmlContent) {
   var emailOptions = {
     to: address,
     html: htmlContent,

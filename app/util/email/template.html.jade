@@ -29,7 +29,7 @@ each client in results
                       else
                         td(style=css.td)!= row[column.index].trim()
 
-              if recordCount > MAX_ROWS_PER_SECTION
+              if recordCount === MAX_ROWS_PER_SECTION + 1
                 tr
                   td(style=css['td.too-many-rows'], colspan=row.length)
                     span Sunt prea multe rezultate pentru a fi incluse în email:&#32;

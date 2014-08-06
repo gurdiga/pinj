@@ -88,10 +88,6 @@ var columns = [
     'index': 9,
     'show': true
   }, {
-    'title': 'Data publicării',
-    'index': 10,
-    'show': true
-  }, {
     'title': 'PDF',
     'index': 'pdfUrl',
     'link': true,

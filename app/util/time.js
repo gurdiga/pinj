@@ -1,7 +1,7 @@
 'use strict';
 
 function time(f, label) {
-  label = label || f.name;
+  label = label || f.name || 'unlabeled';
 
   return function() {
     console.time(label);
@@ -13,13 +13,3 @@ function time(f, label) {
 }
 
 module.exports = time;
-
-(function selfTest() {
-  var assert = require('assert');
-
-  function add(a, b) {
-    return a + b;
-  }
-
-  assert.equal(time(add)(1, 2), 3);
-}());

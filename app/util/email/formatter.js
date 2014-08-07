@@ -10,7 +10,8 @@ EmailFormatter.formatAsHTML = function formatAsHTML(results) {
     'css': prepareCSS()
   };
 
-  return jade.renderFile(__dirname + '/template.html.jade', templateContext);
+  var templateCode = fs.readFileSync(__dirname + '/template.html._', {encoding: 'utf8'});
+  return _.template(templateCode, templateContext);
 };
 
 function prepareCSS() {
@@ -31,4 +32,4 @@ function prepareCSS() {
 module.exports = EmailFormatter;
 
 var _ = require('underscore');
-var jade = require('jade');
+var fs = require('fs');

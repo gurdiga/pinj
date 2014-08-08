@@ -3,7 +3,7 @@
 var CaseInquirySection = {};
 
 CaseInquirySection.inquireAbout = function(clientName) {
-  var courts = ['all'];
+  var courts = ['only one'];
 
   return forEach(courts)
     .inSeries(getResults)

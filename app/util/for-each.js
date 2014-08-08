@@ -7,8 +7,8 @@ function forEach(items) {
   };
 
   function asyncRun(flowType) {
-    return function(thenable, thisObject) {
-      var asyncTasks = prepareAsyncTasks(items, thenable, thisObject);
+    return function(thenableIterator, thisObject) {
+      var asyncTasks = prepareAsyncTasks(items, thenableIterator, thisObject);
       var deferred = Q.defer();
 
       async[flowType](asyncTasks, function(err, results) {
@@ -20,11 +20,11 @@ function forEach(items) {
     };
   }
 
-  function prepareAsyncTasks(items, thenable, thisObject) {
+  function prepareAsyncTasks(items, thenableIterator, thisObject) {
     return _.chain(items)
       .map(function(item) {
         return [item, timedTask(function(callback) {
-          var promise = thenable.call(thisObject, item);
+          var promise = thenableIterator.call(thisObject, item);
 
           assert(typeof promise === 'object', 'A thenable should return a promise object.');
           assert('then' in promise, 'A promise must have the “then” method.');

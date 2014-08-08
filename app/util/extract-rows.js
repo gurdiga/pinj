@@ -1,13 +1,11 @@
 'use strict';
 
-function extractRows(augmentEachRow) {
-  augmentEachRow = augmentEachRow || function noop(row) { return row; };
+function extractRows(rowPreprocessor, subsectionName) {
+  rowPreprocessor = rowPreprocessor || function noop(row) { return row; };
 
   return function(result) {
     return result.rows.map(function(row) {
-      var id = row.id;
-      row = row.cell;
-      return augmentEachRow(row, id);
+      return rowPreprocessor(row.cell, row.id, subsectionName);
     });
   };
 }

@@ -1,4 +1,3 @@
-pinj
-====
+### pinj
 
-An experiment
+A thingy for a lawyer friend. A side project.

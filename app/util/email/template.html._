@@ -4,7 +4,7 @@
   <% _(client.results).each(function(level) { %>
     <h3><%= level.label %></h3>
 
-    <% _(level.results).each(function(section) { var recordCount = 1; %>
+    <% _(level.results).each(function(section) { var recordCount = 1, columnCount = 0; %>
       <h4><%= section.label %></h4>
 
       <table style="<%= css.table %>">
@@ -13,7 +13,7 @@
             <th style="<%= css.th %>">#</th>
 
             <% _(section.results.columns).each(function(column) { %>
-              <% if (column.show) { %>
+              <% if (column.show) { columnCount++ %>
                 <th style="<%= css.th %>"><%= column.title %></th>
               <% } %>
             <% }) %>
@@ -38,16 +38,17 @@
                     <% } %>
                   <% }) %>
                 </tr>
-              <% } else if (recordCount === MAX_ROWS_PER_SECTION + 1) { %>
-                <tr>
-                  <td style="<%= css['td.too-many-rows'] %>" colspan="<%= row.length %>">
-                    Sunt prea multe rezultate pentru a fi incluse în email. Puteţi lista toate rezultatele pe
-                    <a href="http://instante.justice.md/cms/">Portalul Instanţelor Naţionale de Judecată</a>.
-                  </td>
-                </tr>
               <% }; recordCount++ %>
             <% }) %>
           <% }) %>
+          <% if (recordCount > MAX_ROWS_PER_SECTION) { %>
+            <tr>
+              <td style="<%= css['td.too-many-rows'] %>" colspan="<%= columnCount + 1 %>">
+                Sunt prea multe rezultate pentru a fi incluse în email: <%= recordCount %>. Puteţi lista toate rezultatele pe
+                <a target="_blank" href="http://instante.justice.md/cms/">Portalul Instanţelor Naţionale de Judecată</a>.
+              </td>
+            </tr>
+          <% } %>
         </tbody>
       </table>
     <% }) %>

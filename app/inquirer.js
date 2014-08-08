@@ -9,7 +9,7 @@ Inquirer.inquireAbout = function(clientNames) {
   ];
 
   return forEach(clientNames).inSeries(function(clientName) {
-    return forEach(levels).inParallel(function(sections) {
+    return forEach(levels).inSeries(function(sections) {
       return forEach(sections).inParallel(function(section) {
         return section.inquireAbout(clientName);
       });

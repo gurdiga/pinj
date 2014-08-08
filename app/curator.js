@@ -5,10 +5,10 @@ var Curator = {};
 Curator.curate = function(results) {
   return {
     'for': function curateFor(lawyerEmail) {
-        time(compact)(results);
-        time(disregardUnusedColumns)(results);
-        time(excludeAllOldRows)(results, lawyerEmail);
-        time(compact)(results);
+        compact(results);
+        disregardUnusedColumns(results);
+        excludeAllOldRows(results, lawyerEmail);
+        compact(results);
         stopIfNoNews(results);
 
         return results;
@@ -133,7 +133,6 @@ function stringify(array) {
 
 var Storage = require('./util/storage');
 var _ = require('underscore');
-var time = require('./util/time');
 
 module.exports = Curator;
 

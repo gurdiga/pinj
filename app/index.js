@@ -7,13 +7,13 @@ function main() {
     return Inquirer
       .inquireAbout(clientNames)
       .then(function(results) {
-        return time(Curator.curate(results).for)(lawyerEmail);
+        return Curator.curate(results).for(lawyerEmail);
       })
       .then(function(results) {
-        return time(EmailFormatter.formatAsHTML)(results);
+        return EmailFormatter.formatAsHTML(results);
       })
       .then(function(htmlContent) {
-        return time(EmailSender.send)(lawyerEmail, htmlContent);
+        return EmailSender.send(lawyerEmail, htmlContent);
       })
       .catch(function(err) {
         if (err.message === 'No news') {
@@ -28,7 +28,6 @@ function main() {
 
 var _ = require('underscore');
 var forEach = require('./util/for-each');
-var time = require('./util/time');
 var input = require('../input');
 var lawyerEmails = _(input).keys();
 

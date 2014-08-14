@@ -33,7 +33,7 @@
                           <a href="<%= row[column.index] %>"><%= column.title %></a>
                         </td>
                       <% } else { %>
-                        <td style="<%= css.td %>"><%= row[column.index].trim() %></td>
+                        <td style="<%= css.td %>"> <%= row[column.index].trim() %> </td>
                       <% } %>
                     <% } %>
                   <% }) %>

@@ -85,7 +85,7 @@ function getFirebaseData(path) {
 
 function authenticate(ref) {
   var deferred = Q.defer();
-  var tokenGenerator = new FirebaseTokenGenerator(process.env.PINJ_FIREBASE_SECRET);
+  var tokenGenerator = new FirebaseTokenGenerator(secrets.PINJ_FIREBASE_SECRET);
   var token = tokenGenerator.createToken({
     cron: true
   });
@@ -113,3 +113,4 @@ var Q = require('q');
 var _ = require('underscore');
 var Firebase = require('firebase');
 var FirebaseTokenGenerator = require('firebase-token-generator');
+var secrets = require('../secrets');

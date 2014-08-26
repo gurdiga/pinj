@@ -35,8 +35,8 @@ var forEach = require('./util/for-each');
 var ClientLists = require('./client-lists');
 var Inquirer = require('./inquirer');
 var Curator = require('./curator');
-var EmailFormatter = require('./util/email/formatter');
-var EmailSender = require('./util/email/sender');
+var EmailFormatter = require('./email-formatter');
+var EmailSender = require('./email-sender');
 
 var payers = require('../payers');
 

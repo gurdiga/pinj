@@ -10,12 +10,12 @@ EmailFormatter.formatAsHTML = function formatAsHTML(results) {
     'css': prepareCSS()
   };
 
-  var templateCode = fs.readFileSync(__dirname + '/template.html._', {encoding: 'utf8'});
+  var templateCode = fs.readFileSync(__dirname + '/email/template.html._', {encoding: 'utf8'});
   return _.template(templateCode, templateContext);
 };
 
 function prepareCSS() {
-  var json = require('./template.css');
+  var json = require('./email/template.css');
 
   return _.chain(json)
     .map(function(properties, selector) {

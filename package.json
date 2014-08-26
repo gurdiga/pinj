@@ -6,6 +6,8 @@
     "node-fs": "0.1.7",
     "nodemailer": "1.1.1",
     "nodemailer-smtp-transport": "0.1.12",
+    "firebase": "1.0.21",
+    "firebase-token-generator-node": "firebase/firebase-token-generator-node",
     "q": "1.0.1",
     "request": "2.39.0",
     "underscore": "1.6.0"

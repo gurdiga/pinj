@@ -4,8 +4,7 @@ SHELL = /bin/sh
 
 export
 	JSON_FILES = payers.json payers.json.example secrets.json secrets.json.example
-	JSHINT_FILES = $(JSON_FILES) $(shell find app \( -name '*.js' -or -name '*.json' \) -and \( -not -path 'app/web-ui*' \) | sort)
-	JSHINT_WEB_FILES = $(shell find app/web-ui -not -path 'app/web-ui/bower_components/*' \( -name '*.js' -or -name '*.json' \) | sort)
+	JSHINT_FILES = $(JSON_FILES) $(shell find app -name '*.js' -or -name '*.json' | sort)
 
 default: test
 	@node app

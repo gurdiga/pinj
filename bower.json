@@ -1,0 +1,20 @@
+{
+  "name": "web-boilerplate",
+  "version": "0.0.0",
+  "homepage": "https://github.com/gurdiga/web-boilerplate",
+  "authors": [
+    "Vlad GURDIGA <gurdiga@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "assert": "0.1.0",
+    "microevent": "*"
+  },
+  "devDependencies": {
+    "mocha": "~1.21.3",
+    "chai": "~1.9.1",
+    "sinon": "http://sinonjs.org/releases/sinon-1.10.3.js",
+    "sinon-chai": "~2.5.0"
+  }
+}

@@ -13,7 +13,17 @@ var SummonsSection = {
       searchOptions: getSearchOptions(fieldName, clientName)
     };
 
-    function getSearchOptions(fieldName, clientName) {
+    function getSearchOptions(fieldName, query) {
+      var RULE_PER_QUERY_TYPE = {
+        'caseNumber': [
+          {'field': 'nr_dosar', 'op': 'cn', 'data': query.substr(1)}
+        ],
+        'name': [
+          {'field': 'data_sedinta', 'op': 'cn', 'data': (new Date()).getFullYear()},
+          {'field': fieldName, 'op': 'cn', 'data': query}
+        ]
+      };
+
       var searchOptions = {
         '_search': true,
         'nd': Date.now(),
@@ -23,10 +33,7 @@ var SummonsSection = {
         'sord': 'desc',
         'filters': {
           'groupOp': 'AND',
-          'rules': [
-            {'field': 'data_sedinta', 'op': 'cn', 'data': (new Date()).getFullYear()},
-            {'field': fieldName, 'op': 'cn', 'data': clientName}
-          ]
+          'rules': RULE_PER_QUERY_TYPE[queryType(query)]
         }
       };
 
@@ -118,3 +125,5 @@ var SummonsSection = {
 };
 
 module.exports = SummonsSection;
+
+var queryType = require('../../util/query-type');

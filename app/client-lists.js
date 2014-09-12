@@ -48,7 +48,7 @@ ClientLists.getFor = function(payerEmails) {
       }
 
       function removeBadCharacters(clientName) {
-        return clientName.replace(/[^- 0-9a-zа-яăîşţâ\.]/i, '');
+        return clientName.replace(/[^-# 0-9a-zа-яăîşţâ\.]/i, '');
       }
 
       function respectsMinLength(minLength) {

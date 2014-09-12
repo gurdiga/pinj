@@ -15,7 +15,17 @@ var CivilianCollegeSentenceSection = {
       searchOptions: getSearchOptions(clientName)
     };
 
-    function getSearchOptions(clientName) {
+    function getSearchOptions(query) {
+      var RULE_PER_QUERY_TYPE = {
+        'caseNumber': [
+          {'field': 'nr_dosar', 'op': 'cn', 'data': query.substr(1)}
+        ],
+        'name': [
+          {'field': 'data_examinare', 'op': 'cn', 'data': (new Date()).getFullYear()},
+          {'field': 'partile_dosar', 'op': 'cn', 'data': query}
+        ]
+      };
+
       var searchOptions = {
         '_search': true,
         'nd': Date.now(),
@@ -25,10 +35,7 @@ var CivilianCollegeSentenceSection = {
         'sord': 'desc',
         'filters': {
           'groupOp': 'AND',
-          'rules': [
-            {'field': 'data_examinare', 'op': 'cn', 'data': (new Date()).getFullYear()},
-            {'field': 'partile_dosar', 'op': 'cn', 'data': clientName}
-          ]
+          'rules': RULE_PER_QUERY_TYPE[queryType(query)]
         }
       };
 
@@ -78,3 +85,5 @@ var CivilianCollegeSentenceSection = {
 };
 
 module.exports = CivilianCollegeSentenceSection;
+
+var queryType = require('../../util/query-type');

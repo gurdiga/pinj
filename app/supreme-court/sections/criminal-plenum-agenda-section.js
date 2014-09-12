@@ -15,7 +15,17 @@ var CriminalPlenumAgendaSection = {
       searchOptions: getSearchOptions(clientName)
     };
 
-    function getSearchOptions(clientName) {
+    function getSearchOptions(query) {
+      var RULE_PER_QUERY_TYPE = {
+        'caseNumber': [
+          {'field': 'nr_dosar', 'op': 'cn', 'data': query.substr(1)}
+        ],
+        'name': [
+          {'field': 'data_sedinta', 'op': 'cn', 'data': (new Date()).getFullYear()},
+          {'field': 'partea_dosar', 'op': 'cn', 'data': query}
+        ]
+      };
+
       var searchOptions = {
         '_search': true,
         'nd': Date.now(),
@@ -25,10 +35,7 @@ var CriminalPlenumAgendaSection = {
         'sord': 'desc',
         'filters': {
           'groupOp': 'AND',
-          'rules': [
-            {'field': 'data_sedinta', 'op': 'cn', 'data': (new Date()).getFullYear()},
-            {'field': 'partea_dosar', 'op': 'cn', 'data': clientName}
-          ]
+          'rules': RULE_PER_QUERY_TYPE[queryType(query)]
         }
       };
 
@@ -94,3 +101,5 @@ var CriminalPlenumAgendaSection = {
 };
 
 module.exports = CriminalPlenumAgendaSection;
+
+var queryType = require('../../util/query-type');

@@ -14,6 +14,7 @@
 
     function activateTab(selector) {
       tab(selector).tab('show') ;
+      location.hash = '';
     }
 
     function tab(selector) {

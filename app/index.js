@@ -15,6 +15,8 @@
   var tabLabels = jQuery('a[data-toggle="tab"]');
   new InputFocuser(tabLabels);
 
+  new TabPreselector(location.hash);
+
   App.userService = new UserService();
 
   var infoPanel = querySelector('#current-user-email');

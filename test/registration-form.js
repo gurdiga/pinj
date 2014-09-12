@@ -2,7 +2,7 @@
   'use strict';
 
   describe('Registration form', function() {
-    var App, Deferred, querySelector, RegistrationForm, jQuery;
+    var App, Deferred, querySelector, RegistrationForm, jQuery, InputFocuser;
     var form, email, password;
 
     before(function(done) {
@@ -11,6 +11,7 @@
       querySelector = this.iframe.querySelector;
       RegistrationForm = this.iframe.RegistrationForm;
       jQuery = this.iframe.jQuery;
+      InputFocuser = this.iframe.InputFocuser;
 
       email = 'registration-form@test.com';
       password = 'Passw0rd';
@@ -48,6 +49,16 @@
       });
     });
 
+    it('focuses the first field automatically', function(done) {
+      setTimeout(function() {
+        var emailField = querySelector('#registration-email', form);
+        expect(emailField).to.be.focused();
+
+        done();
+      }, InputFocuser.DELAY);
+    });
+
+
     describe('validation', function() {
       var emailField, passwordField, passwordConfirmationField, submitButton;
 
@@ -59,10 +70,6 @@
       });
 
       describe('email field', function() {
-        it('is focused initially', function() {
-          expect(emailField).to.be.focused();
-        });
-
         it('shows an error message when the email is empty', function() {
           this.type('').into(emailField);
           submit();

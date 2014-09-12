@@ -31,6 +31,7 @@
     "MicroEvent": false,
     "UserService": false,
     "LogoutButton": false,
+    "TabPreselector": false,
     "InputFocuser": false,
     "EmailUpdater": false,
     "ViewSwitcher": false,

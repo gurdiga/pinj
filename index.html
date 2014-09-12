@@ -1,147 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PINJ</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Monitorul PINJ</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/yeti/bootstrap.min.css" rel="stylesheet"/>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans&subset=latin,latin-ext' rel='stylesheet' type='text/css'/>
     <style>
-      [ng-cloak] {
-        display: none;
+      .content .row:first-child {
+        margin-top: 5em;
+      }
+
+      .row img {
+        max-width: 100%;
+      }
+      
+      img.email {
+        border: 1px solid silver;
+      }
+
+      .subscriptions th,
+      .subscriptions td {
+        text-align: center;
+        padding: .25em 1em;
+        font-size: 1.5em;
+        white-space: nowrap;
+      }
+
+      .subscriptions .title {
+        font-size: 2em;
+        font-weight: bold;
+        padding-bottom: 0;
+      }
+
+      .subscriptions .description {
+        padding-top: 0;
+        font-size: 1em;
+      }
+
+      .payment-note {
+        margin-top: 1em;
+      }
+
+      .footer {
+        margin: 3em 0 0;
+        padding-bottom: 4em;
       }
     </style>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.0/css/bootstrapValidator.min.css">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="app/css/animation.css">
-    <link rel="stylesheet" href="app/css/index.css">
   </head>
 
-  <body ng-app="App" ng-controller="MainController" ng-cloak>
+  <body>
 
-    <div class="container">
-
-      <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-4">
-          <nav class="navbar navbar-default" role="navigation">
-            <div class="container-fluid">
-              <div class="pull-right">
-                <span class="navbar-text" id="current-user-email"></span>
-                <button id="logout-button" class="btn navbar-btn btn-warning" style="display:none">Ieşire</button>
-              </div>
-
-              <div class="navbar-header">
-                <span class="navbar-brand">PINJ</span>
-              </div>
-            </div>
-          </nav>
-
-          <div id="unauthenticated-view" style="display:none">
-            <p>Acest sistem vă ajută să fiţi la zi cu informaţiile judecătoriilor publicate pe
-            <a href="http://instante.justice.md/cms/">Portalul Instanţelor de Judecată</a> şi saitul
-            <a href="http://csj.md/">CSJ</a>.</p>
-
-            <p>Adresa de contact: info@pinj.pentru.md.</p>
-
-            <br/>
-
-            <ul class="nav nav-tabs" role="tablist">
-              <li class="active"><a href="#authentication-tab" role="tab" data-toggle="tab">Autentificare</a></li>
-              <li><a href="#registration-tab" role="tab" data-toggle="tab">Înregistrare</a></li>
-            </ul>
-
-            <div class="tab-content">
-              <div class="tab-pane fade in active" id="authentication-tab">
-                <p>Bună ziua.</p>
-
-                <form id="authentication-form" role="form" ng-controller="AuthenticationFormController">
-                  <div class="form-group">
-                    <label for="authentication-email">Adresa de email</label>
-                    <input type="email" class="form-control" id="authentication-email" name="authentication-email" required autofocus />
-                  </div>
-
-                  <div class="form-group">
-                    <label for="authentication-password">Parola</label>
-                    <input type="password" class="form-control" id="authentication-password" name="authentication-password" required />
-                  </div>
-
-                  <p id="authentication-error" ng-if="!!authenticationErrorrMessage" class="alert alert-danger" role="alert" ng-cloak>{{ authenticationErrorrMessage }}</p>
-
-                  <button class="btn btn-lg btn-primary" type="submit" disabled>Autentifică</button>
-                </form>
-              </div>
-
-              <div class="tab-pane fade" id="registration-tab">
-                <p>Inregistrarea se face rapid şi vă puteţi accesa contul imediat după înregistrare.</p>
-
-                <form id="registration-form" role="form" ng-controller="RegistrationFormController">
-                  <div class="form-group">
-                    <label class="control-label" for="registration-email">Adresa de email</label>
-                    <input type="email" class="form-control" id="registration-email" name="registration-email" required/>
-                  </div>
-
-                  <div class="form-group">
-                    <label class="control-label" for="registration-password">Parola</label>
-                    <input type="password" class="form-control" id="registration-password" name="registration-password" required/>
-                  </div>
-
-                  <div class="form-group">
-                    <label class="control-label" for="registration-password-confirmation">Confirmarea parolei</label>
-                    <input type="password" class="form-control" id="registration-password-confirmation" name="registration-password-confirmation" required/>
-                  </div>
-
-                  <p id="registration-error" ng-if="!!registrationErrorrMessage" class="alert alert-danger" role="alert">{{ registrationErrorrMessage }}</p>
-
-                  <button class="btn btn-lg btn-primary" type="submit" disabled>Înregistrează</button>
-                </form>
-              </div>
-            </div>
-          </div><!-- /#unauthenticated-view -->
-
-          <div id="authenticated-view" style="display: none">
-            <p>Bun venit. Aici puteţi introduce lista clienţilor.</p>
-
-            <form id="client-list-form">
-              <textarea name="list" class="form-control"></textarea>
-
-              <button name="submit-button" class="btn btn-default btn-primary">
-                <i class="fa fa-spinner fa-spin"></i>
-                Salvează
-              </button>
-              <span id="save-confirmation-message">Salvat!</span>
-            </form>
-          </div>
-
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Monitorul PINJ</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="app.html">Autentificare</a></li>
+          </ul>
         </div>
       </div>
     </div>
 
+    <div class="content container">
+      <div class="row">
+        <div class="col-md-5">
+          <h1>Monitorul PINJ</h1>
+
+          <p>În fiecare zi, sistemul nostru caută clienţii dumneavoastră pe portalul
+          <a href="http://instante.justice.md">instante.justice.md</a> şi <a hre="http://csj.md">csj.md</a>
+          şi vă trimite un email dacă s&#8209;a schimbat ceva.</p>
+
+          <p>Înregistrarea durează mai puţin de 42 de secunde, şi
+          primiţi o săptămînă gratuită de utiulizare a sistemului.</p>
+
+          <a class="btn btn-md btn-primary" href="app.html#registration-tab" role="button">Înregistrare</a>
+
+          <img src="images/folder-search.jpg"/>
+        </div>
+
+        <div class="col-md-5 col-md-offset-1 subscriptions">
+          <h2>Abonamente lunare</h2>
+          <table>
+            <tr>
+              <th class="title">C15</th>
+              <th class="title">C30</th>
+              <th class="title">C60</th>
+            </tr>
+
+            <tr>
+              <td class="description">15 clienţi</td>
+              <td class="description">30 clienţi</td>
+              <td class="description">60 clienţi</td>
+            </tr>
+
+            <tr>
+              <td class="price">3 USD</td>
+              <td class="price">6 USD</td>
+              <td class="price">9 USD</td>
+            </tr>
+          </table>
+
+          <p class="payment-note">Achitarea se face după înregistrare.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Un exemplu de email</h2>
+          <p>Mesajul se trimite la sfîrşitul zilei la ora 10 şi conţine
+          schimbările care au intervenit pe parcursul zilei.</p>
+          <p>Dacă nu s&#8209;a schimbat nimic, nu trimitem email.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <p><img class="email" src="images/email.png"/></p>
+        </div>
+      </div>
+    </div> <!-- /container -->
+
+    <div class="footer well">
+      <div class="container">
+        <h2>Contact</h2>
+
+        <p>
+          Întrebările şi sugestiile ni le puteţi trimite la adresa:
+          <a href="mailto:info@monitorulpinj.pentru.md">info@monitorulpinj.pentru.md</a>.
+        </p>
+      </div>
+    </div>
+
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.0/js/bootstrapValidator.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/q.js/1.0.1/q.js"></script>
-    <script>Q.longStackSupport = true;</script>
-    <script src="//cdn.firebase.com/js/client/1.0.21/firebase.js"></script>
-    <script src="//cdn.firebase.com/js/simple-login/1.6.3/firebase-simple-login.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular-animate.min.js"></script>
-
-    <script src="bower_components/assert/assert.js"></script>
-    <script src="bower_components/microevent/microevent.js"></script>
-    <script src="app/util/microevent-once.js"></script>
-
-    <script src="app/util/query-selector.js"></script>
-    <script src="app/util/deferred.js"></script>
-    <script src="app/services/user-service.js"></script>
-    <script src="app/services/client-list-service.js"></script>
-    <script src="app/view-switcher.js"></script>
-    <script src="app/input-focuser.js"></script>
-    <script src="app/logout-button.js"></script>
-    <script src="app/email-updater.js"></script>
-    <script src="app/client-list-form.js"></script>
-    <script src="app/authentication-form.js"></script>
-    <script src="app/registration-form.js"></script>
-    <script src="app/index.js"></script>
   </body>
 </html>

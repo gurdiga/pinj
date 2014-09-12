@@ -2,7 +2,7 @@
   'use strict';
 
   var IFRAME_ID = 'app';
-  var APP_PATH = '/';
+  var APP_PATH = '/app.html';
 
   before(createIframe);
 

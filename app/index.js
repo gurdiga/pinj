@@ -24,16 +24,17 @@
 
   var authenticatedView = querySelector('#authenticated-view');
   var unauthenticatedView = querySelector('#unauthenticated-view');
+  var currentUserEmail = querySelector('#current-user-email');
   new ViewSwitcher([{
     'eventName': 'authenticated',
     'emitters': [App.userService],
-    'elementsToShow': [authenticatedView, logoutButton],
+    'elementsToShow': [authenticatedView, logoutButton, currentUserEmail],
     'elementsToHide': [unauthenticatedView]
   }, {
     'eventName': 'deauthenticated',
     'emitters': [App.userService],
     'elementsToShow': [unauthenticatedView],
-    'elementsToHide': [authenticatedView, logoutButton]
+    'elementsToHide': [authenticatedView, logoutButton, currentUserEmail]
   }]);
 
   App.userService.bind('authenticated', function(email) {

@@ -11,11 +11,10 @@
       }
 
       .content .row:first-child {
-        margin-top: 5em;
+        margin-top: 6em;
       }
     </style>
-    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/yeti/bootstrap.min.css" rel="stylesheet"/>
-    <link href='//fonts.googleapis.com/css?family=Open+Sans&subset=latin,latin-ext' rel='stylesheet' type='text/css'/>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.0/css/bootstrapValidator.min.css"/>
     <link rel="stylesheet" href="app/css/animation.css"/>
     <link rel="stylesheet" href="app/css/index.css"/>
@@ -27,7 +26,7 @@
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="pull-right">
-          <button id="logout-button" class="btn navbar-btn btn-warning" style="display:none">Ieşire</button>
+          <button id="logout-button" class="btn navbar-btn btn-primary" style="display:none">Ieşire</button>
         </div>
 
         <div class="navbar-header">
@@ -96,6 +95,11 @@
 
           <div id="authenticated-view" style="display: none">
             <p>Bun venit. Aici puteţi introduce lista clienţilor, cîte un nume sau denumire pe linie.</p>
+
+            <!--div class="alert alert-warning alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              Serviciul nu este achitat.
+            </div-->
 
             <form id="client-list-form">
               <textarea name="list" class="form-control"></textarea>

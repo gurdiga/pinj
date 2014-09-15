@@ -12,6 +12,8 @@ ClientLists.getFor = function(payerEmails) {
     return function(users) {
       var payerClientLists = [];
 
+      console.log('users:', users);
+
       _(users).each(function(data, aid) {
         if (isPayer(aid)) payerClientLists.push({
           email: emailFromAID(aid),
@@ -21,6 +23,8 @@ ClientLists.getFor = function(payerEmails) {
           }
         });
       });
+
+      console.log('payerClientLists:', payerClientLists);
 
       return payerClientLists;
     };

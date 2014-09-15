@@ -12,7 +12,7 @@
     });
   }
 
-  InputFocuser.DELAY = 200;
+  InputFocuser.DELAY = 500;
 
   window.InputFocuser = InputFocuser;
 

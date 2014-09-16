@@ -14,6 +14,12 @@
     return this.inner.reject.apply(this.inner, arguments);
   };
 
+  Deferred.prototype.timeout = function(ms, message) {
+    setTimeout(function() {
+      this.inner.reject(new Error('Timeout error: ' + message));
+    }.bind(this), ms);
+  };
+
   Deferred.createResolvedPromise = function(value) {
     var deferred = new Deferred();
     deferred.resolve(value);

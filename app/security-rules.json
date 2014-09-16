@@ -1,0 +1,18 @@
+{
+  "rules": {
+    "data": {
+      ".read": "auth.cron === true",
+
+      "$aid": {
+        ".read": "auth.email.replace('.', ':') === $aid",
+        ".write": "auth.email.replace('.', ':') === $aid",
+
+        "timestamps": {
+          "registration": {
+            ".write": "!data.exists()"
+          }
+        }
+      }
+    }
+  }
+}

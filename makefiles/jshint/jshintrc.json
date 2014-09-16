@@ -30,6 +30,7 @@
     "Deferred": false,
     "MicroEvent": false,
     "UserService": false,
+    "UserTracker": false,
     "UserDataService": false,
     "LogoutButton": false,
     "TabPreselector": false,

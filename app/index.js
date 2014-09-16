@@ -18,6 +18,7 @@
   new TabPreselector(location.hash);
 
   App.userService = new UserService();
+  new UserTracker();
 
   var infoPanel = querySelector('#current-user-email');
   new EmailUpdater(App.userService, infoPanel);

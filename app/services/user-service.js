@@ -1,6 +1,8 @@
 (function() {
   'use strict';
 
+  var TIMEOUT = 3000;
+
   function UserService() {
     this.ref = new Firebase(App.FIREBASE_URL);
 
@@ -30,6 +32,8 @@
       else deferred.resolve();
     });
 
+    deferred.timeout(TIMEOUT, 'Timed out on registration: ' + email);
+
     return deferred.promise;
   };
 
@@ -40,6 +44,8 @@
       if (data.error) deferred.reject(data.error);
       else if (data.user) deferred.resolve();
     });
+
+    deferred.timeout(TIMEOUT, 'Timed out on authentication: ' + email);
 
     this.auth.login('password', {
       'email': email,
@@ -63,6 +69,8 @@
 
     this.auth.logout();
 
+    deferred.timeout(TIMEOUT, 'Timed out on logout');
+
     return deferred.promise
     .then(function() {
       this.trigger('deauthenticated');
@@ -76,6 +84,8 @@
       if (error === null) deferred.resolve();
       else deferred.reject(error);
     });
+
+    deferred.timeout(TIMEOUT, 'Timed out on unregistration: ' + email);
 
     return deferred.promise;
   };

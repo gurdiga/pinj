@@ -14,21 +14,22 @@ function main() {
       })
       .then(function(htmlContent) {
         return EmailSender.send(payer.email, htmlContent);
+      })
+      .catch(function(error) {
+        if (error.message === 'No news') console.log('No news');
+        else throw error;
       });
     });
   })
-  .catch(function(err) {
-    if (err.message === 'No news') {
-      console.log('No news');
-      return;
-    }
-
-    console.error('Oh my! I’ve got an error!', err.stack);
-    process.exit(1);
-  })
+  .catch(logTheErrorAndExit)
   .then(function() {
     process.exit(0);
   });
+}
+
+function logTheErrorAndExit(error) {
+  console.error('Oh my! I’ve got an error!', error.stack);
+  process.exit(1);
 }
 
 var forEach = require('./util/for-each');

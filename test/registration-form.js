@@ -36,7 +36,7 @@
 
       beforeEach(function() {
         form = document.createElement('form');
-        registrationForm = new RegistrationForm(form);
+        registrationForm = new RegistrationForm(form, App.userService);
       });
 
       it('eventifies the given form', function() {

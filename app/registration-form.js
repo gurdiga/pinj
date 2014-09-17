@@ -1,7 +1,8 @@
 (function() {
   'use strict';
 
-  function RegistrationForm(form) {
+  function RegistrationForm(form, userService) {
+    this.userService = userService;
     this.form = form;
 
     MicroEvent.mixin(form);
@@ -58,6 +59,7 @@
 
   RegistrationForm.prototype.setSubmitHandler = function() {
     var form = this.form;
+    var userService = this.userService;
 
     $(form).on('success.form.bv', function(event) {
       event.preventDefault();
@@ -65,9 +67,9 @@
       var email = form['registration-email'].value;
       var password = form['registration-password'].value;
 
-      App.userService.registerUser(email, password)
+      userService.registerUser(email, password)
       .then(function() {
-        return App.userService.authenticateUser(email, password);
+        return userService.authenticateUser(email, password);
       })
       .catch(function(reason) {
         var ERROR_MESSAGES = {
@@ -98,7 +100,7 @@
   RegistrationForm.prototype.setLogoutHandler = function() {
     var form = this.form;
 
-    App.userService.bind('deauthenticated', function() {
+    this.userService.bind('deauthenticated', function() {
       jQuery(form).data('bootstrapValidator').resetForm(true);
     });
   };

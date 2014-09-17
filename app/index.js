@@ -45,7 +45,7 @@
   });
 
   new AuthenticationForm(querySelector('#authentication-form'), App.userService);
-  new RegistrationForm(querySelector('#registration-form'));
+  new RegistrationForm(querySelector('#registration-form'), App.userService);
 
   setTimeout(function() {
     document.body.trigger('ready-for-tests');

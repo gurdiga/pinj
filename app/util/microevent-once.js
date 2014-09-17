@@ -9,7 +9,10 @@
     function callback() {
       var args = [].slice.call(arguments);
       listener.apply(self, args);
-      self.unbind(eventName, callback);
+
+      setTimeout(function() {
+        self.unbind(eventName, callback);
+      });
     }
 
     self.bind(eventName, callback);

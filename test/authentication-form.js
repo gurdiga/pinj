@@ -178,7 +178,7 @@
             this.sinon.stub(UserService.prototype, 'authenticateUser', failedOutcome);
           });
 
-          it('displays and error message containing its code', function(done) {
+          it('displays an error message containing its code', function(done) {
             form.once('authentication-error-message-displayed', function() {
               var authenticationErrorrMessage = querySelector('#authentication-error', form);
               expect(authenticationErrorrMessage, 'authentication errorr message').to.exist;

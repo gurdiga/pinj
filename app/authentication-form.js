@@ -50,16 +50,21 @@
       var password = form['authentication-password'].value;
 
       App.userService.authenticateUser(email, password)
-      .catch(function(reason) {
+      .catch(function(error) {
         var ERROR_MESSAGES = {
           'INVALID_USER': 'Adresa de email este incorectă',
           'INVALID_PASSWORD': 'Parola este incorectă',
           'fallback': 'A intervenit o eroare neprevăzută (%CODE%).'
         };
-        var errorMessage = ERROR_MESSAGES[reason.code];
+        var errorMessage = ERROR_MESSAGES[error.code];
 
-        errorMessage = errorMessage || ERROR_MESSAGES['fallback'].replace('%CODE%', reason.code);
+        errorMessage = errorMessage || fallbackMessage();
         form.trigger('authentication-failed', errorMessage);
+
+        function fallbackMessage() {
+          var code = error.code || error.toString();
+          return ERROR_MESSAGES['fallback'].replace('%CODE%', code);
+        }
       });
     });
   };
@@ -67,14 +72,13 @@
   AuthenticationForm.prototype.setAuthenticationErrorHandler = function() {
     var form = this.form;
 
-    App.controller('AuthenticationFormController', function($scope, $element, $timeout) {
-      form.bind('authentication-failed', function(errorMessage) {
-        $scope.authenticationErrorrMessage = errorMessage;
-        $scope.$digest();
-        $timeout(function() {
-          form.trigger('authentication-error-message-displayed');
-        });
-      });
+    form.bind('authentication-failed', function(errorMessage) {
+      var errorMessageElement = querySelector('#authentication-error');
+
+      errorMessageElement.textContent = errorMessage;
+      errorMessageElement.style.display = 'block';
+
+      form.trigger('authentication-error-message-displayed');
     });
   };
 

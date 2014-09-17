@@ -1,13 +1,13 @@
 (function main() {
   'use strict';
 
-  var App = angular.module('App', ['ngAnimate']);
+  var App = {
+    FIREBASE_URL: 'https://pinj-dev.firebaseio.com'
+  };
+
   window.App = App;
 
   MicroEvent.mixin(document.body);
-
-  App.controller('MainController', function() {});
-  App.FIREBASE_URL = 'https://pinj-dev.firebaseio.com';
 
   var logoutButton = querySelector('#logout-button');
   new LogoutButton(logoutButton, window.location);

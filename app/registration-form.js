@@ -83,16 +83,15 @@
   };
 
   RegistrationForm.prototype.setRegistrationErrorHandler = function() {
-    App.controller('RegistrationFormController', function($scope, $element, $timeout) {
-      var form = $element[0];
+    var form = this.form;
 
-      form.bind('registration-failed', function(errorMessage) {
-        $scope.registrationErrorrMessage = errorMessage;
-        $scope.$digest();
-        $timeout(function() {
-          form.trigger('registration-error-message-displayed');
-        });
-      });
+    form.bind('registration-failed', function(errorMessage) {
+      var errorMessageElement = querySelector('#registration-error');
+
+      errorMessageElement.textContent = errorMessage;
+      errorMessageElement.style.display = 'block';
+
+      form.trigger('registration-error-message-displayed');
     });
   };
 

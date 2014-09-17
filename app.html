@@ -6,21 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Monitorul PINJ</title>
     <style>
-      [ng-cloak] {
-        display: none;
-      }
-
       .content .row:first-child {
         margin-top: 6em;
       }
     </style>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.0/css/bootstrapValidator.min.css"/>
-    <link rel="stylesheet" href="app/css/animation.css"/>
     <link rel="stylesheet" href="app/css/index.css"/>
   </head>
 
-  <body ng-app="App" ng-controller="MainController" ng-cloak>
+  <body>
 
     <!-- Fixed navbar -->
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -49,7 +44,7 @@
               <div class="tab-pane fade in active" id="authentication-tab">
                 <p>Bună ziua.</p>
 
-                <form id="authentication-form" role="form" ng-controller="AuthenticationFormController">
+                <form id="authentication-form">
                   <div class="form-group">
                     <label for="authentication-email">Adresa de email</label>
                     <input type="email" class="form-control" id="authentication-email" name="authentication-email" required autofocus />
@@ -60,7 +55,7 @@
                     <input type="password" class="form-control" id="authentication-password" name="authentication-password" required />
                   </div>
 
-                  <p id="authentication-error" ng-if="!!authenticationErrorrMessage" class="alert alert-danger" role="alert" ng-cloak>{{ authenticationErrorrMessage }}</p>
+                  <p id="authentication-error" class="alert alert-danger" style="display:none"></p>
 
                   <button class="btn btn-lg btn-primary" type="submit" disabled>Autentifică</button>
                 </form>
@@ -69,7 +64,7 @@
               <div class="tab-pane fade" id="registration-tab">
                 <p>Inregistrarea se face rapid şi vă puteţi accesa contul imediat după înregistrare.</p>
 
-                <form id="registration-form" role="form" ng-controller="RegistrationFormController">
+                <form id="registration-form">
                   <div class="form-group">
                     <label class="control-label" for="registration-email">Adresa de email</label>
                     <input type="email" class="form-control" id="registration-email" name="registration-email" required/>
@@ -85,7 +80,7 @@
                     <input type="password" class="form-control" id="registration-password-confirmation" name="registration-password-confirmation" required/>
                   </div>
 
-                  <p id="registration-error" ng-if="!!registrationErrorrMessage" class="alert alert-danger" role="alert">{{ registrationErrorrMessage }}</p>
+                  <p id="registration-error" class="alert alert-danger" style="display:none"></p>
 
                   <button class="btn btn-lg btn-primary" type="submit" disabled>Înregistrează</button>
                 </form>
@@ -126,8 +121,6 @@
     <script>Q.longStackSupport = true;</script>
     <script src="//cdn.firebase.com/js/client/1.0.21/firebase.js"></script>
     <script src="//cdn.firebase.com/js/simple-login/1.6.3/firebase-simple-login.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular-animate.min.js"></script>
 
     <script src="bower_components/assert/assert.js"></script>
     <script src="bower_components/microevent/microevent.js"></script>

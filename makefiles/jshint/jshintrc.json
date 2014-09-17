@@ -48,7 +48,6 @@
     "$": false,
     "Q": false,
     "jQuery": false,
-    "angular": false,
 
     "sinon": false,
     "assert": false,

@@ -9,9 +9,6 @@
 
   MicroEvent.mixin(document.body);
 
-  var logoutButton = querySelector('#logout-button');
-  new LogoutButton(logoutButton, window.location);
-
   var tabLabels = jQuery('a[data-toggle="tab"]');
   new InputFocuser(tabLabels);
 
@@ -19,6 +16,9 @@
 
   App.userService = new UserService();
   new UserTracker(App.userService);
+
+  var logoutButton = querySelector('#logout-button');
+  new LogoutButton(logoutButton, App.userService);
 
   var authenticatedView = querySelector('#authenticated-view');
   var unauthenticatedView = querySelector('#unauthenticated-view');

@@ -2,23 +2,22 @@
   'use strict';
 
   describe('Logout button', function() {
-    var LogoutButton, Deferred, UserService;
-    var logoutButton, domElement, location;
+    var LogoutButton, Deferred, App;
+    var logoutButton, domElement;
 
     beforeEach(function() {
       LogoutButton = this.iframe.LogoutButton;
       Deferred = this.iframe.Deferred;
-      UserService = this.iframe.UserService;
-      this.sinon.stub(UserService.prototype, 'logout', Deferred.createResolvedPromise);
+      App = this.iframe.App;
 
+      this.sinon.stub(App.userService, 'logout', Deferred.createResolvedPromise);
       domElement = document.createElement('button');
-      location = { reload: this.sinon.spy() };
-      logoutButton = new LogoutButton(domElement, location);
+      logoutButton = new LogoutButton(domElement, App.userService);
     });
 
     it('listens for the “click” events on the given element and calls UserService#logout', function() {
       domElement.click();
-      expect(UserService.prototype.logout).to.have.been.called;
+      expect(App.userService.logout).to.have.been.called;
     });
   });
 

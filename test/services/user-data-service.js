@@ -2,7 +2,7 @@
   'use strict';
 
   describe.integration('UserDataService', function() {
-    this.timeout(5000);
+    this.timeout(10000);
 
     var UserDataService, App;
     var userDataService, email, password, aPieceOfData;

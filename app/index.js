@@ -44,7 +44,7 @@
     new ClientListForm(clientListService, form['list'], form['submit-button'], saveConfirmationMessage);
   });
 
-  new AuthenticationForm(querySelector('#authentication-form'));
+  new AuthenticationForm(querySelector('#authentication-form'), App.userService);
   new RegistrationForm(querySelector('#registration-form'));
 
   setTimeout(function() {

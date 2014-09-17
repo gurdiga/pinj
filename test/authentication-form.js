@@ -2,12 +2,11 @@
   'use strict';
 
   describe('Authentication form', function() {
-    var AuthenticationForm, UserService, Deferred, App, querySelector, jQuery;
+    var AuthenticationForm, Deferred, App, querySelector, jQuery;
     var form;
 
     beforeEach(function(done) {
       AuthenticationForm = this.iframe.AuthenticationForm;
-      UserService = this.iframe.UserService;
       Deferred = this.iframe.Deferred;
       App = this.iframe.App;
       querySelector = this.iframe.querySelector;
@@ -152,7 +151,7 @@
             invalidPasswordError.code = 'INVALID_PASSWORD';
 
             var failedOutcome = Deferred.createRejectedPromise.bind(this, invalidPasswordError);
-            this.sinon.stub(UserService.prototype, 'authenticateUser', failedOutcome);
+            this.sinon.stub(App.userService, 'authenticateUser', failedOutcome);
           });
 
           it('displays an error about that', function(done) {
@@ -175,7 +174,7 @@
 
           beforeEach(function() {
             var failedOutcome = Deferred.createRejectedPromise.bind(this, unknownErrorError);
-            this.sinon.stub(UserService.prototype, 'authenticateUser', failedOutcome);
+            this.sinon.stub(App.userService, 'authenticateUser', failedOutcome);
           });
 
           it('displays an error message containing its code', function(done) {

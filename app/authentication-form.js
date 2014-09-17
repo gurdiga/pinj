@@ -1,8 +1,9 @@
 (function() {
   'use strict';
 
-  function AuthenticationForm(form) {
+  function AuthenticationForm(form, userService) {
     MicroEvent.mixin(form);
+    this.userService = userService;
     this.form = form;
     this.initValidation();
     this.setSubmitHandler();
@@ -42,6 +43,7 @@
 
   AuthenticationForm.prototype.setSubmitHandler = function() {
     var form = this.form;
+    var userService = this.userService;
 
     $(form).on('success.form.bv', function(event) {
       event.preventDefault();
@@ -49,7 +51,7 @@
       var email = form['authentication-email'].value;
       var password = form['authentication-password'].value;
 
-      App.userService.authenticateUser(email, password)
+      userService.authenticateUser(email, password)
       .catch(function(error) {
         var ERROR_MESSAGES = {
           'INVALID_USER': 'Adresa de email este incorectă',
@@ -85,7 +87,7 @@
   AuthenticationForm.prototype.setLogoutHandler = function() {
     var form = this.form;
 
-    App.userService.bind('deauthenticated', function() {
+    this.userService.bind('deauthenticated', function() {
       jQuery(form).data('bootstrapValidator').resetForm(true);
       form['authentication-email'].focus();
     });

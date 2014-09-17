@@ -20,9 +20,6 @@
   App.userService = new UserService();
   new UserTracker();
 
-  var infoPanel = querySelector('#current-user-email');
-  new EmailUpdater(App.userService, infoPanel);
-
   var authenticatedView = querySelector('#authenticated-view');
   var unauthenticatedView = querySelector('#unauthenticated-view');
   var currentUserEmail = querySelector('#current-user-email');
@@ -37,6 +34,8 @@
     'elementsToShow': [unauthenticatedView],
     'elementsToHide': [authenticatedView, logoutButton, currentUserEmail]
   }]);
+
+  new EmailUpdater(App.userService, currentUserEmail);
 
   App.userService.bind('authenticated', function(email) {
     var clientListService = new ClientListService(email);

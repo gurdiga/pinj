@@ -18,10 +18,7 @@
         return userDataService.get(registrationTimestamp);
       })
       .then(function(timestamp) {
-        if (timestamp) throw new Error('Registration timestamp is already recorded');
-      })
-      .then(function() {
-        return userDataService.set(registrationTimestamp, Firebase.ServerValue.TIMESTAMP);
+        if (!timestamp) return userDataService.set(registrationTimestamp, Firebase.ServerValue.TIMESTAMP);
       })
       .then(function() {
         this.trigger('recorded-registration');

@@ -18,7 +18,7 @@
   new TabPreselector(location.hash);
 
   App.userService = new UserService();
-  new UserTracker();
+  new UserTracker(App.userService);
 
   var authenticatedView = querySelector('#authenticated-view');
   var unauthenticatedView = querySelector('#unauthenticated-view');

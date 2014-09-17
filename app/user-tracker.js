@@ -1,14 +1,15 @@
 (function() {
   'use strict';
 
-  function UserTracker() {
+  function UserTracker(userService) {
+    this.userService = userService;
     this.storeTimestampsOnAuthentication();
   }
 
   MicroEvent.mixin(UserTracker);
 
   UserTracker.prototype.storeTimestampsOnAuthentication = function() {
-    App.userService.once('authenticated', function(email) {
+    this.userService.once('authenticated', function(email) {
       var userDataService = new UserDataService(email);
       var registrationTimestamp = 'timestamps/registration';
       var lastLoginTimestamp = 'timestamps/lastLogin';

@@ -4,19 +4,18 @@
   describe.integration('UserTracker', function() {
     this.timeout(5000);
 
-    var UserTracker, Firebase, App, UserDataService;
+    var UserTracker, App, UserDataService;
     var userTracker, email, password;
 
     before(function() {
       UserTracker = this.iframe.UserTracker;
-      Firebase = this.iframe.Firebase;
       App = this.iframe.App;
       UserDataService = this.iframe.UserDataService;
 
       email = 'user-tracker@test.com';
       password = 'Passw0rd';
 
-      userTracker = new UserTracker();
+      userTracker = new UserTracker(App.userService);
     });
 
     it('records user registration and last login timestamps', function(done) {

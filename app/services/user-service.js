@@ -7,21 +7,21 @@
     this.ref = new Firebase(App.FIREBASE_URL);
 
     this.bind('firebase-login', this.tryRestoreSession.bind(this));
-    this.auth = new FirebaseSimpleLogin(this.ref, function(error, user) {
-      this.trigger('firebase-login', {
-        'error': error,
-        'user': user
-      });
-    }.bind(this));
+    this.auth = new FirebaseSimpleLogin(this.ref, this.emitFirebaseLoginEvent.bind(this));
   }
 
   MicroEvent.mixin(UserService);
 
   UserService.prototype.tryRestoreSession = function(session) {
     if (session.user) this.trigger('authenticated', session.user.email);
-    if (!session.error && !session.user) {
-      this.trigger('deauthenticated');
-    }
+    else if (!session.error) this.trigger('deauthenticated');
+  };
+
+  UserService.prototype.emitFirebaseLoginEvent = function(error, user) {
+    this.trigger('firebase-login', {
+      'error': error,
+      'user': user
+    });
   };
 
   UserService.prototype.registerUser = function(email, password) {

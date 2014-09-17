@@ -65,7 +65,7 @@
     });
 
     describe('tryRestoreSession()', function() {
-      it('on firebase-login emits “authenticated” event on the instance with the found user’s email', function(done) {
+      it('on Firebase login emits “authenticated” event on the instance with the found user’s email', function(done) {
         userService.once('authenticated', function(email) {
           expect(email).to.equal(session.user.email);
           done();
@@ -73,6 +73,17 @@
 
         var session = {
           user: { email: 'test@test.com' },
+          error: null
+        };
+
+        userService.trigger('firebase-login', session);
+      });
+
+      it('if no user session found emits “deauthenticated” event on the instance', function(done) {
+        userService.once('deauthenticated', done);
+
+        var session = {
+          user: null,
           error: null
         };
 

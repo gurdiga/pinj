@@ -32,6 +32,11 @@ body.authenticated #logout-button {
   padding: 1em .5em;
 }
 
+#client-list-form {
+  padding-bottom: 2em;
+  padding-right: 4em;
+}
+
 #client-list-form textarea {
   resize: vertical;
   height: 17.5em;

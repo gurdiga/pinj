@@ -15,7 +15,8 @@
   new TabPreselector(location.hash);
 
   App.userService = new UserService();
-  new UserTracker(App.userService);
+  App.userDataService = new UserDataService(App.userService);
+  new UserTracker(App.userService, App.userDataService);
 
   var logoutButton = querySelector('#logout-button');
   new LogoutButton(logoutButton, App.userService);

@@ -4,17 +4,18 @@
   describe.integration('UserDataService', function() {
     this.timeout(10000);
 
-    var UserDataService, App;
+    var UserDataService, App, Firebase;
     var userDataService, email, password, aPieceOfData;
 
     before(function(done) {
       UserDataService = this.iframe.UserDataService;
       App = this.iframe.App;
+      Firebase = this.iframe.Firebase;
 
       email = 'user-data-service@test.com';
       password = 'Passw0rd';
       aPieceOfData = 'some data';
-      userDataService = new UserDataService(email);
+      userDataService = new UserDataService(App.userService);
 
       App.userService.registerUser(email, password)
       .then(function() {
@@ -40,7 +41,9 @@
     });
 
     after(function(done) {
-      userDataService.getRef().child('/data/user-data-service@test:com').remove(function(error) {
+      var ref = new Firebase(App.FIREBASE_URL + '/data/user-data-service@test:com');
+
+      ref.remove(function(error) {
         if (error) console.error('Error on data cleanup', error);
 
         App.userService.logout()

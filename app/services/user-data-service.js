@@ -4,53 +4,62 @@
   var TIMEOUT = 3000;
   var DATA_ROOT = '/data';
 
-  function UserDataService(email) {
-    this.email = email;
+  function UserDataService(userService) {
+    this.listenForAuthenticationEventsOn(userService);
   }
 
-  UserDataService.prototype.set = function(path, value) {
-    var deferred = new Deferred();
-    var fullPath = getFullPathFor(path, this.email);
+  UserDataService.prototype.listenForAuthenticationEventsOn = function(userService) {
+    userService.bind('authenticated', function(email) {
+      this.email = email;
+      this.authenticated = true;
+      this.rootRef = new Firebase(App.FIREBASE_URL);
+    }.bind(this));
 
-    this.getRef().child(fullPath)
+    userService.bind('deauthenticated', function() {
+      delete this.email;
+      delete this.authenticated;
+      delete this.rootRef;
+    }.bind(this));
+  };
+
+  UserDataService.prototype.set = function(relativePath, value) {
+    var deferred = new Deferred();
+
+    this.getRefFor(relativePath, deferred)
     .set(value, function onComplete(error) {
       if (error) deferred.reject(error);
       else deferred.resolve();
     });
 
-    deferred.timeout(TIMEOUT, 'Timed out while writing data: ' + path);
+    deferred.timeout(TIMEOUT, 'Timed out while writing data: ' + relativePath);
 
     return deferred.promise;
   };
 
-  UserDataService.prototype.get = function(path) {
+  UserDataService.prototype.get = function(relativePath) {
     var deferred = new Deferred();
-    var fullPath = getFullPathFor(path, this.email);
 
-    this.getRef().child(fullPath)
+    this.getRefFor(relativePath, deferred)
     .once('value', function successCallback(snapshot) {
       deferred.resolve(snapshot.val());
     });
 
-    deferred.timeout(TIMEOUT, 'Timed out while reading data: ' + path);
+    deferred.timeout(TIMEOUT, 'Timed out while reading data: ' + relativePath);
 
     return deferred.promise;
   };
 
-  UserDataService.prototype.getRef = function() {
-    if (!this.ref) this.ref = new Firebase(App.FIREBASE_URL);
+  UserDataService.prototype.getRefFor = function(relativePath, deferred) {
+    if (!this.authenticated) {
+      deferred.reject(new Error('UserDataService: not authenticated'));
+      return;
+    }
 
-    return this.ref;
+    var aid = this.email.replace(/\./g, ':');
+    var fullPath = DATA_ROOT + '/' + aid + '/' + relativePath;
+
+    return this.rootRef.child(fullPath);
   };
-
-  function getFullPathFor(relativePath, email) {
-    /*jshint validthis:true*/
-    return DATA_ROOT + '/' + aid(email) + '/' + relativePath;
-  }
-
-  function aid(email) {
-    return email.replace(/\./g, ':');
-  }
 
   window.UserDataService = UserDataService;
 

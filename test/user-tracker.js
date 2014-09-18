@@ -2,35 +2,31 @@
   'use strict';
 
   describe.integration('UserTracker', function() {
-    this.timeout(5000);
-
-    var UserTracker, App, UserDataService;
+    var UserTracker, App;
     var userTracker, email, password;
 
     before(function() {
       UserTracker = this.iframe.UserTracker;
       App = this.iframe.App;
-      UserDataService = this.iframe.UserDataService;
 
       email = 'user-tracker@test.com';
       password = 'Passw0rd';
-
-      userTracker = new UserTracker(App.userService);
+      userTracker = new UserTracker(App.userService, App.userDataService);
     });
 
     it('records user registration and last login timestamps', function(done) {
-      userTracker.once('recorded-registration', function() {
-        var userDataService = new UserDataService(email);
+      this.timeout(10000);
 
-        userDataService.get('timestamps/registration')
+      userTracker.once('recorded-registration', function() {
+        App.userDataService.get('timestamps/registration')
         .then(function(registrationTimestamp) {
-          expect(registrationTimestamp, 'registration timestamp').to.exist;
+          expect(registrationTimestamp, 'registration timestamp').to.be.a('number');
         })
         .then(function() {
-          return userDataService.get('timestamps/lastLogin');
+          return App.userDataService.get('timestamps/lastLogin');
         })
         .then(function(lastLoginTimestamp) {
-          expect(lastLoginTimestamp, 'last login timestamp').to.exist;
+          expect(lastLoginTimestamp, 'last login timestamp').to.be.a('number');
         })
         .then(done)
         .catch(done);
@@ -44,20 +40,17 @@
     });
 
     after(function(done) {
-      var userDataService = new UserDataService(email);
+      this.timeout(10000);
 
-      App.userService.unregisterUser(email, password)
-      .catch(function(error) {
-        console.error('Error on test user unregistration', error);
-      });
-
-      userDataService.getRef().child('/data/user-tracker@test:com').remove(function(error) {
-        if (error) console.error('Error on data cleanup', error);
-
-        App.userService.logout()
-        .then(done)
-        .catch(done);
-      });
+      App.userDataService.set('/', null)
+      .then(function() {
+        return App.userService.logout();
+      })
+      .then(function() {
+        return App.userService.unregisterUser(email, password);
+      })
+      .then(done)
+      .catch(done);
     });
   });
 

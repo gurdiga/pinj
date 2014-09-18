@@ -1,33 +1,35 @@
 (function() {
   'use strict';
 
-  function UserTracker(userService) {
-    this.userService = userService;
-    this.storeTimestampsOnAuthentication();
+  function UserTracker(userService, userDataService) {
+    this.userDataService = userDataService;
+    this.listenForAuthenticationEventOn(userService);
   }
 
   MicroEvent.mixin(UserTracker);
 
-  UserTracker.prototype.storeTimestampsOnAuthentication = function() {
-    this.userService.once('authenticated', function(email) {
-      var userDataService = new UserDataService(email);
-      var registrationTimestamp = 'timestamps/registration';
-      var lastLoginTimestamp = 'timestamps/lastLogin';
+  UserTracker.prototype.listenForAuthenticationEventOn = function(userService) {
+    userService.once('authenticated', this.recordTimestamps.bind(this));
+  };
 
-      userDataService.set(lastLoginTimestamp, Firebase.ServerValue.TIMESTAMP)
-      .then(function() {
-        return userDataService.get(registrationTimestamp);
-      })
-      .then(function(timestamp) {
-        if (!timestamp) return userDataService.set(registrationTimestamp, Firebase.ServerValue.TIMESTAMP);
-      })
-      .then(function() {
-        this.trigger('recorded-registration');
-      }.bind(this))
-      .catch(function(error) {
-        console.error('Error in UserTracker', error);
-      });
-    }.bind(this));
+  UserTracker.prototype.recordTimestamps = function() {
+    var registrationTimestampPath = 'timestamps/registration';
+    var lastLoginTimestampPath = 'timestamps/lastLogin';
+    var userDataService = this.userDataService;
+
+    userDataService.set(lastLoginTimestampPath, Firebase.ServerValue.TIMESTAMP)
+    .then(function() {
+      return userDataService.get(registrationTimestampPath);
+    })
+    .then(function(registrationTimestamp) {
+      if (!registrationTimestamp) return userDataService.set(registrationTimestampPath, Firebase.ServerValue.TIMESTAMP);
+    })
+    .then(function() {
+      this.trigger('recorded-registration');
+    }.bind(this))
+    .catch(function(error) {
+      console.error('Error in UserTracker', error);
+    });
   };
 
   window.UserTracker = UserTracker;

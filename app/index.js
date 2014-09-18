@@ -7,16 +7,13 @@
 
   window.App = App;
 
-  MicroEvent.mixin(document.body);
-
-  var tabLabels = jQuery('a[data-toggle="tab"]');
-  new InputFocuser(tabLabels);
-
-  new TabPreselector(location.hash);
-
   App.userService = new UserService();
   App.userDataService = new UserDataService(App.userService);
+
   new UserTracker(App.userService, App.userDataService);
+
+  new AuthenticationForm(querySelector('#authentication-form'), App.userService);
+  new RegistrationForm(querySelector('#registration-form'), App.userService);
 
   var logoutButton = querySelector('#logout-button');
   new LogoutButton(logoutButton, App.userService);
@@ -36,13 +33,17 @@
     'elementsToHide': [authenticatedView, logoutButton, currentUserEmail]
   }]);
 
+  var tabLabels = jQuery('a[data-toggle="tab"]');
+  new InputFocuser(tabLabels);
+
+  new TabPreselector(location.hash);
+
   new EmailUpdater(App.userService, currentUserEmail);
 
   var form = querySelector('#client-list-form');
   new ClientListForm(App.userService, App.userDataService, form);
 
-  new AuthenticationForm(querySelector('#authentication-form'), App.userService);
-  new RegistrationForm(querySelector('#registration-form'), App.userService);
+  MicroEvent.mixin(document.body);
 
   setTimeout(function() {
     document.body.trigger('ready-for-tests');

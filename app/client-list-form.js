@@ -1,45 +1,58 @@
 (function() {
   'use strict';
 
-  function ClientListForm(clientListService, field, submitButton, saveConfirmationMessage) {
-    this.clientListService = clientListService;
-    this.field = field;
-    this.submitButton = submitButton;
-    this.saveConfirmationMessage = saveConfirmationMessage;
+  var SAVED_MESSAGE_TIMEOUT = 2000;
 
-    this.loadListInto(field);
-    this.watchInputOnField(field);
-    this.watchClicksOn(submitButton);
+  function ClientListForm(userService, userDataService, form) {
+    this.userDataService = userDataService;
+
+    this.field = querySelector('[name="list"]', form);
+    this.submitButton = querySelector('[name="submit-button"]', form);
+    this.saveConfirmationMessage = querySelector('#save-confirmation-message', form);
+
+    this.listenForAuthenticatedEventOn(userService);
+    this.listenForInputOn(this.field);
+    this.listenForClicksOn(this.submitButton);
   }
 
   MicroEvent.mixin(ClientListForm);
 
-  ClientListForm.prototype.loadListInto = function(field) {
-    this.promise = this.clientListService.load()
-      .then(function(list) {
-        field.value = list;
-      });
+  ClientListForm.CLIENT_LIST_PATH = 'clients';
+
+  ClientListForm.prototype.listenForAuthenticatedEventOn = function(userService) {
+    userService.bind('authenticated', function() {
+      this.loadListInto(this.field)
+      .then(function() {
+        this.trigger('loaded');
+      }.bind(this));
+    }.bind(this));
   };
 
-  ClientListForm.prototype.watchInputOnField = function(field) {
+  ClientListForm.prototype.loadListInto = function(field) {
+    return this.userDataService.get(ClientListForm.CLIENT_LIST_PATH)
+    .then(function(list) {
+      field.value = list;
+    });
+  };
+
+  ClientListForm.prototype.listenForInputOn = function(field) {
     field.addEventListener('input', function() {
       this.submitButton.disabled = false;
     }.bind(this));
   };
 
-  ClientListForm.prototype.watchClicksOn = function(submitButton) {
+  ClientListForm.prototype.listenForClicksOn = function(submitButton) {
     submitButton.addEventListener('click', function() {
       submitButton.disabled = true;
 
-      this.clientListService.save(this.field.value)
+      this.userDataService.set(ClientListForm.CLIENT_LIST_PATH, this.field.value)
       .then(function() {
-        submitButton.disabled = false;
         this.saveConfirmationMessage.style.display = 'inline';
         this.trigger('saved');
 
         setTimeout(function() {
           this.saveConfirmationMessage.style.display = 'none';
-        }.bind(this), 2000);
+        }.bind(this), SAVED_MESSAGE_TIMEOUT);
       }.bind(this));
 
     }.bind(this));

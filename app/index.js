@@ -38,12 +38,8 @@
 
   new EmailUpdater(App.userService, currentUserEmail);
 
-  App.userService.bind('authenticated', function(email) {
-    var clientListService = new ClientListService(email);
-    var form = querySelector('#client-list-form');
-    var saveConfirmationMessage = querySelector('#save-confirmation-message', form);
-    new ClientListForm(clientListService, form['list'], form['submit-button'], saveConfirmationMessage);
-  });
+  var form = querySelector('#client-list-form');
+  new ClientListForm(App.userService, App.userDataService, form);
 
   new AuthenticationForm(querySelector('#authentication-form'), App.userService);
   new RegistrationForm(querySelector('#registration-form'), App.userService);

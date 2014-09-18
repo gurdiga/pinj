@@ -50,7 +50,6 @@
     "jQuery": false,
 
     "sinon": false,
-    "assert": false,
     "chai": false,
     "expect": false,
     "describe": false,

@@ -3,7 +3,7 @@
 
   describe('View switcher', function() {
     var ViewSwitcher, querySelector;
-    var fixture, authenticatedView, deauthenticatedView, viewSwitcher;
+    var fixture, authenticatedView, deauthenticatedView, viewSwitcher, emitter;
 
     beforeEach(function() {
       ViewSwitcher = this.iframe.ViewSwitcher;
@@ -18,9 +18,11 @@
       authenticatedView = querySelector('#authenticated-view', fixture);
       deauthenticatedView = querySelector('#deauthenticated-view', fixture);
 
-      var emitter = {};
+      emitter = {};
       MicroEvent.mixin(emitter);
+    });
 
+    it('shows and hides the given elements when the given event is emitted by the given element', function() {
       viewSwitcher = new ViewSwitcher([{
         'emitters': [emitter],
         'eventName': 'authenticated',
@@ -29,12 +31,22 @@
       }]);
 
       emitter.trigger('authenticated');
-    });
 
-    it('shows and hides the given elements when the given event is emitted by the given element', function() {
       expect(authenticatedView).to.be.visible();
       expect(deauthenticatedView).not.to.be.visible();
       expect(this.app.className).to.contain('authenticated');
+    });
+
+    it('accepts missing elementsToHide/elementsToShow', function() {
+      viewSwitcher = new ViewSwitcher([{
+        'emitters': [emitter],
+        'eventName': 'authenticated',
+        'elementsToHide': [deauthenticatedView]
+      }]);
+
+      emitter.trigger('authenticated');
+
+      expect(deauthenticatedView).not.to.be.visible();
     });
 
     afterEach(function() {

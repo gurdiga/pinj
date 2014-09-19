@@ -23,6 +23,7 @@
     "location": false,
     "document": false,
     "setTimeout": false,
+    "clearTimeout": false,
     "console": false,
     "localStorage": false,
 
@@ -42,6 +43,7 @@
     "querySelector": false,
     "AuthenticationForm": false,
     "RegistrationForm": false,
+    "PaymentTracker": false,
 
     "FirebaseSimpleLogin": false,
     "Firebase": false,

@@ -25,7 +25,7 @@
   UserDataService.prototype.set = function(relativePath, value) {
     var deferred = new Deferred();
 
-    this.getRefFor(relativePath, deferred)
+    this.getRefFor(relativePath)
     .set(value, function onComplete(error) {
       if (error) deferred.reject(error);
       else deferred.resolve();
@@ -49,10 +49,9 @@
     return deferred.promise;
   };
 
-  UserDataService.prototype.getRefFor = function(relativePath, deferred) {
+  UserDataService.prototype.getRefFor = function(relativePath) {
     if (!this.authenticated) {
-      deferred.reject(new Error('UserDataService: not authenticated'));
-      return;
+      throw new Error('UserDataService: not authenticated');
     }
 
     var aid = this.email.replace(/\./g, ':');

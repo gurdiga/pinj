@@ -6,7 +6,7 @@
   function UserService() {
     this.ref = new Firebase(App.FIREBASE_URL);
 
-    this.bind('firebase-login', this.tryRestoreSession.bind(this));
+    this.once('firebase-login', this.tryRestoreSession.bind(this));
     this.auth = new FirebaseSimpleLogin(this.ref, this.emitFirebaseLoginEvent.bind(this));
   }
 

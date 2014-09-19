@@ -36,7 +36,7 @@
       it('authenticates a registered with the given email and password and emits the “authenticated” event', function(done) {
         var emittedTheEvent = false;
 
-        userService.bind('authenticated', function() {
+        userService.once('authenticated', function() {
           emittedTheEvent = true;
         });
 
@@ -51,43 +51,36 @@
           done();
         })
         .catch(done);
-
-        function getFirebaseCookie() {
-          if (!localStorage.firebaseSession) return {};
-
-          try {
-            return JSON.parse(localStorage.firebaseSession);
-          } catch(e) {
-            return {};
-          }
-        }
       });
     });
 
     describe('tryRestoreSession()', function() {
-      it('on Firebase login emits “authenticated” event on the instance with the found user’s email', function(done) {
-        userService.once('authenticated', function(email) {
-          expect(email).to.equal(session.user.email);
-          done();
+      var session;
+
+      describe('when a user session is found', function() {
+        beforeEach(function() {
+          session = { user: { email: 'test@test.com' } };
         });
 
-        var session = {
-          user: { email: 'test@test.com' },
-          error: null
-        };
+        it('emits “authenticated” event on the instance with the found user’s email', function(done) {
+          userService.once('authenticated', function(email) {
+            expect(email).to.equal(session.user.email);
+            done();
+          });
 
-        userService.trigger('firebase-login', session);
+          userService.tryRestoreSession(session);
+        });
       });
 
-      it('if no user session found emits “deauthenticated” event on the instance', function(done) {
-        userService.once('deauthenticated', done);
+      describe('when no session is found', function() {
+        beforeEach(function() {
+          session = { user: null };
+        });
 
-        var session = {
-          user: null,
-          error: null
-        };
-
-        userService.trigger('firebase-login', session);
+        it('if no user session found emits “deauthenticated” event on the instance', function(done) {
+          userService.once('deauthenticated', done);
+          userService.tryRestoreSession(session);
+        });
       });
     });
 
@@ -150,6 +143,16 @@
 
         return deferred.promise;
       };
+    }
+
+    function getFirebaseCookie() {
+      if (!localStorage.firebaseSession) return {};
+
+      try {
+        return JSON.parse(localStorage.firebaseSession);
+      } catch(e) {
+        return {};
+      }
     }
   });
 

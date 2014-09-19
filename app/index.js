@@ -9,6 +9,7 @@
 
   App.userService = new UserService();
   App.userDataService = new UserDataService(App.userService);
+  App.paymentTracker = new PaymentTracker(App.userService, App.userDataService);
 
   new UserTracker(App.userService, App.userDataService);
 
@@ -31,6 +32,17 @@
     'emitters': [App.userService],
     'elementsToShow': [unauthenticatedView],
     'elementsToHide': [authenticatedView, logoutButton, currentUserEmail]
+  }]);
+
+  var paymentOverdueMessage = querySelector('#payment-overdue-message');
+  new ViewSwitcher([{
+    'eventName': 'payment-overdue',
+    'emitters': [App.paymentTracker],
+    'elementsToShow': [paymentOverdueMessage]
+  }, {
+    'eventName': 'deauthenticated',
+    'emitters': [App.userService],
+    'elementsToHide': [paymentOverdueMessage]
   }]);
 
   var tabLabels = jQuery('a[data-toggle="tab"]');

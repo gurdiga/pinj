@@ -92,12 +92,13 @@
             <p>Bun venit.</p>
             <p>Aici puteţi introduce lista clienţilor: cîte un nume, denumire, sau
             număr de dosar pe linie.</p>
-            <p>Numerele de dosar trebuie să fie prefixate cu “#”; de exemplu: #20-2e-767-22012013.</p>
+            <p>Numerele de dosar trebuie să fie prefixate cu “#”, de exemplu: #20-2e-767-22012013.</p>
 
-            <!--div class="alert alert-warning alert-dismissible" role="alert">
+            <div id="payment-overdue-message" class="alert alert-warning alert-dismissible" style="display: none">
               <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-              Serviciul nu este achitat.
-            </div-->
+              <p style="margin-bottom: 1em">Serviciul nu este achitat. Contul va fi dezactivat după o săptămînă de întîrziere a plăţii.</p>
+              <button type="button" class="btn btn-primary">Achitare</button>
+            </div>
 
             <form id="client-list-form">
               <textarea name="list" class="form-control"></textarea>

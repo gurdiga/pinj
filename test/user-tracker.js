@@ -1,56 +1,46 @@
 (function() {
   'use strict';
 
-  describe.integration('UserTracker', function() {
-    var UserTracker, App;
-    var userTracker, email, password;
+  describe('UserTracker', function() {
+    var UserTracker, UserService, UserDataService, Firebase, Deferred;
+    var userTracker, userService, userDataService;
 
-    before(function() {
+    beforeEach(function() {
       UserTracker = this.iframe.UserTracker;
-      App = this.iframe.App;
+      UserService = this.iframe.UserService;
+      UserDataService = this.iframe.UserDataService;
+      Firebase = this.iframe.Firebase;
+      Deferred = this.iframe.Deferred;
 
-      email = 'user-tracker@test.com';
-      password = 'Passw0rd';
-      userTracker = new UserTracker(App.userService, App.userDataService);
+      userService = sinon.createStubInstance(UserService);
+      MicroEvent.mixin(userService);
+      userDataService = sinon.createStubInstance(UserDataService);
+      userDataService.set.returns(Deferred.createResolvedPromise());
+      userDataService.get.returns(Deferred.createResolvedPromise());
+
+      userTracker = new UserTracker(userService, userDataService);
     });
 
     it('records user registration and last login timestamps', function(done) {
-      this.timeout(10000);
+      userTracker.once('recorded-timestamps', this.bubbleErrors(function() {
+        var lastLoginRecordingArgs = userDataService.set.firstCall.args;
+        var lastLoginRecordingPath = lastLoginRecordingArgs[0];
+        var lastLoginRecordingValue = lastLoginRecordingArgs[1];
 
-      userTracker.once('recorded-registration', function() {
-        App.userDataService.get('timestamps/registration')
-        .then(function(registrationTimestamp) {
-          expect(registrationTimestamp, 'registration timestamp').to.be.a('number');
-        })
-        .then(function() {
-          return App.userDataService.get('timestamps/lastLogin');
-        })
-        .then(function(lastLoginTimestamp) {
-          expect(lastLoginTimestamp, 'last login timestamp').to.be.a('number');
-        })
-        .then(done)
-        .catch(done);
-      });
+        expect(lastLoginRecordingPath).to.equal('timestamps/lastLogin');
+        expect(lastLoginRecordingValue).to.equal(Firebase.ServerValue.TIMESTAMP);
 
-      App.userService.registerUser(email, password)
-      .then(function() {
-        return App.userService.authenticateUser(email, password);
-      })
-      .catch(done);
-    });
+        var registrationRecordingArgs = userDataService.set.secondCall.args;
+        var registrationRecordingPath = registrationRecordingArgs[0];
+        var registrationRecordingValue = registrationRecordingArgs[1];
 
-    after(function(done) {
-      this.timeout(10000);
+        expect(registrationRecordingPath).to.equal('timestamps/registration');
+        expect(registrationRecordingValue).to.equal(Firebase.ServerValue.TIMESTAMP);
 
-      App.userDataService.set('/', null)
-      .then(function() {
-        return App.userService.logout();
-      })
-      .then(function() {
-        return App.userService.unregisterUser(email, password);
-      })
-      .then(done)
-      .catch(done);
+        done();
+      }));
+
+      userService.trigger('authenticated');
     });
   });
 

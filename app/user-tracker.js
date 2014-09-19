@@ -9,7 +9,9 @@
   MicroEvent.mixin(UserTracker);
 
   UserTracker.prototype.listenForAuthenticationEventOn = function(userService) {
-    userService.once('authenticated', this.recordTimestamps.bind(this));
+    userService.bind('authenticated', function() {
+      this.recordTimestamps();
+    }.bind(this));
   };
 
   UserTracker.prototype.recordTimestamps = function() {
@@ -25,7 +27,7 @@
       if (!registrationTimestamp) return userDataService.set(registrationTimestampPath, Firebase.ServerValue.TIMESTAMP);
     })
     .then(function() {
-      this.trigger('recorded-registration');
+      this.trigger('recorded-timestamps');
     }.bind(this))
     .catch(function(error) {
       console.error('Error in UserTracker', error);

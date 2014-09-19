@@ -1,19 +1,19 @@
 (function() {
   'use strict';
 
-  describe('EmailUpdater', function() {
-    var EmailUpdater;
+  describe('CurrentUserEmailUpdater', function() {
+    var CurrentUserEmailUpdater;
     var emitter, infoPanel, email;
 
     beforeEach(function() {
-      EmailUpdater = this.iframe.EmailUpdater;
+      CurrentUserEmailUpdater = this.iframe.CurrentUserEmailUpdater;
 
       email = 'test@test.com';
       infoPanel = document.createElement('span');
       emitter = {};
       MicroEvent.mixin(emitter);
 
-      new EmailUpdater(emitter, infoPanel);
+      new CurrentUserEmailUpdater(emitter, infoPanel);
     });
 
     it('shows current user’s email in the header on authentication', function() {

@@ -50,7 +50,7 @@
 
   new TabPreselector(location.hash);
 
-  new EmailUpdater(App.userService, currentUserEmail);
+  new CurrentUserEmailUpdater(App.userService, currentUserEmail);
 
   var form = querySelector('#client-list-form');
   new ClientListForm(App.userService, App.userDataService, form);

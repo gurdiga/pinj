@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  function EmailUpdater(emitter, infoPanel) {
+  function CurrentUserEmailUpdater(emitter, infoPanel) {
     emitter.bind('authenticated', function(email) {
       infoPanel.textContent = email;
     });
@@ -11,6 +11,6 @@
     });
   }
 
-  window.EmailUpdater = EmailUpdater;
+  window.CurrentUserEmailUpdater = CurrentUserEmailUpdater;
 
 }());

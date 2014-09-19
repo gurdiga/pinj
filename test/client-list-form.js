@@ -2,20 +2,24 @@
   'use strict';
 
   describe('Client List form', function() {
-    var ClientListForm, Deferred, App, querySelector;
+    var ClientListForm, Deferred, UserService, UserDataService, querySelector;
     var clientListForm, form;
-    var field, submitButton, saveConfirmationMessage, clientListText;
+    var field, submitButton, saveConfirmationMessage, clientListText, userService, userDataService;
 
     beforeEach(function() {
       ClientListForm = this.iframe.ClientListForm;
       Deferred = this.iframe.Deferred;
-      App = this.iframe.App;
+      UserService = this.iframe.UserService;
+      UserDataService = this.iframe.UserDataService;
       querySelector = this.iframe.querySelector;
 
       clientListText = 'the list';
 
-      this.sinon.stub(App.userDataService, 'set').returns(Deferred.createResolvedPromise());
-      this.sinon.stub(App.userDataService, 'get').returns(Deferred.createResolvedPromise(clientListText));
+      userService = sinon.createStubInstance(UserService);
+      MicroEvent.mixin(userService);
+      userDataService = sinon.createStubInstance(UserDataService);
+      userDataService.set.returns(Deferred.createResolvedPromise());
+      userDataService.get.returns(Deferred.createResolvedPromise(clientListText));
 
       form = prepareForm();
       field = querySelector('[name="list"]', form);
@@ -23,24 +27,24 @@
       saveConfirmationMessage = querySelector('#save-confirmation-message', form);
       document.body.appendChild(form);
 
-      clientListForm = new ClientListForm(App.userService, App.userDataService, form);
+      clientListForm = new ClientListForm(userService, userDataService, form);
     });
 
     it('displays the loaded client list into the given field', function(done) {
       clientListForm.once('loaded', function() {
-        expect(App.userDataService.get).to.have.been.calledWith(ClientListForm.CLIENT_LIST_PATH);
+        expect(userDataService.get).to.have.been.calledWith(ClientListForm.CLIENT_LIST_PATH);
         expect(field.value).to.equal(clientListText);
         done();
       });
 
-      App.userService.trigger('authenticated');
+      userService.trigger('authenticated');
     });
 
     it('submits the client list when button is clicked', function() {
       this.type('the entered list').into(field);
       submitButton.click();
 
-      expect(App.userDataService.set).to.have.been.calledWith(ClientListForm.CLIENT_LIST_PATH, field.value);
+      expect(userDataService.set).to.have.been.calledWith(ClientListForm.CLIENT_LIST_PATH, field.value);
     });
 
     it('disables the submit button and shows the confirmation message', function(done) {

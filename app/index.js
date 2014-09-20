@@ -47,7 +47,7 @@
   }]);
 
   var tabLabels = jQuery('a[data-toggle="tab"]');
-  new InputFocuser(tabLabels);
+  new FieldFocuser(tabLabels);
 
   new TabPreselector(location.hash);
 

@@ -1,13 +1,13 @@
 (function() {
   'use strict';
 
-  function InputFocuser(tabLabels) {
+  function FieldFocuser(tabLabels) {
     this.listenForTabSwitchOn(tabLabels);
   }
 
-  InputFocuser.DELAY = 300;
+  FieldFocuser.DELAY = 300;
 
-  InputFocuser.prototype.listenForTabSwitchOn = function(tabLabels) {
+  FieldFocuser.prototype.listenForTabSwitchOn = function(tabLabels) {
     tabLabels.on('shown.bs.tab', function(event) {
       var context = tabLabels[0].ownerDocument.body;
       var tabContent = jQuery(event.target.getAttribute('href'), context);
@@ -15,12 +15,12 @@
     }.bind(this));
   };
 
-  InputFocuser.prototype.focusTheFirstField = function(tabContent) {
+  FieldFocuser.prototype.focusTheFirstField = function(tabContent) {
     setTimeout(function() {
       tabContent.find('input:first').focus();
-    }, InputFocuser.DELAY);
+    }, FieldFocuser.DELAY);
   };
 
-  window.InputFocuser = InputFocuser;
+  window.FieldFocuser = FieldFocuser;
 
 }());

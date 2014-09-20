@@ -2,11 +2,11 @@
   'use strict';
 
   describe('Input focuser', function() {
-    var InputFocuser, jQuery;
+    var FieldFocuser, jQuery;
     var tabs;
 
     beforeEach(function() {
-      InputFocuser = this.iframe.InputFocuser;
+      FieldFocuser = this.iframe.FieldFocuser;
       jQuery = this.iframe.jQuery;
 
       tabs = jQuery(
@@ -19,7 +19,7 @@
         '</div>'
       ).appendTo(document.body);
 
-      new InputFocuser(tabs.find('a'));
+      new FieldFocuser(tabs.find('a'));
     });
 
     afterEach(function() {

@@ -1,9 +1,11 @@
 (function() {
   'use strict';
 
-  function Deferred() {
+  function Deferred(ms) {
     this.inner = Q.defer();
     this.promise = this.inner.promise;
+
+    if (ms) this.resolveIn(ms);
   }
 
   Deferred.prototype.resolve = function() {
@@ -17,6 +19,12 @@
   Deferred.prototype.timeout = function(ms, message) {
     setTimeout(function() {
       this.inner.reject(new Error('Timeout error: ' + message));
+    }.bind(this), ms);
+  };
+
+  Deferred.prototype.resolveIn = function(ms) {
+    setTimeout(function() {
+      this.inner.resolve();
     }.bind(this), ms);
   };
 

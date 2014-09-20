@@ -27,9 +27,9 @@
       });
 
       it('times out after given number of milliseconds with the given error message', function(done) {
-        this.timeout(600);
+        this.timeout(30);
 
-        var timeout = 500;
+        var timeout = 20;
         var errorMessage = 'Testing promise timeout';
         var deferred = new Deferred();
 
@@ -67,6 +67,16 @@
         });
 
         deferred.reject(rejectionReason);
+      });
+    });
+
+    describe('auto-resolution', function() {
+      this.timeout(30);
+
+      describe('when a number of milliseconds are passed to constructor', function() {
+        it('auto-resolves', function(done) {
+          new Deferred(20).promise.then(done, done);
+        });
       });
     });
   });

@@ -30,7 +30,7 @@
         window.document.title += ' ' + this.iframe.document.title;
       }
 
-      this.app.bind('ready-for-tests', function() {
+      this.iframe.testClient.bind('ready', function() {
         done();
       });
     }.bind(this));

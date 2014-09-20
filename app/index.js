@@ -1,6 +1,8 @@
 (function main() {
   'use strict';
 
+  window.testClient = new TestClient(window.parent.testRunner);
+
   var App = {
     FIREBASE_URL: 'https://pinj-dev.firebaseio.com'
   };
@@ -54,11 +56,5 @@
 
   var form = querySelector('#client-list-form');
   new ClientListForm(App.userService, App.userDataService, form);
-
-  MicroEvent.mixin(document.body);
-
-  setTimeout(function() {
-    document.body.trigger('ready-for-tests');
-  }, 500);
 
 }());

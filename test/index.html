@@ -35,7 +35,9 @@
 
   <script>
     window.mocha.checkLeaks();
+    window.mocha.globals(['testRunner']);
     window.mocha.run();
+    window.testRunner = {};
   </script>
 </body>
 </html>

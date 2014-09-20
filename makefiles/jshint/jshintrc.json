@@ -27,6 +27,7 @@
     "console": false,
     "localStorage": false,
 
+    "TestClient": false,
     "App": false,
     "Deferred": false,
     "MicroEvent": false,

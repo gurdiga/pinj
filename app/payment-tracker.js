@@ -1,10 +1,10 @@
 (function() {
   'use strict';
 
-  function PaymentTracker(userService, userDataService) {
+  function PaymentTracker(userTracker, userDataService) {
     this.userDataService = userDataService;
 
-    this.listenForAuthenticatedEventOn(userService);
+    this.listenForRecordedTimestampsEventOn(userTracker);
   }
 
   MicroEvent.mixin(PaymentTracker);
@@ -12,8 +12,8 @@
   PaymentTracker.PAYMENT_PERIOD = days(31);
   PaymentTracker.TRIAL_PERIOD = days(7);
 
-  PaymentTracker.prototype.listenForAuthenticatedEventOn = function(userService) {
-    userService.bind('authenticated', function() {
+  PaymentTracker.prototype.listenForRecordedTimestampsEventOn = function(userTracker) {
+    userTracker.bind('recorded-timestamps', function() {
       this.checkIfPaymentOverdue();
     }.bind(this));
   };

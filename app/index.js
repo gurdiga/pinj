@@ -11,9 +11,8 @@
 
   App.userService = new UserService();
   App.userDataService = new UserDataService(App.userService);
-  App.paymentTracker = new PaymentTracker(App.userService, App.userDataService);
-
-  new UserTracker(App.userService, App.userDataService);
+  App.userTracker = new UserTracker(App.userService, App.userDataService);
+  App.paymentTracker = new PaymentTracker(App.userTracker, App.userDataService);
 
   new AuthenticationForm(querySelector('#authentication-form'), App.userService);
   new RegistrationForm(querySelector('#registration-form'), App.userService);

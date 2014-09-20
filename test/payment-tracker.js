@@ -2,20 +2,20 @@
   'use strict';
 
   describe('PaymentTracker', function() {
-    var PaymentTracker, UserService, UserDataService, Deferred;
-    var paymentTracker, userService, userDataService;
+    var PaymentTracker, UserTracker, UserDataService, Deferred;
+    var paymentTracker, userTracker, userDataService;
 
     beforeEach(function() {
       PaymentTracker = this.iframe.PaymentTracker;
-      UserService = this.iframe.UserService;
+      UserTracker = this.iframe.UserTracker;
       UserDataService = this.iframe.UserDataService;
       Deferred = this.iframe.Deferred;
 
-      userService = sinon.createStubInstance(UserService);
-      MicroEvent.mixin(userService);
+      userTracker = sinon.createStubInstance(UserTracker);
+      MicroEvent.mixin(userTracker);
       userDataService = sinon.createStubInstance(UserDataService);
 
-      paymentTracker = new PaymentTracker(userService, userDataService);
+      paymentTracker = new PaymentTracker(userTracker, userDataService);
     });
 
     describe('payment period', function() {
@@ -42,7 +42,7 @@
 
         it('emits a “payment-overdue” event', function(done) {
           paymentTracker.once('payment-overdue', done);
-          userService.trigger('authenticated');
+          userTracker.trigger('recorded-timestamps');
         });
       });
 
@@ -79,7 +79,7 @@
             done();
           }));
 
-          userService.trigger('authenticated');
+          userTracker.trigger('recorded-timestamps');
         }
       };
     }

@@ -45,6 +45,7 @@
     "AuthenticationForm": false,
     "RegistrationForm": false,
     "PaymentTracker": false,
+    "FormValidationResetter": false,
 
     "FirebaseSimpleLogin": false,
     "Firebase": false,

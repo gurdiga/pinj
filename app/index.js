@@ -56,4 +56,6 @@
   var form = querySelector('#client-list-form');
   new ClientListForm(App.userService, App.userDataService, form);
 
+  new FormValidationResetter(tabLabels);
+
 }());

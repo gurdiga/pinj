@@ -1,11 +1,11 @@
 (function() {
   'use strict';
 
-  describe.only('FormValidationResetter', function() {
+  describe('FormValidationResetter', function() {
     this.timeout(3000);
 
     var FormValidationResetter, querySelector, jQuery, Deferred;
-    var formValidationResetter, form, tabLabels;
+    var formValidationResetter, form, tabLabels, emailField, authenticationError;
 
     beforeEach(function() {
       FormValidationResetter = this.iframe.FormValidationResetter;
@@ -17,12 +17,15 @@
       tabLabels = jQuery('a[data-toggle="tab"]', this.app);
       expect(tabLabels).not.to.be.empty;
 
+      emailField = form['authentication-email'];
+      this.type('blahblah').into(emailField);
+      authenticationError = querySelector('#authentication-error', this.app);
+      authenticationError.style.display = 'block';
+
       formValidationResetter = new FormValidationResetter(tabLabels);
     });
 
     it('when switching tabs the validation messages are reset', function(done) {
-      this.type('blahblah').into(form['authentication-email']);
-
       activateFirstTab()
       .then(triggerValidation)
       .then(function() {
@@ -32,7 +35,8 @@
       .then(activateFirstTab)
       .then(function() {
         expect(validationClearedFor(), 'validation cleared').to.be.true;
-        expect(form['authentication-email'].value).to.be.empty;
+        expect(emailField.value).to.be.empty;
+        expect(authenticationError).not.to.be.visible();
         done();
       })
       .catch(done);

@@ -16,6 +16,7 @@
     var form = tab.find('form');
     var resetFormData = true;
     form.data('bootstrapValidator').resetForm(resetFormData);
+    querySelector('[id$="-error"]', form.get(0)).style.display = 'none';
   };
 
   window.FormValidationResetter = FormValidationResetter;

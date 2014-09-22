@@ -17,17 +17,27 @@
 
   <body>
 
-    <!-- Fixed navbar -->
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
-        <div class="pull-right">
-          <button id="logout-button" class="btn navbar-btn btn-primary" style="display:none">Ieşire</button>
-        </div>
-
         <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#private-menu">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
           <a class="navbar-brand" href="/">Monitorul PINJ</a>
           <span class="navbar-brand" style="display:none" id="current-user-email"></span>
         </div>
+
+        <div class="collapse navbar-collapse" id="private-menu" style="display:none!important">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#" data-toggle="modal" data-target="#subscriptionDialog">Abonament</a></li>
+            <li><a id="logout-button" href="#">Ieşire</a></li>
+          </ul>
+        </div>
+
       </div>
     </div>
 
@@ -114,6 +124,38 @@
         </div>
       </div>
     </div>
+
+    <div class="modal fade" id="subscriptionDialog" tabindex="-1" role="dialog" aria-labelledby="subscriptionDialogTitle" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="subscriptionDialogTitle">Abonament</h4>
+          </div>
+
+          <div class="modal-body">
+            <div class="alert alert-danger" role="alert">Acest formular este în dezvolatare şi încă nu funţionează.</div>
+
+            <div class="radio">
+              <label><input type="radio" name="optionsRadios" value="c15">15 clienţi</label>
+            </div>
+            <div class="radio">
+              <label><input type="radio" name="optionsRadios" value="c30">30 clienţi</label>
+            </div>
+            <div class="radio">
+              <label><input type="radio" name="optionsRadios" value="c60">60 clienţi</label>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary">Salvează</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>

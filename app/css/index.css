@@ -7,21 +7,12 @@ body.authenticated #current-user-email {
   height: auto;
 }
 
-body.authenticated #logout-button {
-  margin-top: 15px;
-}
-
 .nav-tabs>li {
   font-size: 120%;
 }
 
 .tab-content {
   max-width: 330px;
-}
-
-#authentication-form .checkbox {
-  display: block;
-  margin: 0 0 10px 5px;
 }
 
 .help-block {

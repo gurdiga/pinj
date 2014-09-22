@@ -27,13 +27,14 @@
       });
 
       it('times out after given number of milliseconds with the given error message', function(done) {
-        this.timeout(30);
+        var promiseTimeout = 50;
 
-        var timeout = 20;
+        this.timeout(promiseTimeout + 20);
+
         var errorMessage = 'Testing promise timeout';
         var deferred = new Deferred();
 
-        deferred.timeout(timeout, errorMessage);
+        deferred.timeout(promiseTimeout, errorMessage);
         deferred.promise
         .then(this.bubbleErrors(function() {
           expect('resolution').not.to.exist;

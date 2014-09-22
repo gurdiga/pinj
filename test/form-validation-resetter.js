@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  describe('FormValidationResetter', function() {
+  describe.only('FormValidationResetter', function() {
     this.timeout(3000);
 
     var FormValidationResetter, querySelector, jQuery, Deferred;
@@ -21,6 +21,8 @@
     });
 
     it('when switching tabs the validation messages are reset', function(done) {
+      this.type('blahblah').into(form['authentication-email']);
+
       activateFirstTab()
       .then(triggerValidation)
       .then(function() {
@@ -30,6 +32,7 @@
       .then(activateFirstTab)
       .then(function() {
         expect(validationClearedFor(), 'validation cleared').to.be.true;
+        expect(form['authentication-email'].value).to.be.empty;
         done();
       })
       .catch(done);

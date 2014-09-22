@@ -19,7 +19,7 @@
       }
 
       function hide(element) {
-        element.style.display = 'none';
+        element.style.cssText = 'display:none !important';
       }
     });
   }

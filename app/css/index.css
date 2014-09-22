@@ -3,6 +3,7 @@ body.authenticated #current-user-email {
   float: left;
   clear: left;
   padding-top: 0;
+  padding-bottom: 0;
   font-size: small;
   height: auto;
 }

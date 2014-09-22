@@ -6,7 +6,8 @@
       var element = utils.flag(this, 'object');
 
       this.assert(
-        !!element && element.offsetParent !== null,
+        // thanks to jQuery source
+        !!element && (element.offsetWidth > 0 || element.offsetHeight > 0),
         'expected ' + element + ' to be visible',
         'expected ' + element + ' not to be visible'
       );

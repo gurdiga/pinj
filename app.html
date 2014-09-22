@@ -33,7 +33,7 @@
 
         <div class="collapse navbar-collapse" id="private-menu" style="display:none!important">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" data-toggle="modal" data-target="#subscriptionDialog">Abonament</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#subscription-dialog" id="subscription-button">Abonament</a></li>
             <li><a id="logout-button" href="#">Ieşire</a></li>
           </ul>
         </div>
@@ -123,37 +123,36 @@
 
         </div>
       </div>
-    </div>
 
-    <div class="modal fade" id="subscriptionDialog" tabindex="-1" role="dialog" aria-labelledby="subscriptionDialogTitle" aria-hidden="true">
-      <div class="modal-dialog modal-sm">
-        <div class="modal-content">
+      <div class="modal fade" id="subscription-dialog" tabindex="-1" role="dialog" aria-labelledby="subscription-dialog-title" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
 
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="subscriptionDialogTitle">Abonament</h4>
-          </div>
-
-          <div class="modal-body">
-            <div class="alert alert-danger" role="alert">Acest formular este în dezvolatare şi încă nu funţionează.</div>
-
-            <div class="radio">
-              <label><input type="radio" name="optionsRadios" value="c15">15 clienţi</label>
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title" id="subscription-dialog-title">Abonament</h4>
             </div>
-            <div class="radio">
-              <label><input type="radio" name="optionsRadios" value="c30">30 clienţi</label>
-            </div>
-            <div class="radio">
-              <label><input type="radio" name="optionsRadios" value="c60">60 clienţi</label>
-            </div>
-          </div>
 
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary">Salvează</button>
-          </div>
+            <div class="modal-body">
+              <div class="radio">
+                <label><input type="radio" name="subscription" value="c15">15 clienţi</label>
+              </div>
+              <div class="radio">
+                <label><input type="radio" name="subscription" value="c30">30 clienţi</label>
+              </div>
+              <div class="radio">
+                <label><input type="radio" name="subscription" value="c60">60 clienţi</label>
+              </div>
+            </div>
 
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary">Salvează</button>
+            </div>
+
+          </div>
         </div>
       </div>
+
     </div>
 
 
@@ -184,6 +183,7 @@
     <script src="app/registration-form.js"></script>
     <script src="app/form-validation-resetter.js"></script>
     <script src="test/test-helpers/test-client.js"></script>
+    <script src="app/subscription-dialog.js"></script>
     <script src="app/index.js"></script>
 
     <script>

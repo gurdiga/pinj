@@ -59,4 +59,9 @@
 
   new FormValidationResetter(tabLabels);
 
+  var linkToOpenSubscriptionDialog = querySelector('#subscription-button');
+  var subscriptionDialogDOMElement = querySelector('#subscription-dialog');
+  var subscriptionDialogSubmitButton = querySelector('button.btn-primary', subscriptionDialogDOMElement);
+  new SubscriptionDialog(linkToOpenSubscriptionDialog, subscriptionDialogDOMElement, subscriptionDialogSubmitButton, App.userDataService);
+
 }());

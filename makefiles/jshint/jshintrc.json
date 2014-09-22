@@ -46,6 +46,7 @@
     "RegistrationForm": false,
     "PaymentTracker": false,
     "FormValidationResetter": false,
+    "SubscriptionDialog": false,
 
     "FirebaseSimpleLogin": false,
     "Firebase": false,

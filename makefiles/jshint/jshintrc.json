@@ -36,7 +36,7 @@
     "UserDataService": false,
     "LogoutButton": false,
     "TabPreselector": false,
-    "FieldFocuser": false,
+    "FirstFieldFocuser": false,
     "CurrentUserEmailUpdater": false,
     "ViewSwitcher": false,
     "ClientListService": false,

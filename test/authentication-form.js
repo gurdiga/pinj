@@ -195,11 +195,14 @@
           it('resets the form', function() {
             this.type('authentication-form@test.com').into(emailField);
             this.type('Passw0rd').into(passwordField);
-            App.userService.trigger('deauthenticated');
 
-            expect(emailField).to.be.focused();
-            expect(emailField.value).to.be.empty;
-            expect(passwordField.value).to.be.empty;
+            form.once('reset', function() {
+              expect(emailField).to.be.focused();
+              expect(emailField.value).to.be.empty;
+              expect(passwordField.value).to.be.empty;
+            });
+
+            App.userService.trigger('deauthenticated');
           });
         });
       });

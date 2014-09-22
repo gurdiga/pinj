@@ -14,8 +14,8 @@
 
   FormValidationResetter.prototype.resetFormOnTab = function(tab) {
     var form = tab.find('form');
-    var resetFormData = true;
-    form.data('bootstrapValidator').resetForm(resetFormData);
+    var alsoResetFormData = true;
+    form.data('bootstrapValidator').resetForm(alsoResetFormData);
     querySelector('[id$="-error"]', form.get(0)).style.display = 'none';
   };
 

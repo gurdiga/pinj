@@ -6,6 +6,7 @@
     this.form = form;
 
     MicroEvent.mixin(form);
+
     this.initValidation();
     this.setSubmitHandler();
     this.setRegistrationErrorHandler();
@@ -13,7 +14,7 @@
   }
 
   RegistrationForm.prototype.initValidation = function() {
-    $(this.form).bootstrapValidator({
+    jQuery(this.form).bootstrapValidator({
       live: 'submitted',
       feedbackIcons: {
         valid: 'glyphicon glyphicon-ok',
@@ -61,7 +62,7 @@
     var form = this.form;
     var userService = this.userService;
 
-    $(form).on('success.form.bv', function(event) {
+    jQuery(form).on('success.form.bv', function(event) {
       event.preventDefault();
 
       var email = form['registration-email'].value;

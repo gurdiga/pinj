@@ -72,8 +72,6 @@
     });
 
     describe('auto-resolution', function() {
-      this.timeout(30);
-
       describe('when a number of milliseconds are passed to constructor', function() {
         it('auto-resolves', function(done) {
           new Deferred(20).promise.then(done, done);

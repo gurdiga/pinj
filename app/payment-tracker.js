@@ -32,6 +32,8 @@
     .then(function(timestamps) {
       if (PaymentTracker.outOfTrialPeriod(timestamps.registration) && PaymentTracker.paymentOverdue(timestamps.lastPayment)) {
         this.trigger('payment-overdue');
+      } else {
+        this.trigger('payment-checked');
       }
     }.bind(this))
     .catch(function(error) {

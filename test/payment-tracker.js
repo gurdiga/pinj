@@ -53,6 +53,12 @@
 
         it('doesn’t emit the “payment-overdue” event', function(done) {
           waitToSeeTheEventNotEmitted(this).then(done);
+          userTracker.trigger('recorded-timestamps');
+        });
+
+        it('emits “payment-checked” event', function(done) {
+          paymentTracker.once('payment-checked', done);
+          userTracker.trigger('recorded-timestamps');
         });
       });
     });

@@ -100,15 +100,24 @@
 
           <div id="authenticated-view" style="display: none">
             <p>Bun venit.</p>
+
+            <div id="payment-overdue-message" class="alert alert-warning alert-dismissible" style="display: none">
+              <p style="margin-bottom: 1em">
+                Serviciul nu este achitat.
+                <button type="button" class="btn btn-primary" id="payment-button"
+                  data-toggle="popover"
+                  data-container="body"
+                  data-trigger="focus"
+                  data-content="Această funcţionalitate e în stadiul de construcţie.">Achitare</button>
+              </p>
+
+              <p><small>Dacă nu mai aveţi nevoie de acest serviciu, nu trebuie să faceţi nimic.
+              Contul va fi dezactivat automat după o săptămînă de întîrziere a plăţii.</small></p>
+            </div>
+
             <p>Aici puteţi introduce lista clienţilor: cîte un nume, denumire, sau
             număr de dosar pe linie.</p>
             <p>Numerele de dosar trebuie să fie prefixate cu “#”, de exemplu: #20-2e-767-22012013.</p>
-
-            <div id="payment-overdue-message" class="alert alert-warning alert-dismissible" style="display: none">
-              <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-              <p style="margin-bottom: 1em">Serviciul nu este achitat. Contul va fi dezactivat după o săptămînă de întîrziere a plăţii.</p>
-              <button type="button" class="btn btn-primary">Achitare</button>
-            </div>
 
             <form id="client-list-form">
               <textarea name="list" class="form-control"></textarea>
@@ -125,7 +134,7 @@
       </div>
 
       <div class="modal fade" id="subscription-dialog" tabindex="-1" role="dialog" aria-labelledby="subscription-dialog-title" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog">
           <div class="modal-content">
 
             <div class="modal-header">
@@ -135,14 +144,16 @@
 
             <div class="modal-body">
               <div class="radio">
-                <label><input type="radio" name="subscription" value="c15">15 clienţi</label>
+                <label><input type="radio" name="subscription" value="c15">15 clienţi — 3 USD</label>
               </div>
               <div class="radio">
-                <label><input type="radio" name="subscription" value="c30">30 clienţi</label>
+                <label><input type="radio" name="subscription" value="c30">30 clienţi — 6 USD</label>
               </div>
               <div class="radio">
-                <label><input type="radio" name="subscription" value="c60">60 clienţi</label>
+                <label><input type="radio" name="subscription" value="c60">60 clienţi — 9 USD</label>
               </div>
+
+              <p>Abonamentul ales se va lua în considerare la următoarea plată.</p>
             </div>
 
             <div class="modal-footer">
@@ -195,6 +206,8 @@
       ga('create', 'UA-54971427-1', 'auto');
       ga('send', 'pageview');
     </script>
+
+    <script>jQuery('#payment-button').popover();</script>
 
   </body>
 </html>

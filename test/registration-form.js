@@ -245,9 +245,11 @@
             this.type('Passw0rd').into(passwordField);
             App.userService.trigger('deauthenticated');
 
-            expect(emailField.value).to.be.empty;
-            expect(passwordField.value).to.be.empty;
-            expect(passwordConfirmationField.value).to.be.empty;
+            setTimeout(function() {
+              expect(emailField.value).to.be.empty;
+              expect(passwordField.value).to.be.empty;
+              expect(passwordConfirmationField.value).to.be.empty;
+            });
           });
         });
       });

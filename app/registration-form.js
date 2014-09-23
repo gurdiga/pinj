@@ -98,10 +98,17 @@
   };
 
   RegistrationForm.prototype.setLogoutHandler = function() {
-    var form = this.form;
-
     this.userService.bind('deauthenticated', function() {
-      jQuery(form).data('bootstrapValidator').resetForm(true);
+      this.resetForm();
+    }.bind(this));
+  };
+
+  RegistrationForm.prototype.resetForm = function() {
+    var tabId = jQuery(this.form).parent('.tab-pane').attr('id');
+    var tabLabel = jQuery('a[data-toggle="tab"][href="#' + tabId + '"]');
+
+    setTimeout(function() {
+      tabLabel.trigger('shown.bs.tab');
     });
   };
 

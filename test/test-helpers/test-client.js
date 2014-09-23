@@ -1,13 +1,13 @@
 (function() {
   'use strict';
 
-  TestClient.DELAY = 500;
-
   function TestClient(testRunner) {
     this.testRunner = testRunner;
 
     this.run();
   }
+
+  TestClient.DELAY_BEFORE_STARTING_TESTS = 500;
 
   MicroEvent.mixin(TestClient);
 
@@ -26,7 +26,7 @@
   TestClient.prototype.announceReadiness = function() {
     setTimeout(function() {
       this.trigger('ready');
-    }.bind(this), TestClient.DELAY);
+    }.bind(this), TestClient.DELAY_BEFORE_STARTING_TESTS);
   };
 
   window.TestClient = TestClient;

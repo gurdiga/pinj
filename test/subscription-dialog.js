@@ -32,8 +32,9 @@
       clickTheLink(linkToOpen)
       .then(function() {
         expect(dialogDOMElement).to.be.visible();
-        return closeTheDialog().then(done);
       })
+      .then(closeTheDialog)
+      .then(done)
       .catch(done);
     });
 
@@ -42,8 +43,9 @@
       .then(function() {
         var radioBox = querySelector('input[type="radio"][value="' + currentSubscription + '"]', dialogDOMElement);
         expect(radioBox.checked).to.be.true;
-        return closeTheDialog().then(done);
       })
+      .then(closeTheDialog)
+      .then(done)
       .catch(done);
     });
 
@@ -76,14 +78,14 @@
     }
 
     function closeTheDialog() {
-      var closeButton = querySelector('button.close', dialogDOMElement);
-      closeButton.click();
-
       var deferred = new Deferred();
+      var closeButton = querySelector('button.close', dialogDOMElement);
 
       jQuery(dialogDOMElement).on('hidden.bs.modal', function() {
         deferred.resolve();
       });
+
+      closeButton.click();
 
       return deferred.promise;
     }

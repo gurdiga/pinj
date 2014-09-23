@@ -37,9 +37,9 @@
   };
 
   SubscriptionDialog.prototype.saveSubscriptionAndClose = function() {
-    var newSubscription = querySelector('input[name="subscription"]:checked', this.dialogDOMElement).value;
+    var newSubscription = querySelector('input[name="subscription"]:checked', this.dialogDOMElement);
 
-    this.userDataService.set(SubscriptionDialog.DATA_PATH, newSubscription)
+    this.userDataService.set(SubscriptionDialog.DATA_PATH, newSubscription.value)
     .then(function() {
       return this.closeDialog();
     }.bind(this))
@@ -54,13 +54,11 @@
   SubscriptionDialog.prototype.closeDialog = function() {
     var deferred = new Deferred();
 
-    jQuery(this.dialogDOMElement).on('hidden.bs.modal', function() {
+    jQuery(this.dialogDOMElement)
+    .on('hidden.bs.modal', function() {
       deferred.resolve();
-    });
-
-     jQuery(this.dialogDOMElement).modal('hide');
-
-
+    })
+    .modal('hide');
 
     return deferred.promise;
   };

@@ -24,16 +24,17 @@
   var unauthenticatedView = querySelector('#unauthenticated-view');
   var currentUserEmail = querySelector('#current-user-email');
   var privateMenu = querySelector('#private-menu');
+  var hamburgerButton = querySelector('button.navbar-toggle[data-target="#private-menu"]');
   new ViewSwitcher([{
     'eventName': 'authenticated',
     'emitters': [App.userService],
-    'elementsToShow': [authenticatedView, privateMenu, currentUserEmail],
+    'elementsToShow': [authenticatedView, privateMenu, hamburgerButton, currentUserEmail],
     'elementsToHide': [unauthenticatedView]
   }, {
     'eventName': 'deauthenticated',
     'emitters': [App.userService],
     'elementsToShow': [unauthenticatedView],
-    'elementsToHide': [authenticatedView, privateMenu, currentUserEmail]
+    'elementsToHide': [authenticatedView, privateMenu, hamburgerButton, currentUserEmail]
   }]);
 
   var paymentOverdueMessage = querySelector('#payment-overdue-message');

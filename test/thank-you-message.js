@@ -21,12 +21,13 @@
 
       setTimeout(function() {
         expect(dialog).to.be.visible();
-
-        var closeButton = querySelector('button.close', dialog);
-        closeButton.click();
-
         done();
       }, DIALOG_OPEN_TIMEOUT);
+    });
+
+    afterEach(function() {
+      var closeButton = querySelector('button.close', dialog);
+      closeButton.click();
     });
   });
 

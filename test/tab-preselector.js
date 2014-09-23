@@ -13,12 +13,12 @@
       this.sinon.stub(this.iframe, 'jQuery').returns(tabjQueryObject);
     });
 
-    describe('when the is a tab ID', function() {
+    describe('when the given hash is a tab ID', function() {
       beforeEach(function() {
         tabPreselector = new TabPreselector('#tab-id');
       });
 
-      it('activates the corrensponding tab', function() {
+      it('activates the corresponding tab', function() {
         expect(tabjQueryObject.tab).to.have.been.calledWith('show');
       });
     });

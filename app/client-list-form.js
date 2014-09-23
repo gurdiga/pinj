@@ -26,6 +26,10 @@
         this.trigger('loaded');
       }.bind(this));
     }.bind(this));
+
+    userService.bind('deauthenticated', function() {
+      this.clearList();
+    }.bind(this));
   };
 
   ClientListForm.prototype.loadListInto = function(field) {
@@ -33,6 +37,10 @@
     .then(function(list) {
       field.value = list;
     });
+  };
+
+  ClientListForm.prototype.clearList = function() {
+    this.field.value = '';
   };
 
   ClientListForm.prototype.listenForInputOn = function(field) {

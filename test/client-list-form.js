@@ -40,6 +40,11 @@
       userService.trigger('authenticated');
     });
 
+    it('clears the client list on logout', function() {
+      userService.trigger('deauthenticated');
+      expect(field.value).to.be.empty;
+    });
+
     it('submits the client list when button is clicked', function() {
       this.type('the entered list').into(field);
       submitButton.click();

@@ -65,4 +65,6 @@
   var subscriptionDialogSubmitButton = querySelector('button.btn-primary', subscriptionDialogDOMElement);
   new SubscriptionDialog(linkToOpenSubscriptionDialog, subscriptionDialogDOMElement, subscriptionDialogSubmitButton, App.userDataService);
 
+  new ThankYouMessage(location.hash);
+
 }());

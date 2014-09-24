@@ -2,11 +2,12 @@
   'use strict';
 
   describe('Input focuser', function() {
-    var FirstFieldFocuser, jQuery;
+    var FirstFieldFocuser, DOM, jQuery;
     var focuser, tabs;
 
     beforeEach(function() {
       FirstFieldFocuser = this.iframe.FirstFieldFocuser;
+      DOM = this.iframe.DOM;
       jQuery = this.iframe.jQuery;
 
       tabs = document.createElement('div');
@@ -19,7 +20,7 @@
 
       document.body.appendChild(tabs);
 
-      focuser = new FirstFieldFocuser(jQuery(tabs).find('a'));
+      focuser = new FirstFieldFocuser(DOM.querySelectorAll('a', tabs));
     });
 
     it('focuses the first input on the tab when switching tabs', function(done) {

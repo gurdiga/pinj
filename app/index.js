@@ -48,17 +48,15 @@
     'elementsToHide': [paymentOverdueMessage]
   }]);
 
-  var tabLabels = jQuery('a[data-toggle="tab"]');
+  var tabLabels = DOM.querySelectorAll('a[data-toggle="tab"]');
   new FirstFieldFocuser(tabLabels);
-
+  new FormValidationResetter(tabLabels);
   new TabPreselector(location.hash);
 
   new CurrentUserEmailUpdater(App.userService, currentUserEmail);
 
   var form = DOM.querySelector('#client-list-form');
   new ClientListForm(App.userService, App.userDataService, form);
-
-  new FormValidationResetter(tabLabels);
 
   var linkToOpenSubscriptionDialog = DOM.querySelector('#subscription-button');
   var subscriptionDialogDOMElement = DOM.querySelector('#subscription-dialog');

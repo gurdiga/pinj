@@ -8,7 +8,7 @@
   MicroEvent.mixin(FirstFieldFocuser);
 
   FirstFieldFocuser.prototype.listenForTabSwitchOn = function(tabLabels) {
-    tabLabels.on('shown.bs.tab', function(event) {
+    jQuery(tabLabels).on('shown.bs.tab', function(event) {
       this.focustFirstFieldOnTab(event.target);
     }.bind(this));
   };

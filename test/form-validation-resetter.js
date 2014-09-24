@@ -14,7 +14,7 @@
       Deferred = this.iframe.Deferred;
 
       form = DOM.querySelector('#authentication-form', this.app);
-      tabLabels = jQuery('a[data-toggle="tab"]', this.app);
+      tabLabels = DOM.querySelector('a[data-toggle="tab"]', this.app);
       expect(tabLabels).not.to.be.empty;
 
       emailField = form['authentication-email'];
@@ -44,7 +44,7 @@
 
     function activateFirstTab() {
       var tabId = jQuery(form).parent('.tab-pane').attr('id');
-      var tabLabel = jQuery('a[data-toggle="tab"][href="#' + tabId + '"]');
+      var tabLabel = DOM.querySelector('a[data-toggle="tab"][href="#' + tabId + '"]');
       tabLabel.click();
 
       return new Deferred(200).promise;
@@ -59,8 +59,8 @@
 
     function activateTheSecondTab() {
       var formTabId = jQuery(form).parent('.tab-pane').attr('id');
-      var allTabLabels = jQuery('a[data-toggle="tab"]');
-      var oneOtherTabLabel = allTabLabels.not('[href="#' + formTabId + '"]').first();
+      var allTabLabels = DOM.querySelectorAll('a[data-toggle="tab"]');
+      var oneOtherTabLabel = jQuery(allTabLabels).not('[href="#' + formTabId + '"]').first();
       oneOtherTabLabel.click();
 
       return new Deferred(200).promise;

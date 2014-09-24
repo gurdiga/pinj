@@ -6,7 +6,7 @@
   }
 
   FormValidationResetter.prototype.listenForTabSwitchOn = function(tabLabels) {
-    tabLabels.on('shown.bs.tab', function(event) {
+    jQuery(tabLabels).on('shown.bs.tab', function(event) {
       this.resetFormOnTab(event.target);
     }.bind(this));
   };

@@ -79,6 +79,49 @@
         });
       });
     });
+
+    describe('all: compound promise', function() {
+      var promises = {};
+
+      beforeEach(function() {
+        promises = {
+          'a': Deferred.createResolvedPromise('a'),
+          'b': Deferred.createResolvedPromise('b'),
+          'c': Deferred.createResolvedPromise('c')
+        };
+      });
+
+      it('returns a hash of data for a hash of promises', function(done) {
+        Deferred.all(promises)
+        .then(function(data) {
+          expect(data).to.deep.equal({
+            'a': 'a',
+            'b': 'b',
+            'c': 'c'
+          });
+        })
+        .then(done)
+        .catch(done);
+      });
+
+      describe('when any of the given promises fail', function() {
+        var reason;
+
+        beforeEach(function() {
+          reason = new Error('something bad happened');
+          promises['a'] = Deferred.createRejectedPromise(reason);
+          promises['b'] = Deferred.createRejectedPromise(new Error('any other error is lost'));
+        });
+
+        it('the compound promise fails for the same reason', function(done) {
+          Deferred.all(promises)
+          .catch(function(error) {
+            expect(error).to.equal(reason);
+            done();
+          });
+        });
+      });
+    });
   });
 
 }());

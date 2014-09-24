@@ -40,6 +40,21 @@
     return deferred.promise;
   };
 
+  Deferred.all = function(hash) {
+    var keys = Object.keys(hash);
+    var promises = keys.map(function(k) { return hash[k]; });
+
+    return Q.all(promises).then(function(responsesArray) {
+      var responsesHash = {};
+
+      keys.forEach(function(key, i) {
+        responsesHash[key] = responsesArray[i];
+      });
+
+      return responsesHash;
+    });
+  };
+
   window.Deferred = Deferred;
 
 }());

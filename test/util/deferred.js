@@ -28,8 +28,9 @@
 
       it('times out after given number of milliseconds with the given error message', function(done) {
         var promiseTimeout = 50;
+        var WAIT_FOR_THE_CODE_TO_RUN = 20;
 
-        this.timeout(promiseTimeout + 20);
+        this.timeout(promiseTimeout + WAIT_FOR_THE_CODE_TO_RUN);
 
         var errorMessage = 'Testing promise timeout';
         var deferred = new Deferred();

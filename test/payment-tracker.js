@@ -86,19 +86,16 @@
     });
 
     function waitToSeeTheEventNotEmitted(context) {
-      return {
-        'then': function(done) {
-          var eventTimeout = setTimeout(done, 20);
+      var deferred = new Deferred(20);
 
-          paymentTracker.once('payment-overdue', context.bubbleErrors(function() {
-            clearTimeout(eventTimeout);
-            expect('payment-overdue event').not.to.exist;
-            done();
-          }));
+      paymentTracker.once('payment-overdue', context.bubbleErrors(function() {
+        expect('payment-overdue event').not.to.exist;
+        deferred.resolve();
+      }));
 
-          userTracker.trigger('recorded-timestamps');
-        }
-      };
+      userTracker.trigger('recorded-timestamps');
+
+      return deferred.promise;
     }
 
     var oneDay = 24 * 3600 * 1000;

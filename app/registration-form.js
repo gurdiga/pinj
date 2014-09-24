@@ -89,7 +89,7 @@
     var form = this.form;
 
     form.bind('registration-failed', function(errorMessage) {
-      var errorMessageElement = querySelector('#registration-error');
+      var errorMessageElement = DOM.querySelector('#registration-error');
 
       errorMessageElement.textContent = errorMessage;
       errorMessageElement.style.display = 'block';

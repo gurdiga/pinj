@@ -6,9 +6,9 @@
   function ClientListForm(userService, userDataService, form) {
     this.userDataService = userDataService;
 
-    this.field = querySelector('[name="list"]', form);
-    this.submitButton = querySelector('[name="submit-button"]', form);
-    this.saveConfirmationMessage = querySelector('#save-confirmation-message', form);
+    this.field = DOM.querySelector('[name="list"]', form);
+    this.submitButton = DOM.querySelector('[name="submit-button"]', form);
+    this.saveConfirmationMessage = DOM.querySelector('#save-confirmation-message', form);
 
     this.listenForAuthenticatedEventOn(userService);
     this.listenForInputOn(this.field);

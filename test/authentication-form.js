@@ -2,18 +2,18 @@
   'use strict';
 
   describe('Authentication form', function() {
-    var AuthenticationForm, Deferred, App, querySelector, jQuery;
+    var AuthenticationForm, Deferred, App, DOM, jQuery;
     var form;
 
     beforeEach(function(done) {
       AuthenticationForm = this.iframe.AuthenticationForm;
       Deferred = this.iframe.Deferred;
       App = this.iframe.App;
-      querySelector = this.iframe.querySelector;
+      DOM = this.iframe.DOM;
       jQuery = this.iframe.jQuery;
 
       App.userService.logout();
-      form = querySelector('#authentication-form');
+      form = DOM.querySelector('#authentication-form');
       activateTab(form).then(done);
     });
 
@@ -46,9 +46,9 @@
       var emailField, passwordField, submitButton;
 
       beforeEach(function() {
-        emailField = querySelector('#authentication-email', form);
-        passwordField = querySelector('#authentication-password', form);
-        submitButton = querySelector('button[type="submit"]', form);
+        emailField = DOM.querySelector('#authentication-email', form);
+        passwordField = DOM.querySelector('#authentication-password', form);
+        submitButton = DOM.querySelector('button[type="submit"]', form);
       });
 
       describe('email field', function() {
@@ -67,11 +67,11 @@
         });
 
         function emailMissingErrorMessage() {
-          return querySelector('[data-bv-for="authentication-email"][data-bv-validator="notEmpty"]', form);
+          return DOM.querySelector('[data-bv-for="authentication-email"][data-bv-validator="notEmpty"]', form);
         }
 
         function invalidEmailErrorMessage() {
-          return querySelector('[data-bv-for="authentication-email"][data-bv-validator="emailAddress"]', form);
+          return DOM.querySelector('[data-bv-for="authentication-email"][data-bv-validator="emailAddress"]', form);
         }
       });
 
@@ -85,7 +85,7 @@
         });
 
         function passwordIsEmptyErrorMessage() {
-          return querySelector('[data-bv-for="authentication-password"][data-bv-validator="notEmpty"]', form);
+          return DOM.querySelector('[data-bv-for="authentication-password"][data-bv-validator="notEmpty"]', form);
         }
       });
 
@@ -133,7 +133,7 @@
 
           it('displays an error about that', function(done) {
             form.once('authentication-error-message-displayed', function() {
-              var authenticationErrorrMessage = querySelector('#authentication-error', form);
+              var authenticationErrorrMessage = DOM.querySelector('#authentication-error', form);
               expect(authenticationErrorrMessage, 'authentication errorr message').to.exist;
               expect(authenticationErrorrMessage.textContent).to.contain('Adresa de email este incorectă');
               done();
@@ -156,7 +156,7 @@
 
           it('displays an error about that', function(done) {
             form.once('authentication-error-message-displayed', function() {
-              var authenticationErrorrMessage = querySelector('#authentication-error', form);
+              var authenticationErrorrMessage = DOM.querySelector('#authentication-error', form);
               expect(authenticationErrorrMessage, 'authentication errorr message').to.exist;
               expect(authenticationErrorrMessage.textContent).to.contain('Parola este incorectă');
               done();
@@ -179,7 +179,7 @@
 
           it('displays an error message containing its code', function(done) {
             form.once('authentication-error-message-displayed', function() {
-              var authenticationErrorrMessage = querySelector('#authentication-error', form);
+              var authenticationErrorrMessage = DOM.querySelector('#authentication-error', form);
               expect(authenticationErrorrMessage, 'authentication errorr message').to.exist;
               expect(authenticationErrorrMessage.textContent).to.contain(unknownErrorError.code);
               done();
@@ -216,7 +216,7 @@
     function activateTab(form) {
       return {
         then: function(done) {
-          var tabLabel = querySelector('a[data-toggle="tab"][href="#authentication-tab"]', form.ownerDocument);
+          var tabLabel = DOM.querySelector('a[data-toggle="tab"][href="#authentication-tab"]', form.ownerDocument);
           tabLabel.click();
           setTimeout(done, 200);
         }

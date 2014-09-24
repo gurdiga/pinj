@@ -2,12 +2,12 @@
   'use strict';
 
   describe('View switcher', function() {
-    var ViewSwitcher, querySelector;
+    var ViewSwitcher, DOM;
     var fixture, authenticatedView, deauthenticatedView, viewSwitcher, emitter;
 
     beforeEach(function() {
       ViewSwitcher = this.iframe.ViewSwitcher;
-      querySelector = this.iframe.querySelector;
+      DOM = this.iframe.DOM;
 
       fixture = document.createElement('div');
       fixture.innerHTML = '' +
@@ -15,8 +15,8 @@
         '<div id="deauthenticated-view">...UI...</div>';
       document.body.appendChild(fixture);
 
-      authenticatedView = querySelector('#authenticated-view', fixture);
-      deauthenticatedView = querySelector('#deauthenticated-view', fixture);
+      authenticatedView = DOM.querySelector('#authenticated-view', fixture);
+      deauthenticatedView = DOM.querySelector('#deauthenticated-view', fixture);
 
       emitter = {};
       MicroEvent.mixin(emitter);

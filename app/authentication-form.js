@@ -77,7 +77,7 @@
     var form = this.form;
 
     form.bind('authentication-failed', function(errorMessage) {
-      var errorMessageElement = querySelector('#authentication-error');
+      var errorMessageElement = DOM.querySelector('#authentication-error');
 
       errorMessageElement.textContent = errorMessage;
       errorMessageElement.style.display = 'block';

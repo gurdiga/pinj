@@ -2,20 +2,20 @@
   'use strict';
 
   describe('SubscriptionDialog', function() {
-    var SubscriptionDialog, querySelector, Deferred, App, jQuery, UserData;
+    var SubscriptionDialog, DOM, Deferred, App, jQuery, UserData;
     var linkToOpen, dialogDOMElement, currentSubscription, submitButton;
 
     before(function() {
       SubscriptionDialog = this.iframe.SubscriptionDialog;
-      querySelector = this.iframe.querySelector;
+      DOM = this.iframe.DOM;
       Deferred = this.iframe.Deferred;
       App = this.iframe.App;
       jQuery = this.iframe.jQuery;
       UserData = this.iframe.UserData;
 
-      linkToOpen = querySelector('#subscription-button', this.app);
-      dialogDOMElement = querySelector('#subscription-dialog', this.app);
-      submitButton = querySelector('button.btn-primary', dialogDOMElement);
+      linkToOpen = DOM.querySelector('#subscription-button', this.app);
+      dialogDOMElement = DOM.querySelector('#subscription-dialog', this.app);
+      submitButton = DOM.querySelector('button.btn-primary', dialogDOMElement);
       currentSubscription = 'c30';
 
       this.sinon.stub(App.userDataService, 'get')
@@ -40,7 +40,7 @@
     it('has the list of available subscriptions, with the current one checked', function(done) {
       clickTheLink(linkToOpen)
       .then(function() {
-        var radioBox = querySelector('input[type="radio"][value="' + currentSubscription + '"]', dialogDOMElement);
+        var radioBox = DOM.querySelector('input[type="radio"][value="' + currentSubscription + '"]', dialogDOMElement);
         expect(radioBox.checked).to.be.true;
       })
       .then(closeTheDialog)
@@ -49,7 +49,7 @@
     });
 
     it('has a close button', function() {
-      var closeButton = querySelector('button.close', dialogDOMElement);
+      var closeButton = DOM.querySelector('button.close', dialogDOMElement);
       expect(closeButton).to.exist;
     });
 
@@ -57,7 +57,7 @@
       clickTheLink(linkToOpen)
       .then(function() {
         var newSubscription = 'c60';
-        var radioBox = querySelector('input[type="radio"][value="' + newSubscription + '"]', dialogDOMElement);
+        var radioBox = DOM.querySelector('input[type="radio"][value="' + newSubscription + '"]', dialogDOMElement);
         radioBox.checked = true;
 
         dialogDOMElement.once('saved-subscription', function() {
@@ -78,7 +78,7 @@
 
     function closeTheDialog() {
       var deferred = new Deferred();
-      var closeButton = querySelector('button.close', dialogDOMElement);
+      var closeButton = DOM.querySelector('button.close', dialogDOMElement);
 
       jQuery(dialogDOMElement).on('hidden.bs.modal', function() {
         deferred.resolve();

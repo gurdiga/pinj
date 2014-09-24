@@ -2,7 +2,7 @@
   'use strict';
 
   describe('Client List form', function() {
-    var ClientListForm, Deferred, UserService, UserDataService, querySelector, UserData;
+    var ClientListForm, Deferred, UserService, UserDataService, DOM, UserData;
     var clientListForm, form;
     var field, submitButton, saveConfirmationMessage, clientListText, userService, userDataService;
 
@@ -11,7 +11,7 @@
       Deferred = this.iframe.Deferred;
       UserService = this.iframe.UserService;
       UserDataService = this.iframe.UserDataService;
-      querySelector = this.iframe.querySelector;
+      DOM = this.iframe.DOM;
       UserData = this.iframe.UserData;
 
       clientListText = 'the list';
@@ -23,9 +23,9 @@
       userDataService.get.returns(Deferred.createResolvedPromise(clientListText));
 
       form = prepareForm();
-      field = querySelector('[name="list"]', form);
-      submitButton = querySelector('[name="submit-button"]', form);
-      saveConfirmationMessage = querySelector('#save-confirmation-message', form);
+      field = DOM.querySelector('[name="list"]', form);
+      submitButton = DOM.querySelector('[name="submit-button"]', form);
+      saveConfirmationMessage = DOM.querySelector('#save-confirmation-message', form);
       document.body.appendChild(form);
 
       clientListForm = new ClientListForm(userService, userDataService, form);

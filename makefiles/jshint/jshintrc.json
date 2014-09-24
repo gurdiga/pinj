@@ -29,6 +29,7 @@
 
     "TestClient": false,
     "App": false,
+    "DOM": false,
     "Deferred": false,
     "MicroEvent": false,
     "UserData": false,

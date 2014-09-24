@@ -14,17 +14,17 @@
   App.userTracker = new UserTracker(App.userService, App.userDataService);
   App.paymentTracker = new PaymentTracker(App.userTracker, App.userDataService);
 
-  new AuthenticationForm(querySelector('#authentication-form'), App.userService);
-  new RegistrationForm(querySelector('#registration-form'), App.userService);
+  new AuthenticationForm(DOM.querySelector('#authentication-form'), App.userService);
+  new RegistrationForm(DOM.querySelector('#registration-form'), App.userService);
 
-  var logoutButton = querySelector('#logout-button');
+  var logoutButton = DOM.querySelector('#logout-button');
   new LogoutButton(logoutButton, App.userService);
 
-  var authenticatedView = querySelector('#authenticated-view');
-  var unauthenticatedView = querySelector('#unauthenticated-view');
-  var currentUserEmail = querySelector('#current-user-email');
-  var privateMenu = querySelector('#private-menu');
-  var hamburgerButton = querySelector('button.navbar-toggle[data-target="#private-menu"]');
+  var authenticatedView = DOM.querySelector('#authenticated-view');
+  var unauthenticatedView = DOM.querySelector('#unauthenticated-view');
+  var currentUserEmail = DOM.querySelector('#current-user-email');
+  var privateMenu = DOM.querySelector('#private-menu');
+  var hamburgerButton = DOM.querySelector('button.navbar-toggle[data-target="#private-menu"]');
   new ViewSwitcher([{
     'eventName': 'authenticated',
     'emitters': [App.userService],
@@ -37,7 +37,7 @@
     'elementsToHide': [authenticatedView, privateMenu, hamburgerButton, currentUserEmail]
   }]);
 
-  var paymentOverdueMessage = querySelector('#payment-overdue-message');
+  var paymentOverdueMessage = DOM.querySelector('#payment-overdue-message');
   new ViewSwitcher([{
     'eventName': 'payment-overdue',
     'emitters': [App.paymentTracker],
@@ -55,14 +55,14 @@
 
   new CurrentUserEmailUpdater(App.userService, currentUserEmail);
 
-  var form = querySelector('#client-list-form');
+  var form = DOM.querySelector('#client-list-form');
   new ClientListForm(App.userService, App.userDataService, form);
 
   new FormValidationResetter(tabLabels);
 
-  var linkToOpenSubscriptionDialog = querySelector('#subscription-button');
-  var subscriptionDialogDOMElement = querySelector('#subscription-dialog');
-  var subscriptionDialogSubmitButton = querySelector('button.btn-primary', subscriptionDialogDOMElement);
+  var linkToOpenSubscriptionDialog = DOM.querySelector('#subscription-button');
+  var subscriptionDialogDOMElement = DOM.querySelector('#subscription-dialog');
+  var subscriptionDialogSubmitButton = DOM.querySelector('button.btn-primary', subscriptionDialogDOMElement);
   new SubscriptionDialog(linkToOpenSubscriptionDialog, subscriptionDialogDOMElement, subscriptionDialogSubmitButton, App.userDataService);
   new SubscriptionInquirer(linkToOpenSubscriptionDialog, PaymentTracker.TRIAL_PERIOD, App.userTracker, App.userDataService);
 

@@ -12,9 +12,9 @@
   };
 
   FormValidationResetter.prototype.resetFormOnTab = function(tabLabel) {
-    var tabPane = querySelector(tabLabel.getAttribute('href'));
-    var form = querySelector('form', tabPane);
-    var errorMessage = querySelector('[id$="-error"]', form);
+    var tabPane = DOM.querySelector(tabLabel.getAttribute('href'));
+    var form = DOM.querySelector('form', tabPane);
+    var errorMessage = DOM.querySelector('[id$="-error"]', form);
     var alsoResetFormData = true;
 
     jQuery(form).data('bootstrapValidator').resetForm(alsoResetFormData);

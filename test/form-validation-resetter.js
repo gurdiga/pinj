@@ -4,22 +4,22 @@
   describe('FormValidationResetter', function() {
     this.timeout(3000);
 
-    var FormValidationResetter, querySelector, jQuery, Deferred;
+    var FormValidationResetter, DOM, jQuery, Deferred;
     var formValidationResetter, form, tabLabels, emailField, authenticationError;
 
     beforeEach(function() {
       FormValidationResetter = this.iframe.FormValidationResetter;
-      querySelector = this.iframe.querySelector;
+      DOM = this.iframe.DOM;
       jQuery = this.iframe.jQuery;
       Deferred = this.iframe.Deferred;
 
-      form = querySelector('#authentication-form', this.app);
+      form = DOM.querySelector('#authentication-form', this.app);
       tabLabels = jQuery('a[data-toggle="tab"]', this.app);
       expect(tabLabels).not.to.be.empty;
 
       emailField = form['authentication-email'];
       this.type('blahblah').into(emailField);
-      authenticationError = querySelector('#authentication-error', this.app);
+      authenticationError = DOM.querySelector('#authentication-error', this.app);
       authenticationError.style.display = 'block';
 
       formValidationResetter = new FormValidationResetter(tabLabels);
@@ -51,7 +51,7 @@
     }
 
     function triggerValidation() {
-      var submitButton = querySelector('button[type="submit"]', form);
+      var submitButton = DOM.querySelector('button[type="submit"]', form);
       submitButton.click();
 
       return new Deferred(200).promise;

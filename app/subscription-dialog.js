@@ -24,7 +24,7 @@
   SubscriptionDialog.prototype.loadCurrentSubscriptionInto = function(dialogDOMElement) {
     this.userDataService.get(UserData.SUBSCRIPTION_PATH)
     .then(function(data) {
-      var radioBox = querySelector('input[type="radio"][value="' + data + '"]', dialogDOMElement);
+      var radioBox = DOM.querySelector('input[type="radio"][value="' + data + '"]', dialogDOMElement);
       radioBox.checked = true;
     }.bind(this));
   };
@@ -34,7 +34,7 @@
   };
 
   SubscriptionDialog.prototype.saveSubscriptionAndClose = function() {
-    var newSubscription = querySelector('input[name="subscription"]:checked', this.dialogDOMElement);
+    var newSubscription = DOM.querySelector('input[name="subscription"]:checked', this.dialogDOMElement);
 
     this.userDataService.set(UserData.SUBSCRIPTION_PATH, newSubscription.value)
     .then(this.closeDialog.bind(this))

@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  describe.only('DOM', function() {
+  describe('DOM', function() {
     var DOM;
 
     beforeEach(function() {

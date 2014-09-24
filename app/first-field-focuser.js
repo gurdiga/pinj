@@ -15,8 +15,8 @@
 
   FirstFieldFocuser.prototype.focustFirstFieldOnTab = function(tabLabel) {
     var context = tabLabel.ownerDocument.body;
-    var tabPane = querySelector(tabLabel.getAttribute('href'), context);
-    var firstField = querySelector('input', tabPane);
+    var tabPane = DOM.querySelector(tabLabel.getAttribute('href'), context);
+    var firstField = DOM.querySelector('input', tabPane);
 
     firstField.focus();
     this.trigger('first-field-focused');

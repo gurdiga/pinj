@@ -5,15 +5,15 @@
     var DIALOG_OPEN_TIMEOUT = 200;
     this.timeout(DIALOG_OPEN_TIMEOUT + 50);
 
-    var ThankYouMessage, querySelector;
+    var ThankYouMessage, DOM;
     var hash, dialog;
 
     beforeEach(function() {
       ThankYouMessage = this.iframe.ThankYouMessage;
-      querySelector = this.iframe.querySelector;
+      DOM = this.iframe.DOM;
 
       hash = '#thank-you-message';
-      dialog = querySelector(hash, this.app);
+      dialog = DOM.querySelector(hash, this.app);
     });
 
     it('shows the dialog correspondint to the given hash', function(done) {
@@ -26,7 +26,7 @@
     });
 
     afterEach(function() {
-      var closeButton = querySelector('button.close', dialog);
+      var closeButton = DOM.querySelector('button.close', dialog);
       closeButton.click();
     });
   });

@@ -2,13 +2,13 @@
   'use strict';
 
   describe('Registration form', function() {
-    var App, Deferred, querySelector, RegistrationForm, jQuery, FirstFieldFocuser;
+    var App, Deferred, DOM, RegistrationForm, jQuery, FirstFieldFocuser;
     var form, email, password;
 
     before(function(done) {
       App = this.iframe.App;
       Deferred = this.iframe.Deferred;
-      querySelector = this.iframe.querySelector;
+      DOM = this.iframe.DOM;
       RegistrationForm = this.iframe.RegistrationForm;
       jQuery = this.iframe.jQuery;
       FirstFieldFocuser = this.iframe.FirstFieldFocuser;
@@ -16,7 +16,7 @@
       email = 'registration-form@test.com';
       password = 'Passw0rd';
 
-      form = querySelector('#registration-form');
+      form = DOM.querySelector('#registration-form');
       activateTab(form).then(done);
     });
 
@@ -51,7 +51,7 @@
 
     it('focuses the first field automatically', function(done) {
       setTimeout(function() {
-        var emailField = querySelector('#registration-email', form);
+        var emailField = DOM.querySelector('#registration-email', form);
         expect(emailField).to.be.focused();
 
         done();
@@ -63,10 +63,10 @@
       var emailField, passwordField, passwordConfirmationField, submitButton;
 
       beforeEach(function() {
-        emailField = querySelector('#registration-email', form);
-        passwordField = querySelector('#registration-password', form);
-        passwordConfirmationField = querySelector('#registration-password-confirmation', form);
-        submitButton = querySelector('button[type="submit"]', form);
+        emailField = DOM.querySelector('#registration-email', form);
+        passwordField = DOM.querySelector('#registration-password', form);
+        passwordConfirmationField = DOM.querySelector('#registration-password-confirmation', form);
+        submitButton = DOM.querySelector('button[type="submit"]', form);
       });
 
       describe('email field', function() {
@@ -93,11 +93,11 @@
         });
 
         function emailMissingErrorMessage() {
-          return querySelector('[data-bv-for="registration-email"][data-bv-validator="notEmpty"]', form);
+          return DOM.querySelector('[data-bv-for="registration-email"][data-bv-validator="notEmpty"]', form);
         }
 
         function invalidEmailErrorMessage() {
-          return querySelector('[data-bv-for="registration-email"][data-bv-validator="emailAddress"]', form);
+          return DOM.querySelector('[data-bv-for="registration-email"][data-bv-validator="emailAddress"]', form);
         }
       });
 
@@ -143,15 +143,15 @@
         });
 
         function passwordIsEmptyErrorMessage() {
-          return querySelector('[data-bv-for="registration-password"][data-bv-validator="notEmpty"]', form);
+          return DOM.querySelector('[data-bv-for="registration-password"][data-bv-validator="notEmpty"]', form);
         }
 
         function passwordConfirmationIsEmptyErrrorMessage() {
-          return querySelector('[data-bv-for="registration-password-confirmation"][data-bv-validator="notEmpty"]', form);
+          return DOM.querySelector('[data-bv-for="registration-password-confirmation"][data-bv-validator="notEmpty"]', form);
         }
 
         function passwordConfirmationMissmatchErrrorMessage() {
-          return querySelector('[data-bv-for="registration-password-confirmation"][data-bv-validator="identical"]', form);
+          return DOM.querySelector('[data-bv-for="registration-password-confirmation"][data-bv-validator="identical"]', form);
         }
       });
 
@@ -204,7 +204,7 @@
 
           it('displays an error about that', function(done) {
             form.once('registration-error-message-displayed', function() {
-              var registrationErrorrMessage = querySelector('#registration-error', form);
+              var registrationErrorrMessage = DOM.querySelector('#registration-error', form);
               expect(registrationErrorrMessage, 'registration errorr message').to.exist;
               done();
             });
@@ -227,7 +227,7 @@
 
           it('displays and error message containing its code', function(done) {
             form.once('registration-error-message-displayed', function() {
-              var registrationErrorrMessage = querySelector('#registration-error', form);
+              var registrationErrorrMessage = DOM.querySelector('#registration-error', form);
               expect(registrationErrorrMessage.textContent).to.contain(unknownErrorError.code);
               done();
             });
@@ -263,7 +263,7 @@
     function activateTab(form) {
       return {
         then: function(done) {
-          var tabLabel = querySelector('a[data-toggle="tab"][href="#registration-tab"]', form.ownerDocument);
+          var tabLabel = DOM.querySelector('a[data-toggle="tab"][href="#registration-tab"]', form.ownerDocument);
           tabLabel.click();
           setTimeout(done, 200);
         }

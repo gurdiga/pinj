@@ -17,16 +17,10 @@
   };
 
   PaymentTracker.prototype.checkIfPaymentOverdue = function() {
-    this.userDataService.get(UserData.LAST_PAYMENT_TIMESTAMP_PATH)
-    .then(function(lastPaymentTimestamp) {
-      return this.userDataService.get(UserData.REGISTRATION_TIMESTAMP_PATH)
-      .then(function(registrationTimestamp) {
-        return {
-          'lastPayment': lastPaymentTimestamp,
-          'registration': registrationTimestamp
-        };
-      });
-    }.bind(this))
+    Deferred.all({
+      'lastPayment': this.userDataService.get(UserData.LAST_PAYMENT_TIMESTAMP_PATH),
+      'registration': this.userDataService.get(UserData.REGISTRATION_TIMESTAMP_PATH)
+    })
     .then(function(timestamps) {
       if (PaymentTracker.outOfTrialPeriod(timestamps.registration) && PaymentTracker.paymentOverdue(timestamps.lastPayment)) {
         this.trigger('payment-overdue');

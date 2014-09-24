@@ -15,12 +15,12 @@
   UserTracker.prototype.recordTimestamps = function() {
     var userDataService = this.userDataService;
 
-    userDataService.set(UserData.LAST_LOGIN_TIMESTAMP_PATH, Firebase.ServerValue.TIMESTAMP)
-    .then(function() {
-      return userDataService.get(UserData.REGISTRATION_TIMESTAMP_PATH);
+    Deferred.all({
+      '_': userDataService.set(UserData.LAST_LOGIN_TIMESTAMP_PATH, Firebase.ServerValue.TIMESTAMP),
+      'registrationTimestamp': userDataService.get(UserData.REGISTRATION_TIMESTAMP_PATH)
     })
-    .then(function(registrationTimestamp) {
-      if (!registrationTimestamp) return userDataService.set(UserData.REGISTRATION_TIMESTAMP_PATH, Firebase.ServerValue.TIMESTAMP);
+    .then(function(data) {
+      if (!data.registrationTimestamp) return userDataService.set(UserData.REGISTRATION_TIMESTAMP_PATH, Firebase.ServerValue.TIMESTAMP);
     })
     .then(this.trigger.bind(this, 'recorded-timestamps'))
     .catch(function(error) {

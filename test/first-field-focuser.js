@@ -3,7 +3,7 @@
 
   describe('Input focuser', function() {
     var FirstFieldFocuser, jQuery;
-    var tabs;
+    var focuser, tabs;
 
     beforeEach(function() {
       FirstFieldFocuser = this.iframe.FirstFieldFocuser;
@@ -17,19 +17,13 @@
             '<input name="input2"/>' +
           '</div>' +
         '</div>'
-      ).appendTo(document.body);
+      );
 
-      new FirstFieldFocuser(tabs.find('a'));
-    });
-
-    afterEach(function() {
-      tabs.remove();
+      focuser = new FirstFieldFocuser(tabs.find('a'));
     });
 
     it('focuses the first input on the tab when switching tabs', function(done) {
-      tabs.find('input:first').on('focus', function() {
-        done();
-      });
+      focuser.once('first-field-focused', done);
       tabs.find('a').trigger('shown.bs.tab');
     });
   });

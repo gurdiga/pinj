@@ -5,7 +5,7 @@
     this.listenForTabSwitchOn(tabLabels);
   }
 
-  FirstFieldFocuser.DELAY = 300;
+  MicroEvent.mixin(FirstFieldFocuser);
 
   FirstFieldFocuser.prototype.listenForTabSwitchOn = function(tabLabels) {
     tabLabels.on('shown.bs.tab', function(event) {
@@ -16,9 +16,8 @@
   };
 
   FirstFieldFocuser.prototype.focusTheFirstField = function(tabContent) {
-    setTimeout(function() {
-      tabContent.find('input:first').focus();
-    }, FirstFieldFocuser.DELAY);
+    tabContent.find('input:first').focus();
+    this.trigger('first-field-focused');
   };
 
   window.FirstFieldFocuser = FirstFieldFocuser;

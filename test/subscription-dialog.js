@@ -5,7 +5,7 @@
     var SubscriptionDialog, querySelector, Deferred, App, jQuery;
     var linkToOpen, dialogDOMElement, currentSubscription, submitButton;
 
-    beforeEach(function() {
+    before(function() {
       SubscriptionDialog = this.iframe.SubscriptionDialog;
       querySelector = this.iframe.querySelector;
       Deferred = this.iframe.Deferred;
@@ -22,8 +22,6 @@
         .returns(Deferred.createResolvedPromise(currentSubscription));
       this.sinon.stub(App.userDataService, 'set')
         .returns(Deferred.createResolvedPromise());
-
-      new SubscriptionDialog(linkToOpen, dialogDOMElement, submitButton, App.userDataService);
     });
 
     it('is opened by the subscription linkToOpen in the menu', function(done) {

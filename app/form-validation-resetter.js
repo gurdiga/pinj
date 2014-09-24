@@ -7,16 +7,18 @@
 
   FormValidationResetter.prototype.listenForTabSwitchOn = function(tabLabels) {
     tabLabels.on('shown.bs.tab', function(event) {
-      var tab = jQuery(event.target.getAttribute('href'));
-      this.resetFormOnTab(tab);
+      this.resetFormOnTab(event.target);
     }.bind(this));
   };
 
-  FormValidationResetter.prototype.resetFormOnTab = function(tab) {
-    var form = tab.find('form');
+  FormValidationResetter.prototype.resetFormOnTab = function(tabLabel) {
+    var tabPane = querySelector(tabLabel.getAttribute('href'));
+    var form = querySelector('form', tabPane);
+    var errorMessage = querySelector('[id$="-error"]', form);
     var alsoResetFormData = true;
-    form.data('bootstrapValidator').resetForm(alsoResetFormData);
-    querySelector('[id$="-error"]', form.get(0)).style.display = 'none';
+
+    jQuery(form).data('bootstrapValidator').resetForm(alsoResetFormData);
+    errorMessage.style.display = 'none';
   };
 
   window.FormValidationResetter = FormValidationResetter;

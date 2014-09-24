@@ -28,14 +28,14 @@
         var lastLoginRecordingPath = lastLoginRecordingArgs[0];
         var lastLoginRecordingValue = lastLoginRecordingArgs[1];
 
-        expect(lastLoginRecordingPath).to.equal(UserData.LAST_LOGIN_TIMESTAMP);
+        expect(lastLoginRecordingPath).to.equal(UserData.LAST_LOGIN_TIMESTAMP_PATH);
         expect(lastLoginRecordingValue).to.equal(Firebase.ServerValue.TIMESTAMP);
 
         var registrationRecordingArgs = userDataService.set.secondCall.args;
         var registrationRecordingPath = registrationRecordingArgs[0];
         var registrationRecordingValue = registrationRecordingArgs[1];
 
-        expect(registrationRecordingPath).to.equal(UserData.REGISTRATION_TIMESTAMP);
+        expect(registrationRecordingPath).to.equal(UserData.REGISTRATION_TIMESTAMP_PATH);
         expect(registrationRecordingValue).to.equal(Firebase.ServerValue.TIMESTAMP);
 
         done();

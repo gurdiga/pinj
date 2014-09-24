@@ -13,15 +13,13 @@
   PaymentTracker.TRIAL_PERIOD = days(7);
 
   PaymentTracker.prototype.listenForRecordedTimestampsEventOn = function(userTracker) {
-    userTracker.bind('recorded-timestamps', function() {
-      this.checkIfPaymentOverdue();
-    }.bind(this));
+    userTracker.bind('recorded-timestamps', this.checkIfPaymentOverdue.bind(this));
   };
 
   PaymentTracker.prototype.checkIfPaymentOverdue = function() {
-    this.userDataService.get(UserData.LAST_PAYMENT_TIMESTAMP)
+    this.userDataService.get(UserData.LAST_PAYMENT_TIMESTAMP_PATH)
     .then(function(lastPaymentTimestamp) {
-      return this.userDataService.get(UserData.REGISTRATION_TIMESTAMP)
+      return this.userDataService.get(UserData.REGISTRATION_TIMESTAMP_PATH)
       .then(function(registrationTimestamp) {
         return {
           'lastPayment': lastPaymentTimestamp,

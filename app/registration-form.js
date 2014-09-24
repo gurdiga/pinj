@@ -99,9 +99,7 @@
   };
 
   RegistrationForm.prototype.setLogoutHandler = function() {
-    this.userService.bind('deauthenticated', function() {
-      this.resetForm();
-    }.bind(this));
+    this.userService.bind('deauthenticated', this.resetForm.bind(this));
   };
 
   RegistrationForm.prototype.resetForm = function() {

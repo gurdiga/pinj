@@ -9,25 +9,20 @@
   MicroEvent.mixin(UserTracker);
 
   UserTracker.prototype.listenForAuthenticationEventOn = function(userService) {
-    userService.bind('authenticated', function() {
-      this.recordTimestamps();
-    }.bind(this));
+    userService.bind('authenticated', this.recordTimestamps.bind(this));
   };
 
   UserTracker.prototype.recordTimestamps = function() {
-    var registrationTimestampPath = UserData.REGISTRATION_TIMESTAMP;
     var userDataService = this.userDataService;
 
-    userDataService.set(UserData.LAST_LOGIN_TIMESTAMP, Firebase.ServerValue.TIMESTAMP)
+    userDataService.set(UserData.LAST_LOGIN_TIMESTAMP_PATH, Firebase.ServerValue.TIMESTAMP)
     .then(function() {
-      return userDataService.get(UserData.REGISTRATION_TIMESTAMP);
+      return userDataService.get(UserData.REGISTRATION_TIMESTAMP_PATH);
     })
     .then(function(registrationTimestamp) {
-      if (!registrationTimestamp) return userDataService.set(UserData.REGISTRATION_TIMESTAMP, Firebase.ServerValue.TIMESTAMP);
+      if (!registrationTimestamp) return userDataService.set(UserData.REGISTRATION_TIMESTAMP_PATH, Firebase.ServerValue.TIMESTAMP);
     })
-    .then(function() {
-      this.trigger('recorded-timestamps');
-    }.bind(this))
+    .then(this.trigger.bind(this, 'recorded-timestamps'))
     .catch(function(error) {
       console.error('Error in UserTracker', error);
     });

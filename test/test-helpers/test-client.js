@@ -24,9 +24,7 @@
   };
 
   TestClient.prototype.announceReadiness = function() {
-    setTimeout(function() {
-      this.trigger('ready');
-    }.bind(this), TestClient.DELAY_BEFORE_STARTING_TESTS);
+    setTimeout(this.trigger.bind(this, 'ready'), TestClient.DELAY_BEFORE_STARTING_TESTS);
   };
 
   window.TestClient = TestClient;

@@ -14,7 +14,7 @@
   };
 
   SubscriptionInquirer.prototype.checkIfAlreadyPickedASubscription = function() {
-    this.userDataService.get(SubscriptionDialog.DATA_PATH)
+    this.userDataService.get(UserData.SUBSCRIPTION_PATH)
     .then(function(subscription) {
       if (!subscription) this.checkIfOutOfTrial();
     }.bind(this))
@@ -24,7 +24,7 @@
   };
 
   SubscriptionInquirer.prototype.checkIfOutOfTrial = function() {
-    this.userDataService.get(UserData.REGISTRATION_TIMESTAMP)
+    this.userDataService.get(UserData.REGISTRATION_TIMESTAMP_PATH)
     .then(function(registrationTimestamp) {
       var outOfTrial = (registrationTimestamp + this.trialPeriodLength) < Date.now();
 

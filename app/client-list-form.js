@@ -18,23 +18,16 @@
   MicroEvent.mixin(ClientListForm);
 
   ClientListForm.prototype.listenForAuthenticatedEventOn = function(userService) {
-    userService.bind('authenticated', function() {
-      this.loadListInto(this.field)
-      .then(function() {
-        this.trigger('loaded');
-      }.bind(this));
-    }.bind(this));
-
-    userService.bind('deauthenticated', function() {
-      this.clearList();
-    }.bind(this));
+    userService.bind('authenticated', this.loadList.bind(this));
+    userService.bind('deauthenticated', this.clearList.bind(this));
   };
 
-  ClientListForm.prototype.loadListInto = function(field) {
+  ClientListForm.prototype.loadList = function() {
     return this.userDataService.get(UserData.CLIENT_LIST_PATH)
     .then(function(list) {
-      field.value = list;
-    });
+      this.field.value = list;
+    }.bind(this))
+    .then(this.trigger.bind(this, 'loaded'));
   };
 
   ClientListForm.prototype.clearList = function() {

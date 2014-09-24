@@ -53,9 +53,7 @@
     });
 
     return deferred.promise
-    .then(function() {
-      this.trigger('authenticated', email);
-    }.bind(this));
+    .then(this.trigger.bind(this, 'authenticated', email));
   };
 
   UserService.prototype.logout = function() {
@@ -72,9 +70,7 @@
     deferred.timeout(TIMEOUT, 'Timed out on logout');
 
     return deferred.promise
-    .then(function() {
-      this.trigger('deauthenticated');
-    }.bind(this));
+    .then(this.trigger.bind(this, 'deauthenticated'));
   };
 
   UserService.prototype.unregisterUser = function(email, password) {

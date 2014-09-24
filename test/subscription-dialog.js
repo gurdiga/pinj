@@ -2,7 +2,7 @@
   'use strict';
 
   describe('SubscriptionDialog', function() {
-    var SubscriptionDialog, querySelector, Deferred, App, jQuery;
+    var SubscriptionDialog, querySelector, Deferred, App, jQuery, UserData;
     var linkToOpen, dialogDOMElement, currentSubscription, submitButton;
 
     before(function() {
@@ -11,6 +11,7 @@
       Deferred = this.iframe.Deferred;
       App = this.iframe.App;
       jQuery = this.iframe.jQuery;
+      UserData = this.iframe.UserData;
 
       linkToOpen = querySelector('#subscription-button', this.app);
       dialogDOMElement = querySelector('#subscription-dialog', this.app);
@@ -18,7 +19,7 @@
       currentSubscription = 'c30';
 
       this.sinon.stub(App.userDataService, 'get')
-        .withArgs(SubscriptionDialog.DATA_PATH)
+        .withArgs(UserData.SUBSCRIPTION_PATH)
         .returns(Deferred.createResolvedPromise(currentSubscription));
       this.sinon.stub(App.userDataService, 'set')
         .returns(Deferred.createResolvedPromise());
@@ -60,7 +61,7 @@
         radioBox.checked = true;
 
         dialogDOMElement.once('saved-subscription', function() {
-          expect(App.userDataService.set).to.have.been.calledWith(SubscriptionDialog.DATA_PATH, newSubscription);
+          expect(App.userDataService.set).to.have.been.calledWith(UserData.SUBSCRIPTION_PATH, newSubscription);
           expect(dialogDOMElement).not.to.be.visible();
           done();
         });

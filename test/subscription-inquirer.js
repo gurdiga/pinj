@@ -27,7 +27,7 @@
     describe('if user didn’t yet pick a subscription', function() {
       beforeEach(function() {
         userDataService.get
-          .withArgs(SubscriptionDialog.DATA_PATH)
+          .withArgs(UserData.SUBSCRIPTION_PATH)
           .returns(Deferred.createResolvedPromise(null));
       });
 
@@ -36,7 +36,7 @@
           var moreThanOneTrialPeriodAgo = Date.now() - trialPeriodLength - someTime;
 
           userDataService.get
-            .withArgs(UserData.REGISTRATION_TIMESTAMP)
+            .withArgs(UserData.REGISTRATION_TIMESTAMP_PATH)
             .returns(Deferred.createResolvedPromise(moreThanOneTrialPeriodAgo));
         });
 
@@ -54,7 +54,7 @@
           var withinTheTrialPeriod = Date.now() - trialPeriodLength + someTime;
 
           userDataService.get
-            .withArgs(UserData.REGISTRATION_TIMESTAMP)
+            .withArgs(UserData.REGISTRATION_TIMESTAMP_PATH)
             .returns(Deferred.createResolvedPromise(withinTheTrialPeriod));
         });
 
@@ -70,7 +70,7 @@
         var currentSubscription = 'c42';
 
         userDataService.get
-          .withArgs(SubscriptionDialog.DATA_PATH)
+          .withArgs(UserData.SUBSCRIPTION_PATH)
           .returns(Deferred.createResolvedPromise(currentSubscription));
       });
 

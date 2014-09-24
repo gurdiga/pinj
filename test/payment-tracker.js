@@ -34,14 +34,14 @@
     describe('when last payment is older than a payment period ago', function() {
       beforeEach(function() {
         userDataService.get
-          .withArgs(UserData.LAST_PAYMENT_TIMESTAMP)
+          .withArgs(UserData.LAST_PAYMENT_TIMESTAMP_PATH)
           .returns(moreThanAPaymentPeriodAgo());
       });
 
       describe('when it’s not a trial user', function() {
         beforeEach(function() {
           userDataService.get
-            .withArgs(UserData.REGISTRATION_TIMESTAMP)
+            .withArgs(UserData.REGISTRATION_TIMESTAMP_PATH)
             .returns(outOfTrialPeriod());
         });
 
@@ -54,7 +54,7 @@
       describe('when it’s a trial user', function() {
         beforeEach(function() {
           userDataService.get
-            .withArgs(UserData.REGISTRATION_TIMESTAMP)
+            .withArgs(UserData.REGISTRATION_TIMESTAMP_PATH)
             .returns(withinTheTrialPeriod());
         });
 
@@ -73,10 +73,10 @@
     describe('when last payment is within the payment period', function() {
       beforeEach(function() {
         userDataService.get
-          .withArgs(UserData.LAST_PAYMENT_TIMESTAMP)
+          .withArgs(UserData.LAST_PAYMENT_TIMESTAMP_PATH)
           .returns(lessThanAPaymentPeriodAgo());
         userDataService.get
-          .withArgs(UserData.REGISTRATION_TIMESTAMP)
+          .withArgs(UserData.REGISTRATION_TIMESTAMP_PATH)
           .returns(outOfTrialPeriod());
       });
 

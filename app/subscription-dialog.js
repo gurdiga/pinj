@@ -12,7 +12,6 @@
   }
 
   SubscriptionDialog.SHOW_DELAY = 250;
-  SubscriptionDialog.DATA_PATH = 'subscription';
 
   SubscriptionDialog.prototype.listenFowShownEventOn = function(dialogDOMElement) {
     var loadCurrentSubscriptionInto = this.loadCurrentSubscriptionInto.bind(this);
@@ -23,7 +22,7 @@
   };
 
   SubscriptionDialog.prototype.loadCurrentSubscriptionInto = function(dialogDOMElement) {
-    this.userDataService.get(SubscriptionDialog.DATA_PATH)
+    this.userDataService.get(UserData.SUBSCRIPTION_PATH)
     .then(function(data) {
       var radioBox = querySelector('input[type="radio"][value="' + data + '"]', dialogDOMElement);
       radioBox.checked = true;
@@ -31,18 +30,14 @@
   };
 
   SubscriptionDialog.prototype.listenForClicksOn = function(submitButton) {
-    submitButton.addEventListener('click', function() {
-      this.saveSubscriptionAndClose();
-    }.bind(this));
+    submitButton.addEventListener('click', this.saveSubscriptionAndClose.bind(this));
   };
 
   SubscriptionDialog.prototype.saveSubscriptionAndClose = function() {
     var newSubscription = querySelector('input[name="subscription"]:checked', this.dialogDOMElement);
 
-    this.userDataService.set(SubscriptionDialog.DATA_PATH, newSubscription.value)
-    .then(function() {
-      return this.closeDialog();
-    }.bind(this))
+    this.userDataService.set(UserData.SUBSCRIPTION_PATH, newSubscription.value)
+    .then(this.closeDialog.bind(this))
     .then(function() {
       this.dialogDOMElement.trigger('saved-subscription');
     }.bind(this))

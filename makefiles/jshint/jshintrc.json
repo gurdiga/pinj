@@ -47,6 +47,7 @@
     "PaymentTracker": false,
     "FormValidationResetter": false,
     "SubscriptionDialog": false,
+    "SubscriptionInquirer": false,
     "ThankYouMessage": false,
 
     "FirebaseSimpleLogin": false,

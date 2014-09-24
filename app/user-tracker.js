@@ -15,16 +15,15 @@
   };
 
   UserTracker.prototype.recordTimestamps = function() {
-    var registrationTimestampPath = 'timestamps/registration';
-    var lastLoginTimestampPath = 'timestamps/lastLogin';
+    var registrationTimestampPath = UserData.REGISTRATION_TIMESTAMP;
     var userDataService = this.userDataService;
 
-    userDataService.set(lastLoginTimestampPath, Firebase.ServerValue.TIMESTAMP)
+    userDataService.set(UserData.LAST_LOGIN_TIMESTAMP, Firebase.ServerValue.TIMESTAMP)
     .then(function() {
-      return userDataService.get(registrationTimestampPath);
+      return userDataService.get(UserData.REGISTRATION_TIMESTAMP);
     })
     .then(function(registrationTimestamp) {
-      if (!registrationTimestamp) return userDataService.set(registrationTimestampPath, Firebase.ServerValue.TIMESTAMP);
+      if (!registrationTimestamp) return userDataService.set(UserData.REGISTRATION_TIMESTAMP, Firebase.ServerValue.TIMESTAMP);
     })
     .then(function() {
       this.trigger('recorded-timestamps');

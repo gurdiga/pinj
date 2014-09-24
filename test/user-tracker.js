@@ -2,7 +2,7 @@
   'use strict';
 
   describe('UserTracker', function() {
-    var UserTracker, UserService, UserDataService, Firebase, Deferred;
+    var UserTracker, UserService, UserDataService, Firebase, Deferred, UserData;
     var userTracker, userService, userDataService;
 
     beforeEach(function() {
@@ -11,6 +11,7 @@
       UserDataService = this.iframe.UserDataService;
       Firebase = this.iframe.Firebase;
       Deferred = this.iframe.Deferred;
+      UserData = this.iframe.UserData;
 
       userService = sinon.createStubInstance(UserService);
       MicroEvent.mixin(userService);
@@ -27,14 +28,14 @@
         var lastLoginRecordingPath = lastLoginRecordingArgs[0];
         var lastLoginRecordingValue = lastLoginRecordingArgs[1];
 
-        expect(lastLoginRecordingPath).to.equal('timestamps/lastLogin');
+        expect(lastLoginRecordingPath).to.equal(UserData.LAST_LOGIN_TIMESTAMP);
         expect(lastLoginRecordingValue).to.equal(Firebase.ServerValue.TIMESTAMP);
 
         var registrationRecordingArgs = userDataService.set.secondCall.args;
         var registrationRecordingPath = registrationRecordingArgs[0];
         var registrationRecordingValue = registrationRecordingArgs[1];
 
-        expect(registrationRecordingPath).to.equal('timestamps/registration');
+        expect(registrationRecordingPath).to.equal(UserData.REGISTRATION_TIMESTAMP);
         expect(registrationRecordingValue).to.equal(Firebase.ServerValue.TIMESTAMP);
 
         done();

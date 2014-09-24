@@ -2,7 +2,7 @@
   'use strict';
 
   describe('PaymentTracker', function() {
-    var PaymentTracker, UserTracker, UserDataService, Deferred;
+    var PaymentTracker, UserTracker, UserDataService, Deferred, UserData;
     var paymentTracker, userTracker, userDataService;
 
     beforeEach(function() {
@@ -10,6 +10,7 @@
       UserTracker = this.iframe.UserTracker;
       UserDataService = this.iframe.UserDataService;
       Deferred = this.iframe.Deferred;
+      UserData = this.iframe.UserData;
 
       userTracker = sinon.createStubInstance(UserTracker);
       MicroEvent.mixin(userTracker);
@@ -32,12 +33,16 @@
 
     describe('when last payment is older than a payment period ago', function() {
       beforeEach(function() {
-        userDataService.get.withArgs('timestamps/lastPayment').returns(moreThanAPaymentPeriodAgo());
+        userDataService.get
+          .withArgs(UserData.LAST_PAYMENT_TIMESTAMP)
+          .returns(moreThanAPaymentPeriodAgo());
       });
 
       describe('when it’s not a trial user', function() {
         beforeEach(function() {
-          userDataService.get.withArgs('timestamps/registration').returns(outOfTrialPeriod());
+          userDataService.get
+            .withArgs(UserData.REGISTRATION_TIMESTAMP)
+            .returns(outOfTrialPeriod());
         });
 
         it('emits a “payment-overdue” event', function(done) {
@@ -48,7 +53,9 @@
 
       describe('when it’s a trial user', function() {
         beforeEach(function() {
-          userDataService.get.withArgs('timestamps/registration').returns(withinTheTrialPeriod());
+          userDataService.get
+            .withArgs(UserData.REGISTRATION_TIMESTAMP)
+            .returns(withinTheTrialPeriod());
         });
 
         it('doesn’t emit the “payment-overdue” event', function(done) {
@@ -65,8 +72,12 @@
 
     describe('when last payment is within the payment period', function() {
       beforeEach(function() {
-        userDataService.get.withArgs('timestamps/lastPayment').returns(lessThanAPaymentPeriodAgo());
-        userDataService.get.withArgs('timestamps/registration').returns(outOfTrialPeriod());
+        userDataService.get
+          .withArgs(UserData.LAST_PAYMENT_TIMESTAMP)
+          .returns(lessThanAPaymentPeriodAgo());
+        userDataService.get
+          .withArgs(UserData.REGISTRATION_TIMESTAMP)
+          .returns(outOfTrialPeriod());
       });
 
       it('doesn’t emit the “payment-overdue” event', function(done) {

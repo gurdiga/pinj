@@ -2,7 +2,7 @@
   'use strict';
 
   describe('Client List form', function() {
-    var ClientListForm, Deferred, UserService, UserDataService, querySelector;
+    var ClientListForm, Deferred, UserService, UserDataService, querySelector, UserData;
     var clientListForm, form;
     var field, submitButton, saveConfirmationMessage, clientListText, userService, userDataService;
 
@@ -12,6 +12,7 @@
       UserService = this.iframe.UserService;
       UserDataService = this.iframe.UserDataService;
       querySelector = this.iframe.querySelector;
+      UserData = this.iframe.UserData;
 
       clientListText = 'the list';
 
@@ -32,7 +33,7 @@
 
     it('displays the loaded client list into the given field', function(done) {
       clientListForm.once('loaded', function() {
-        expect(userDataService.get).to.have.been.calledWith(ClientListForm.CLIENT_LIST_PATH);
+        expect(userDataService.get).to.have.been.calledWith(UserData.CLIENT_LIST_PATH);
         expect(field.value).to.equal(clientListText);
         done();
       });
@@ -49,7 +50,7 @@
       this.type('the entered list').into(field);
       submitButton.click();
 
-      expect(userDataService.set).to.have.been.calledWith(ClientListForm.CLIENT_LIST_PATH, field.value);
+      expect(userDataService.set).to.have.been.calledWith(UserData.CLIENT_LIST_PATH, field.value);
     });
 
     it('disables the submit button and shows the confirmation message', function(done) {

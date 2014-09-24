@@ -17,8 +17,6 @@
 
   MicroEvent.mixin(ClientListForm);
 
-  ClientListForm.CLIENT_LIST_PATH = 'clients';
-
   ClientListForm.prototype.listenForAuthenticatedEventOn = function(userService) {
     userService.bind('authenticated', function() {
       this.loadListInto(this.field)
@@ -33,7 +31,7 @@
   };
 
   ClientListForm.prototype.loadListInto = function(field) {
-    return this.userDataService.get(ClientListForm.CLIENT_LIST_PATH)
+    return this.userDataService.get(UserData.CLIENT_LIST_PATH)
     .then(function(list) {
       field.value = list;
     });
@@ -53,7 +51,7 @@
     submitButton.addEventListener('click', function() {
       submitButton.disabled = true;
 
-      this.userDataService.set(ClientListForm.CLIENT_LIST_PATH, this.field.value)
+      this.userDataService.set(UserData.CLIENT_LIST_PATH, this.field.value)
       .then(function() {
         this.saveConfirmationMessage.style.display = 'inline';
         this.trigger('saved');

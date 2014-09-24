@@ -19,9 +19,9 @@
   };
 
   PaymentTracker.prototype.checkIfPaymentOverdue = function() {
-    this.userDataService.get('timestamps/lastPayment')
+    this.userDataService.get(UserData.LAST_PAYMENT_TIMESTAMP)
     .then(function(lastPaymentTimestamp) {
-      return this.userDataService.get('timestamps/registration')
+      return this.userDataService.get(UserData.REGISTRATION_TIMESTAMP)
       .then(function(registrationTimestamp) {
         return {
           'lastPayment': lastPaymentTimestamp,

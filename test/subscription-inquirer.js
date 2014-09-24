@@ -2,7 +2,7 @@
   'use strict';
 
   describe('SubscriptionInquirer', function() {
-    var SubscriptionInquirer, UserTracker, UserDataService, Deferred, SubscriptionDialog;
+    var SubscriptionInquirer, UserTracker, UserDataService, Deferred, SubscriptionDialog, UserData;
     var linkToOpenSubscriptionDialog, trialPeriodLength, userTracker, userDataService, someTime;
 
     beforeEach(function() {
@@ -11,6 +11,7 @@
       UserTracker = this.iframe.UserTracker;
       UserDataService = this.iframe.UserDataService;
       Deferred = this.iframe.Deferred;
+      UserData = this.iframe.UserData;
 
       linkToOpenSubscriptionDialog = document.createElement('a');
       someTime = 42;
@@ -35,7 +36,7 @@
           var moreThanOneTrialPeriodAgo = Date.now() - trialPeriodLength - someTime;
 
           userDataService.get
-            .withArgs('timestamps/registration')
+            .withArgs(UserData.REGISTRATION_TIMESTAMP)
             .returns(Deferred.createResolvedPromise(moreThanOneTrialPeriodAgo));
         });
 
@@ -53,7 +54,7 @@
           var withinTheTrialPeriod = Date.now() - trialPeriodLength + someTime;
 
           userDataService.get
-            .withArgs('timestamps/registration')
+            .withArgs(UserData.REGISTRATION_TIMESTAMP)
             .returns(Deferred.createResolvedPromise(withinTheTrialPeriod));
         });
 

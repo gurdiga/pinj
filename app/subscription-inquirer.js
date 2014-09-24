@@ -24,7 +24,7 @@
   };
 
   SubscriptionInquirer.prototype.checkIfOutOfTrial = function() {
-    this.userDataService.get('timestamps/registration')
+    this.userDataService.get(UserData.REGISTRATION_TIMESTAMP)
     .then(function(registrationTimestamp) {
       var outOfTrial = (registrationTimestamp + this.trialPeriodLength) < Date.now();
 

@@ -58,10 +58,11 @@
   var form = DOM.querySelector('#client-list-form');
   new ClientListForm(App.userService, App.userDataService, form);
 
+  App.subscription = new Subscription(App.userDataService);
+
   var linkToOpenSubscriptionDialog = DOM.querySelector('#subscription-button');
   var subscriptionDialogDOMElement = DOM.querySelector('#subscription-dialog');
-  var subscriptionDialogSubmitButton = DOM.querySelector('button.btn-primary', subscriptionDialogDOMElement);
-  new SubscriptionDialog(linkToOpenSubscriptionDialog, subscriptionDialogDOMElement, subscriptionDialogSubmitButton, App.userDataService);
+  App.subscriptionDialog = new SubscriptionDialog(subscriptionDialogDOMElement, App.subscription);
   new SubscriptionInquirer(linkToOpenSubscriptionDialog, PaymentTracker.TRIAL_PERIOD, App.userTracker, App.userDataService);
 
   new ThankYouMessage(location.hash);

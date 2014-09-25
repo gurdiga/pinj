@@ -48,6 +48,7 @@
     "RegistrationForm": false,
     "PaymentTracker": false,
     "FormValidationResetter": false,
+    "Subscription": false,
     "SubscriptionDialog": false,
     "SubscriptionInquirer": false,
     "ThankYouMessage": false,

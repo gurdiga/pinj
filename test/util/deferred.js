@@ -22,29 +22,23 @@
     });
 
     describe('timing out', function() {
-      it('can be timed out', function() {
-        expect(deferred.timeout).to.be.a('function');
-      });
-
       it('times out after given number of milliseconds with the given error message', function(done) {
-        var promiseTimeout = 50;
-        var WAIT_FOR_THE_CODE_TO_RUN = 20;
-
-        this.timeout(promiseTimeout + WAIT_FOR_THE_CODE_TO_RUN);
-
-        var errorMessage = 'Testing promise timeout';
         var deferred = new Deferred();
+        var promiseTimeout = 20;
+        var errorMessage = 'Testing promise timeout';
+        var startTime = Date.now();
 
         deferred.timeout(promiseTimeout, errorMessage);
         deferred.promise
-        .then(this.bubbleErrors(function() {
-          expect('resolution').not.to.exist;
-          done();
-        }))
-        .catch(this.bubbleErrors(function(error) {
+        .catch(function(error) {
+          var realPromiseTimeout = Date.now() - startTime;
+          var allowedLag = 10;
+
+          expect(realPromiseTimeout).to.be.within(promiseTimeout, promiseTimeout + allowedLag);
           expect(error.message).to.contain(errorMessage);
-          done();
-        }));
+        })
+        .then(done)
+        .catch(done);
       });
     });
 

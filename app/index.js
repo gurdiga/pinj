@@ -1,8 +1,6 @@
 (function main() {
   'use strict';
 
-  window.testClient = new TestClient(window.parent.testRunner);
-
   var App = {
     FIREBASE_URL: 'https://pinj-dev.firebaseio.com'
   };

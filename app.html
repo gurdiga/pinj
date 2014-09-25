@@ -192,6 +192,10 @@
     </div>
 
 
+    <script src="bower_components/microevent/microevent.js"></script>
+    <script src="test/test-helpers/test-client.js"></script>
+    <script>window.testClient = new TestClient(window.parent.testRunner);</script>
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.0/js/bootstrapValidator.min.js"></script>
@@ -200,9 +204,7 @@
     <script src="//cdn.firebase.com/js/client/1.0.21/firebase.js"></script>
     <script src="//cdn.firebase.com/js/simple-login/1.6.3/firebase-simple-login.js"></script>
 
-    <script src="bower_components/microevent/microevent.js"></script>
     <script src="app/util/microevent-once.js"></script>
-
     <script src="app/util/dom.js"></script>
     <script src="app/util/deferred.js"></script>
     <script src="app/services/user-data-service.js"></script>
@@ -218,7 +220,6 @@
     <script src="app/authentication-form.js"></script>
     <script src="app/registration-form.js"></script>
     <script src="app/form-validation-resetter.js"></script>
-    <script src="test/test-helpers/test-client.js"></script>
     <script src="app/subscription-dialog.js"></script>
     <script src="app/thank-you-message.js"></script>
     <script src="app/subscription-inquirer.js"></script>

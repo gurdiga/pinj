@@ -46,3 +46,7 @@ button i.fa-spinner {
 button:disabled i.fa-spinner {
   display: inline;
 }
+
+#payment-overdue-message button {
+  margin: .3em 0 1em;
+}

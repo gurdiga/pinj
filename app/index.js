@@ -62,6 +62,7 @@
   var subscriptionDialogDOMElement = DOM.querySelector('#subscription-dialog');
   App.subscriptionDialog = new SubscriptionDialog(subscriptionDialogDOMElement, App.subscription);
   new SubscriptionInquirer(linkToOpenSubscriptionDialog, PaymentTracker.TRIAL_PERIOD, App.userTracker, App.userDataService);
+  new PaymentOverdueMessage(paymentOverdueMessage, subscriptionDialogDOMElement, App.userService, App.subscription);
 
   new ThankYouMessage(location.hash);
 

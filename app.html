@@ -109,14 +109,18 @@
             <p>Bun venit.</p>
 
             <div id="payment-overdue-message" class="alert alert-warning alert-dismissible" style="display: none">
-              <p style="margin-bottom: 1em">
-                Serviciul nu este achitat.
-                <button type="button" class="btn btn-primary" id="payment-button"
-                  data-toggle="popover"
-                  data-container="body"
-                  data-trigger="focus"
-                  data-content="Această funcţionalitate e în stadiul de construcţie.">Achitare</button>
-              </p>
+              <p>Serviciul nu este achitat: <b id="subscription-name"></b></p>
+
+              <button type="button" class="btn btn-primary" id="subscription-dialog-button"
+                data-toggle="modal"
+                data-target="#subscription-dialog"
+                style="display:none">Alegeţi un abonament</button>
+
+              <button type="button" class="btn btn-primary" id="payment-button"
+                data-toggle="popover"
+                data-container="body"
+                data-trigger="focus"
+                data-content="Această funcţionalitate e în stadiul de construcţie.">Achitare</button>
 
               <p><small>Dacă nu mai aveţi nevoie de acest serviciu, nu trebuie să faceţi nimic:
               contul va fi dezactivat automat după o săptămînă de întîrziere a plăţii.</small></p>
@@ -211,6 +215,7 @@
     <script src="app/services/user-service.js"></script>
     <script src="app/user-tracker.js"></script>
     <script src="app/payment-tracker.js"></script>
+    <script src="app/payment-overdue-message.js"></script>
     <script src="app/view-switcher.js"></script>
     <script src="app/first-field-focuser.js"></script>
     <script src="app/tab-preselector.js"></script>
@@ -220,11 +225,11 @@
     <script src="app/authentication-form.js"></script>
     <script src="app/registration-form.js"></script>
     <script src="app/form-validation-resetter.js"></script>
-    <script src="app/subscription-dialog.js"></script>
-    <script src="app/thank-you-message.js"></script>
-    <script src="app/subscription-inquirer.js"></script>
-    <script src="app/user-data.js"></script>
     <script src="app/subscription.js"></script>
+    <script src="app/subscription-dialog.js"></script>
+    <script src="app/subscription-inquirer.js"></script>
+    <script src="app/thank-you-message.js"></script>
+    <script src="app/user-data.js"></script>
     <script src="app/index.js"></script>
 
     <script>

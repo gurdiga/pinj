@@ -35,17 +35,6 @@
     'elementsToHide': [authenticatedView, privateMenu, hamburgerButton, currentUserEmail]
   }]);
 
-  var paymentOverdueMessage = DOM.querySelector('#payment-overdue-message');
-  new ViewSwitcher([{
-    'eventName': 'payment-overdue',
-    'emitters': [App.paymentTracker],
-    'elementsToShow': [paymentOverdueMessage]
-  }, {
-    'eventName': 'deauthenticated',
-    'emitters': [App.userService],
-    'elementsToHide': [paymentOverdueMessage]
-  }]);
-
   var tabLabels = DOM.querySelectorAll('a[data-toggle="tab"]');
   new FirstFieldFocuser(tabLabels);
   new FormValidationResetter(tabLabels);
@@ -57,6 +46,17 @@
   new ClientListForm(App.userService, App.userDataService, form);
 
   App.subscription = new Subscription(App.userDataService);
+
+  var paymentOverdueMessage = DOM.querySelector('#payment-overdue-message');
+  new ViewSwitcher([{
+    'eventName': 'payment-overdue',
+    'emitters': [App.paymentTracker],
+    'elementsToShow': [paymentOverdueMessage]
+  }, {
+    'eventName': 'deauthenticated',
+    'emitters': [App.userService],
+    'elementsToHide': [paymentOverdueMessage]
+  }]);
 
   var linkToOpenSubscriptionDialog = DOM.querySelector('#subscription-button');
   var subscriptionDialogDOMElement = DOM.querySelector('#subscription-dialog');

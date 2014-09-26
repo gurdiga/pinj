@@ -33,6 +33,11 @@
     'emitters': [App.userService],
     'elementsToShow': [unauthenticatedView],
     'elementsToHide': [authenticatedView, privateMenu, hamburgerButton, currentUserEmail]
+  }, {
+    'eventName': 'not-authenticated',
+    'emitters': [App.userService],
+    'elementsToShow': [unauthenticatedView],
+    'elementsToHide': [authenticatedView, privateMenu, hamburgerButton, currentUserEmail]
   }]);
 
   var tabLabels = DOM.querySelectorAll('a[data-toggle="tab"]');

@@ -14,7 +14,7 @@
 
   UserService.prototype.tryRestoreSession = function(session) {
     if (session.user) this.trigger('authenticated', session.user.email);
-    else if (!session.error) this.trigger('deauthenticated');
+    else if (!session.error) this.trigger('not-authenticated');
   };
 
   UserService.prototype.emitFirebaseLoginEvent = function(error, user) {

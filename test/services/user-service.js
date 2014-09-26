@@ -77,8 +77,8 @@
           session = { user: null };
         });
 
-        it('if no user session found emits “deauthenticated” event on the instance', function(done) {
-          userService.once('deauthenticated', done);
+        it('if no user session found emits “not-authenticated” event on the instance', function(done) {
+          userService.once('not-authenticated', done);
           userService.tryRestoreSession(session);
         });
       });

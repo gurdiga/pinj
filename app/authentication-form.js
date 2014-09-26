@@ -93,10 +93,12 @@
   AuthenticationForm.prototype.resetForm = function() {
     var tabId = jQuery(this.form).parent('.tab-pane').attr('id');
     var tabLabel = jQuery('a[data-toggle="tab"][href="#' + tabId + '"]');
+    var tabPane = jQuery(tabLabel.attr('href'));
 
-    setTimeout(function() {
-      tabLabel.trigger('shown.bs.tab');
-    });
+    if (tabPane.is(':visible')) tabLabel.trigger('shown.bs.tab');
+    else tabLabel.trigger('click');
+
+    this.form.trigger('reset');
   };
 
   window.AuthenticationForm = AuthenticationForm;

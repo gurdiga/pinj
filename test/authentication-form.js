@@ -192,7 +192,7 @@
         });
 
         describe('on logout', function() {
-          it('resets the form', function() {
+          it('resets the form', function(done) {
             this.type('authentication-form@test.com').into(emailField);
             this.type('Passw0rd').into(passwordField);
 
@@ -200,6 +200,7 @@
               expect(emailField).to.be.focused();
               expect(emailField.value).to.be.empty;
               expect(passwordField.value).to.be.empty;
+              done();
             });
 
             App.userService.trigger('deauthenticated');

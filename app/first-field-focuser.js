@@ -2,13 +2,14 @@
   'use strict';
 
   function FirstFieldFocuser(tabLabels) {
-    this.listenForTabSwitchOn(tabLabels);
+    this.tabLabels = tabLabels;
+    this.listenForTabSwitchOnTabLabels();
   }
 
   MicroEvent.mixin(FirstFieldFocuser);
 
-  FirstFieldFocuser.prototype.listenForTabSwitchOn = function(tabLabels) {
-    jQuery(tabLabels).on('shown.bs.tab', function(event) {
+  FirstFieldFocuser.prototype.listenForTabSwitchOnTabLabels = function() {
+    jQuery(this.tabLabels).on('shown.bs.tab', function(event) {
       this.focustFirstFieldOnTab(event.target);
     }.bind(this));
   };

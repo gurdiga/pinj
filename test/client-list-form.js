@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  describe('Client List form', function() {
+  describe('ClientListForm', function() {
     var ClientListForm, Deferred, UserService, UserDataService, DOM, UserData;
     var clientListForm, form;
     var field, submitButton, saveConfirmationMessage, clientListText, userService, userDataService;

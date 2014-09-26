@@ -2,11 +2,12 @@
   'use strict';
 
   function FormValidationResetter(tabLabels) {
-    this.listenForTabSwitchOn(tabLabels);
+    this.tabLabels = tabLabels;
+    this.listenForTabSwitchOnTabLabels();
   }
 
-  FormValidationResetter.prototype.listenForTabSwitchOn = function(tabLabels) {
-    jQuery(tabLabels).on('shown.bs.tab', function(event) {
+  FormValidationResetter.prototype.listenForTabSwitchOnTabLabels = function() {
+    jQuery(this.tabLabels).on('shown.bs.tab', function(event) {
       this.resetFormOnTab(event.target);
     }.bind(this));
   };

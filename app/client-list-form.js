@@ -4,22 +4,23 @@
   var SAVED_MESSAGE_TIMEOUT = 2000;
 
   function ClientListForm(userService, userDataService, form) {
+    this.userService = userService;
     this.userDataService = userDataService;
 
     this.field = DOM.querySelector('[name="list"]', form);
     this.submitButton = DOM.querySelector('[name="submit-button"]', form);
     this.saveConfirmationMessage = DOM.querySelector('#save-confirmation-message', form);
 
-    this.listenForAuthenticatedEventOn(userService);
-    this.listenForInputOn(this.field);
-    this.listenForClicksOn(this.submitButton);
+    this.listenForAuthenticatedEventOnUserService();
+    this.listenForInputOnField();
+    this.listenForClicksOnSubmitButton();
   }
 
   MicroEvent.mixin(ClientListForm);
 
-  ClientListForm.prototype.listenForAuthenticatedEventOn = function(userService) {
-    userService.bind('authenticated', this.loadList.bind(this));
-    userService.bind('deauthenticated', this.clearList.bind(this));
+  ClientListForm.prototype.listenForAuthenticatedEventOnUserService = function() {
+    this.userService.bind('authenticated', this.loadList.bind(this));
+    this.userService.bind('deauthenticated', this.clearList.bind(this));
   };
 
   ClientListForm.prototype.loadList = function() {
@@ -34,15 +35,15 @@
     this.field.value = '';
   };
 
-  ClientListForm.prototype.listenForInputOn = function(field) {
-    field.addEventListener('input', function() {
+  ClientListForm.prototype.listenForInputOnField = function() {
+    this.field.addEventListener('input', function() {
       this.submitButton.disabled = false;
     }.bind(this));
   };
 
-  ClientListForm.prototype.listenForClicksOn = function(submitButton) {
-    submitButton.addEventListener('click', function() {
-      submitButton.disabled = true;
+  ClientListForm.prototype.listenForClicksOnSubmitButton = function() {
+    this.submitButton.addEventListener('click', function() {
+      this.submitButton.disabled = true;
 
       this.userDataService.set(UserData.CLIENT_LIST_PATH, this.field.value)
       .then(function() {

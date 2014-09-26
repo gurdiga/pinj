@@ -2,14 +2,16 @@
   'use strict';
 
   function UserTracker(userService, userDataService) {
+    this.userService = userService;
     this.userDataService = userDataService;
-    this.listenForAuthenticationEventOn(userService);
+
+    this.listenForAuthenticationEventOnUserService();
   }
 
   MicroEvent.mixin(UserTracker);
 
-  UserTracker.prototype.listenForAuthenticationEventOn = function(userService) {
-    userService.bind('authenticated', this.recordTimestamps.bind(this));
+  UserTracker.prototype.listenForAuthenticationEventOnUserService = function() {
+    this.userService.bind('authenticated', this.recordTimestamps.bind(this));
   };
 
   UserTracker.prototype.recordTimestamps = function() {

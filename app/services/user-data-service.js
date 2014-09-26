@@ -5,17 +5,18 @@
   var DATA_ROOT = '/data';
 
   function UserDataService(userService) {
-    this.listenForAuthenticationEventsOn(userService);
+    this.userService = userService;
+    this.listenForAuthenticationEventsOnUserService();
   }
 
-  UserDataService.prototype.listenForAuthenticationEventsOn = function(userService) {
-    userService.bind('authenticated', function(email) {
+  UserDataService.prototype.listenForAuthenticationEventsOnUserService = function() {
+    this.userService.bind('authenticated', function(email) {
       this.email = email;
       this.authenticated = true;
       this.rootRef = new Firebase(App.FIREBASE_URL);
     }.bind(this));
 
-    userService.bind('deauthenticated', function() {
+    this.userService.bind('deauthenticated', function() {
       delete this.email;
       delete this.authenticated;
       delete this.rootRef;

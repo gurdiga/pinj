@@ -5,12 +5,13 @@
     this.trialPeriodLength = trialPeriodLength;
     this.userDataService = userDataService;
     this.linkToOpenSubscriptionDialog = linkToOpenSubscriptionDialog;
+    this.userTracker = userTracker;
 
-    this.listenForTheAuthenticatedEventOn(userTracker);
+    this.listenForTheAuthenticatedEventOnUserTracker();
   }
 
-  SubscriptionInquirer.prototype.listenForTheAuthenticatedEventOn = function(userTracker) {
-    userTracker.bind('recorded-timestamps', this.checkIfAlreadyPickedASubscription.bind(this));
+  SubscriptionInquirer.prototype.listenForTheAuthenticatedEventOnUserTracker = function() {
+    this.userTracker.bind('recorded-timestamps', this.checkIfAlreadyPickedASubscription.bind(this));
   };
 
   SubscriptionInquirer.prototype.checkIfAlreadyPickedASubscription = function() {

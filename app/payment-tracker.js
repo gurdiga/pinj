@@ -2,9 +2,10 @@
   'use strict';
 
   function PaymentTracker(userTracker, userDataService) {
+    this.userTracker = userTracker;
     this.userDataService = userDataService;
 
-    this.listenForRecordedTimestampsEventOn(userTracker);
+    this.listenForRecordedTimestampsEventOnUserTracker();
   }
 
   MicroEvent.mixin(PaymentTracker);
@@ -12,8 +13,8 @@
   PaymentTracker.PAYMENT_PERIOD = days(31);
   PaymentTracker.TRIAL_PERIOD = days(7);
 
-  PaymentTracker.prototype.listenForRecordedTimestampsEventOn = function(userTracker) {
-    userTracker.bind('recorded-timestamps', this.checkIfPaymentOverdue.bind(this));
+  PaymentTracker.prototype.listenForRecordedTimestampsEventOnUserTracker = function() {
+    this.userTracker.bind('recorded-timestamps', this.checkIfPaymentOverdue.bind(this));
   };
 
   PaymentTracker.prototype.checkIfPaymentOverdue = function() {

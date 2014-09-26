@@ -37,7 +37,8 @@
       });
 
       it('shows it as selected', function(done) {
-        subscription.once('loaded', function() {
+        subscription.once('loaded', function(subscriptionId) {
+          expect(subscriptionId).to.equal(currentSubscription);
           expect(subscriptionDialog.getCurrentSubscription()).to.equal(currentSubscription);
           return subscriptionDialog.close().then(done);
         });
@@ -56,13 +57,17 @@
       it('saved the selected option', function(done) {
         subscriptionDialog.open()
         .then(function() {
-          var newSubscription = 'c60';
-          subscriptionDialog.selectSubscription(newSubscription);
+          var newSubscriptionId = 'c60';
+
+          subscription.once('saved', function(subscriptionId) {
+            expect(subscriptionId, 'subscription ID passed with the saved event').to.equal(newSubscriptionId);
+            done();
+          });
+
+          subscriptionDialog.selectSubscription(newSubscriptionId);
           subscriptionDialog.save();
 
-          expect(subscription.set).to.have.been.calledWith(newSubscription);
-
-          return subscriptionDialog.close().then(done);
+          expect(subscription.set).to.have.been.calledWith(newSubscriptionId);
         })
         .catch(done);
       });

@@ -49,12 +49,13 @@
   };
 
   SubscriptionDialog.prototype.saveSubscriptionAndClose = function() {
-    var newSubscription = DOM.querySelector('input[name="subscription"]:checked', this.dialogDOMElement);
+    var optionDOMElement = DOM.querySelector('input[name="subscription"]:checked', this.dialogDOMElement);
+    var newSubscriptionId = optionDOMElement.value;
 
-    this.subscription.set(newSubscription.value)
+    this.subscription.set(newSubscriptionId)
     .then(this.close.bind(this))
     .then(function() {
-      this.subscription.trigger('saved');
+      this.subscription.trigger('saved', newSubscriptionId);
     }.bind(this))
     .catch(function(error) {
       console.error('Error while saving subscription:', error);

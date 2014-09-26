@@ -25,7 +25,7 @@
     it('shows and hides the given elements when the given event is emitted by the given element', function() {
       viewSwitcher = new ViewSwitcher([{
         'emitters': [emitter],
-        'eventName': 'authenticated',
+        'eventNames': ['authenticated'],
         'elementsToShow': [authenticatedView],
         'elementsToHide': [deauthenticatedView]
       }]);
@@ -40,7 +40,7 @@
     it('accepts missing elementsToHide/elementsToShow', function() {
       viewSwitcher = new ViewSwitcher([{
         'emitters': [emitter],
-        'eventName': 'authenticated',
+        'eventNames': ['authenticated'],
         'elementsToHide': [deauthenticatedView]
       }]);
 

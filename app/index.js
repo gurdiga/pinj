@@ -24,17 +24,12 @@
   var privateMenu = DOM.querySelector('#private-menu');
   var hamburgerButton = DOM.querySelector('button.navbar-toggle[data-target="#private-menu"]');
   new ViewSwitcher([{
-    'eventName': 'authenticated',
+    'eventNames': ['authenticated'],
     'emitters': [App.userService],
     'elementsToShow': [authenticatedView, privateMenu, hamburgerButton, currentUserEmail],
     'elementsToHide': [unauthenticatedView]
   }, {
-    'eventName': 'deauthenticated',
-    'emitters': [App.userService],
-    'elementsToShow': [unauthenticatedView],
-    'elementsToHide': [authenticatedView, privateMenu, hamburgerButton, currentUserEmail]
-  }, {
-    'eventName': 'not-authenticated',
+    'eventNames': ['deauthenticated', 'not-authenticated'],
     'emitters': [App.userService],
     'elementsToShow': [unauthenticatedView],
     'elementsToHide': [authenticatedView, privateMenu, hamburgerButton, currentUserEmail]
@@ -54,11 +49,11 @@
 
   var paymentOverdueMessage = DOM.querySelector('#payment-overdue-message');
   new ViewSwitcher([{
-    'eventName': 'payment-overdue',
+    'eventNames': ['payment-overdue'],
     'emitters': [App.paymentTracker],
     'elementsToShow': [paymentOverdueMessage]
   }, {
-    'eventName': 'deauthenticated',
+    'eventNames': ['deauthenticated'],
     'emitters': [App.userService],
     'elementsToHide': [paymentOverdueMessage]
   }]);

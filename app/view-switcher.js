@@ -7,10 +7,12 @@
       spec.elementsToHide = spec.elementsToHide || [];
 
       spec.emitters.forEach(function bindToEmitter(emitter) {
-        emitter.bind(spec.eventName, function() {
-          spec.elementsToShow.forEach(show);
-          spec.elementsToHide.forEach(hide);
-          document.body.classList.add('authenticated');
+        spec.eventNames.forEach(function(eventName) {
+          emitter.bind(eventName, function() {
+            spec.elementsToShow.forEach(show);
+            spec.elementsToHide.forEach(hide);
+            document.body.classList.add('authenticated');
+          });
         });
       });
 

@@ -12,9 +12,6 @@
   App.userTracker = new UserTracker(App.userService, App.userDataService);
   App.paymentTracker = new PaymentTracker(App.userTracker, App.userDataService);
 
-  new AuthenticationForm(DOM.querySelector('#authentication-form'), App.userService);
-  new RegistrationForm(DOM.querySelector('#registration-form'), App.userService);
-
   var logoutButton = DOM.querySelector('#logout-button');
   new LogoutButton(logoutButton, App.userService);
 
@@ -65,5 +62,8 @@
   new PaymentOverdueMessage(paymentOverdueMessage, subscriptionDialogDOMElement, App.userService, App.subscription);
 
   new ThankYouMessage(location.hash);
+
+  new AuthenticationForm(DOM.querySelector('#authentication-form'), App.userService);
+  new RegistrationForm(DOM.querySelector('#registration-form'), App.userService);
 
 }());

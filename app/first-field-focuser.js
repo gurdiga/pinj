@@ -19,8 +19,15 @@
     var tabPane = DOM.querySelector(tabLabel.getAttribute('href'), context);
     var firstField = DOM.querySelector('input', tabPane);
 
-    firstField.focus();
-    this.trigger('first-field-focused');
+    waithForViewSwitcher()
+    .then(function() {
+      firstField.focus();
+      this.trigger('first-field-focused');
+    }.bind(this));
+
+    function waithForViewSwitcher() {
+      return Deferred.createResolvedPromise();
+    }
   };
 
   window.FirstFieldFocuser = FirstFieldFocuser;

@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  describe('Input focuser', function() {
+  describe('FirstFieldFocuser', function() {
     var FirstFieldFocuser, DOM, jQuery;
     var focuser, tabs;
 

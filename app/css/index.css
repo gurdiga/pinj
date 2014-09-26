@@ -39,14 +39,6 @@ body.authenticated #current-user-email {
   display: none;
 }
 
-button i.fa-spinner {
-  display: none;
-}
-
-button:disabled i.fa-spinner {
-  display: inline;
-}
-
 #payment-overdue-message button {
   margin: .3em 0 1em;
 }

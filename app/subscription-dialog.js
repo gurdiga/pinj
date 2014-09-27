@@ -8,8 +8,6 @@
     this.dialogDOMElement = dialogDOMElement;
     this.submitButton = DOM.querySelector('button.btn-primary', dialogDOMElement);
 
-    MicroEvent.mixin(dialogDOMElement);
-
     this.listenForClicksOnSubmitButton();
     this.waitForTheDialogToOpen();
   }

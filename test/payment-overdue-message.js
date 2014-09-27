@@ -73,35 +73,22 @@
           }));
 
           paymentOverdueMessage.once('subscription-dialog-button-shown', this.bubbleErrors(function() {
-            subscription.trigger('saved', 'c60');
+            subscription.trigger('changed', 'c60');
           }));
         });
       });
     });
 
-    describe('on subscription events', function() {
+    describe('when subscription is changed', function() {
       var subscriptionId = 'c15';
 
-      describe('when saved', function() {
-        it('updates the message', function(done) {
-          paymentOverdueMessage.once('updated', this.bubbleErrors(function() {
-            expect(paymentOverdueMessage.getSubscriptionName()).to.equal('15 clienţi');
-            expect(paymentOverdueMessage.getPaymentButton(), 'payment button').to.be.visible();
-            done();
-          }));
-          subscription.trigger('saved', subscriptionId);
-        });
-      });
-
-      describe('when loaded', function() {
-        it('updates the message', function(done) {
-          paymentOverdueMessage.once('updated', this.bubbleErrors(function() {
-            expect(paymentOverdueMessage.getSubscriptionName()).to.equal('15 clienţi');
-            expect(paymentOverdueMessage.getPaymentButton(), 'payment button').to.be.visible();
-            done();
-          }));
-          subscription.trigger('loaded', subscriptionId);
-        });
+      it('updates the message', function(done) {
+        paymentOverdueMessage.once('updated', this.bubbleErrors(function() {
+          expect(paymentOverdueMessage.getSubscriptionName()).to.equal('15 clienţi');
+          expect(paymentOverdueMessage.getPaymentButton(), 'payment button').to.be.visible();
+          done();
+        }));
+        subscription.trigger('changed', subscriptionId);
       });
     });
 

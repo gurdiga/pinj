@@ -14,6 +14,8 @@
     this.waitForTheDialogToOpen();
   }
 
+  MicroEvent.mixin(SubscriptionDialog);
+
   SubscriptionDialog.prototype.getCurrentSubscription = function() {
     return DOM.querySelector(INPUT_SELECTOR_PREFIX + ':checked', this.dialogDOMElement).value;
   };
@@ -36,7 +38,7 @@
     .then(function(subscriptionId) {
       var radioBox = this.getElementBySubscriptionId(subscriptionId);
       radioBox.checked = true;
-      this.subscription.trigger('loaded', subscriptionId);
+      this.trigger('loaded-subscription', subscriptionId);
     }.bind(this));
   };
 
@@ -55,7 +57,7 @@
     this.subscription.set(newSubscriptionId)
     .then(this.close.bind(this))
     .then(function() {
-      this.subscription.trigger('saved', newSubscriptionId);
+      this.trigger('saved-subscription', newSubscriptionId);
     }.bind(this))
     .catch(function(error) {
       console.error('Error while saving subscription:', error);

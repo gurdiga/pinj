@@ -37,7 +37,7 @@
       });
 
       it('shows it as selected', function(done) {
-        subscription.once('loaded', function(subscriptionId) {
+        subscriptionDialog.once('loaded-subscription', function(subscriptionId) {
           expect(subscriptionId).to.equal(currentSubscription);
           expect(subscriptionDialog.getCurrentSubscription()).to.equal(currentSubscription);
           return subscriptionDialog.close().then(done);
@@ -59,7 +59,7 @@
         .then(function() {
           var newSubscriptionId = 'c60';
 
-          subscription.once('saved', function(subscriptionId) {
+          subscriptionDialog.once('saved-subscription', function(subscriptionId) {
             expect(subscriptionId, 'subscription ID passed with the saved event').to.equal(newSubscriptionId);
             done();
           });

@@ -30,8 +30,7 @@
   };
 
   PaymentOverdueMessage.prototype.listenForEventsOnSubscription = function() {
-    this.subscription.bind('loaded', this.updateSubscriptionNameFromId.bind(this));
-    this.subscription.bind('saved', this.updateSubscriptionNameFromId.bind(this));
+    this.subscription.bind('changed', this.updateSubscriptionNameFromId.bind(this));
   };
 
   PaymentOverdueMessage.prototype.loadSubscription = function() {

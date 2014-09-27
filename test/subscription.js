@@ -27,11 +27,20 @@
           userDataService.get.returns(Deferred.createResolvedPromise(subscriptionId));
         });
 
-        it('delegates to UserDataService', function(done) {
+        it('delegates to UserDataService and triggers “loaded” event', function(done) {
+          var isEventEmitted, emittedValue;
+
+          subscription.once('loaded', function(subscriptionId) {
+            isEventEmitted = true;
+            emittedValue = subscriptionId;
+          });
+
           subscription.get()
           .then(function(returnValue) {
             expect(userDataService.get).to.have.been.calledWith(UserData.SUBSCRIPTION_PATH);
-            expect(returnValue).to.equal(subscriptionId);
+            expect(returnValue, 'return value').to.equal(subscriptionId);
+            expect(isEventEmitted).to.be.true;
+            expect(emittedValue).to.equal(subscriptionId);
           })
           .then(done)
           .catch(done);
@@ -60,10 +69,19 @@
           userDataService.set.returns(Deferred.createResolvedPromise());
         });
 
-        it('delegates to UserDataService', function(done) {
+        it('delegates to UserDataService and emits “changed” event', function(done) {
+          var isEventEmitted, emittedValue;
+
+          subscription.once('changed', function(subscriptionId) {
+            isEventEmitted = true;
+            emittedValue = subscriptionId;
+          });
+
           subscription.set(subscriptionId)
           .then(function() {
             expect(userDataService.set).to.have.been.calledWith(UserData.SUBSCRIPTION_PATH, subscriptionId);
+            expect(isEventEmitted).to.be.true;
+            expect(emittedValue).to.equal(subscriptionId);
           })
           .then(done)
           .catch(done);

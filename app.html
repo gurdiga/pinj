@@ -116,14 +116,19 @@
                 data-target="#subscription-dialog"
                 style="display:none">Alegeţi un abonament</button>
 
-              <button type="button" class="btn btn-primary" id="payment-button"
-                data-toggle="popover"
-                data-container="body"
-                data-trigger="focus"
-                data-content="Această funcţionalitate e în stadiul de construcţie.">Achitare</button>
+              <div id="payment-button">
+                <form action="https://www.2checkout.com/checkout/purchase" method="post" target="_blank">
+                  <input type="hidden" name="sid" value="1461312" />
+                  <input type="hidden" name="quantity" value="1" />
+                  <input type="hidden" name="product_id" value="THIS IS TO BE SET WHEN SUBSCRIPTION IS LOADED FROM DB" />
 
-              <p><small>Dacă nu mai aveţi nevoie de acest serviciu, nu trebuie să faceţi nimic:
-              contul va fi dezactivat automat după o săptămînă de întîrziere a plăţii.</small></p>
+                  <p>
+                    <button type="submit" class="btn btn-primary">Achitare</button>
+                    <small>Plata se face prin intermediul
+                    <br/>serviciului <a href="https://www.2checkout.com" target="_blank">2Checkout.com</a>.</small>
+                  </p>
+                </form>
+              </div>
             </div>
 
             <p>Aici puteţi introduce lista clienţilor: cîte un nume, denumire, sau
@@ -238,8 +243,6 @@
       ga('create', 'UA-54971427-1', 'auto');
       ga('send', 'pageview');
     </script>
-
-    <script>jQuery('#payment-button').popover();</script>
 
   </body>
 </html>

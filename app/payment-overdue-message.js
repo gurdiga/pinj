@@ -23,6 +23,7 @@
     this.subscriptionNameDOMElement = DOM.querySelector('#' + PaymentOverdueMessage.SUBSCRIPTION_NAME_DOM_ID, this.messageDOMElement);
     this.subscriptionDialogButton = DOM.querySelector('#' + PaymentOverdueMessage.SUBSCRIPTION_DIALOG_BUTTON_DOM_ID, this.messageDOMElement);
     this.paymentButton = DOM.querySelector('#' + PaymentOverdueMessage.PAYMENT_BUTTON_DOM_ID, this.messageDOMElement);
+    this._2coProductIdDOMElement = DOM.querySelector('input[type="hidden"][name="product_id"]');
   };
 
   PaymentOverdueMessage.prototype.listenForAuthenticatedEventOnUserService = function() {
@@ -30,13 +31,13 @@
   };
 
   PaymentOverdueMessage.prototype.listenForEventsOnSubscription = function() {
-    this.subscription.bind('changed', this.updateSubscriptionNameFromId.bind(this));
+    this.subscription.bind('changed', this.updateSubscriptionFromId.bind(this));
   };
 
   PaymentOverdueMessage.prototype.loadSubscription = function() {
     this.subscription.get()
     .then(function(subscriptionId) {
-      if (subscriptionId) this.updateSubscriptionNameFromId(subscriptionId);
+      if (subscriptionId) this.updateSubscriptionFromId(subscriptionId);
       else this.showSubscriptionDialogButton();
     }.bind(this))
     .catch(function(error) {
@@ -59,15 +60,29 @@
     return this.paymentButton;
   };
 
-  PaymentOverdueMessage.prototype.updateSubscriptionNameFromId = function(subscriptionId) {
+  PaymentOverdueMessage.prototype.updateSubscriptionFromId = function(subscriptionId) {
     hide(this.subscriptionDialogButton);
     show(this.paymentButton);
 
     var subscriptionName = this.getSubscriptionNameById(subscriptionId);
     this.updateSubscriptionName(subscriptionName);
+    this._2coProductIdDOMElement.value = get2coProductIdBySubscriptionId(subscriptionId);
 
     this.trigger('updated');
   };
+
+  function get2coProductIdBySubscriptionId(subscriptionId) {
+    // Please see https://www.2checkout.com/va/products/ for the corresponding 2CO IDs.
+    var _2CO_PRODUCT_ID_BY_SUBSCRIPTION_ID = {
+      'c15': 2,
+      'c30': 3,
+      'c60': 4
+    };
+
+    if (!_2CO_PRODUCT_ID_BY_SUBSCRIPTION_ID.hasOwnProperty(subscriptionId)) throw new Error('Bad subscription ID: “' + subscriptionId + '”');
+
+    return _2CO_PRODUCT_ID_BY_SUBSCRIPTION_ID[subscriptionId];
+  }
 
   PaymentOverdueMessage.prototype.getSubscriptionNameById = function(subscriptionId) {
     var subscriptionDOMElement = DOM.querySelector('input[type="radio"][name="subscription"][value="' + subscriptionId + '"]', this.subscriptionDialogDOMElement);
@@ -83,8 +98,8 @@
     return this.subscriptionNameDOMElement.textContent;
   };
 
-  PaymentOverdueMessage.prototype.getSubscriptionNameDOMElement = function() {
-    return this.subscriptionNameDOMElement;
+  PaymentOverdueMessage.prototype.get2coProductId = function() {
+    return this._2coProductIdDOMElement.value;
   };
 
   function hide(button) {

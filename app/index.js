@@ -44,6 +44,11 @@
 
   App.subscription = new Subscription(App.userDataService);
 
+  var linkToOpenSubscriptionDialog = DOM.querySelector('#subscription-button');
+  var subscriptionDialogDOMElement = DOM.querySelector('#subscription-dialog');
+  App.subscriptionDialog = new SubscriptionDialog(subscriptionDialogDOMElement, App.subscription);
+  new SubscriptionInquirer(linkToOpenSubscriptionDialog, PaymentTracker.TRIAL_PERIOD, App.userTracker, App.userDataService);
+
   var paymentOverdueMessage = DOM.querySelector('#payment-overdue-message');
   new ViewSwitcher([{
     'eventNames': ['payment-overdue'],
@@ -54,11 +59,6 @@
     'emitters': [App.userService],
     'elementsToHide': [paymentOverdueMessage]
   }]);
-
-  var linkToOpenSubscriptionDialog = DOM.querySelector('#subscription-button');
-  var subscriptionDialogDOMElement = DOM.querySelector('#subscription-dialog');
-  App.subscriptionDialog = new SubscriptionDialog(subscriptionDialogDOMElement, App.subscription);
-  new SubscriptionInquirer(linkToOpenSubscriptionDialog, PaymentTracker.TRIAL_PERIOD, App.userTracker, App.userDataService);
   new PaymentOverdueMessage(paymentOverdueMessage, subscriptionDialogDOMElement, App.userService, App.subscription);
 
   new ThankYouMessage(location.hash);

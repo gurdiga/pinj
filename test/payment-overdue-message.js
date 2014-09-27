@@ -36,6 +36,7 @@
         it('fetches the subscription and updates the message', function(done) {
           paymentOverdueMessage.once('updated', this.bubbleErrors(function() {
             expect(paymentOverdueMessage.getSubscriptionName()).to.equal('30 clienţi');
+            expect(paymentOverdueMessage.get2coProductId(), '2CO product ID').to.equal('3');
             expect(paymentOverdueMessage.getPaymentButton(), 'payment button').to.be.visible();
             done();
           }));
@@ -101,6 +102,7 @@
 
       messageDOMElement.innerHTML =
         '<button id="' + PaymentOverdueMessage.PAYMENT_BUTTON_DOM_ID + '">payment button</button>' +
+        '<input type="hidden" name="product_id" value="this is to set" />' +
         '<span id="' + PaymentOverdueMessage.SUBSCRIPTION_NAME_DOM_ID + '">here will go the subscription name</span>' +
         '<button style="display:none" ' +
           'id="' + PaymentOverdueMessage.SUBSCRIPTION_DIALOG_BUTTON_DOM_ID + '">button to open the subscription dialog</a>'

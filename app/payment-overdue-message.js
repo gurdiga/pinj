@@ -24,6 +24,7 @@
     this.subscriptionDialogButton = DOM.querySelector('#' + PaymentOverdueMessage.SUBSCRIPTION_DIALOG_BUTTON_DOM_ID, this.messageDOMElement);
     this.paymentButton = DOM.querySelector('#' + PaymentOverdueMessage.PAYMENT_BUTTON_DOM_ID, this.messageDOMElement);
     this._2coProductIdDOMElement = DOM.querySelector('input[type="hidden"][name="product_id"]');
+    this.pinjEmailHiddenInput = DOM.querySelector('input[type="hidden"][name="pinj_email"]');
   };
 
   PaymentOverdueMessage.prototype.listenForAuthenticatedEventOnUserService = function() {
@@ -34,7 +35,9 @@
     this.subscription.bind('changed', this.updateSubscriptionFromId.bind(this));
   };
 
-  PaymentOverdueMessage.prototype.loadSubscription = function() {
+  PaymentOverdueMessage.prototype.loadSubscription = function(email) {
+    this.email = email;
+
     this.subscription.get()
     .then(function(subscriptionId) {
       if (subscriptionId) this.updateSubscriptionFromId(subscriptionId);
@@ -66,12 +69,13 @@
 
     var subscriptionName = this.getSubscriptionNameById(subscriptionId);
     this.updateSubscriptionName(subscriptionName);
-    this._2coProductIdDOMElement.value = get2coProductIdBySubscriptionId(subscriptionId);
+    this._2coProductIdDOMElement.value = getProductIdParamBySubscriptionId(subscriptionId);
+    this.pinjEmailHiddenInput.value = this.email;
 
     this.trigger('updated');
   };
 
-  function get2coProductIdBySubscriptionId(subscriptionId) {
+  function getProductIdParamBySubscriptionId(subscriptionId) {
     // Please see https://www.2checkout.com/va/products/ for the corresponding 2CO IDs.
     var _2CO_PRODUCT_ID_BY_SUBSCRIPTION_ID = {
       'c15': 2,
@@ -98,8 +102,12 @@
     return this.subscriptionNameDOMElement.textContent;
   };
 
-  PaymentOverdueMessage.prototype.get2coProductId = function() {
+  PaymentOverdueMessage.prototype.getProductIdParam = function() {
     return this._2coProductIdDOMElement.value;
+  };
+
+  PaymentOverdueMessage.prototype.getPINJEmailParam = function() {
+    return this.pinjEmailHiddenInput.value;
   };
 
   function hide(button) {

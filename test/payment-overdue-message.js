@@ -3,7 +3,7 @@
 
   describe('PaymentOverdueMessage', function() {
     var PaymentOverdueMessage, UserService, Subscription, Deferred;
-    var paymentOverdueMessage, messageDOMElement, subscriptionDialogDOMElement, userService, subscription;
+    var paymentOverdueMessage, messageDOMElement, subscriptionDialogDOMElement, userService, subscription, email;
 
     beforeEach(function() {
       PaymentOverdueMessage = this.iframe.PaymentOverdueMessage;
@@ -11,6 +11,7 @@
       Subscription = this.iframe.Subscription;
       Deferred = this.iframe.Deferred;
 
+      email = 'payment-overdue-message@test.com';
       userService = sinon.createStubInstance(UserService);
       MicroEvent.mixin(userService);
       subscription = sinon.createStubInstance(Subscription);
@@ -30,13 +31,14 @@
         beforeEach(function() {
           subscriptionId = 'c30';
           subscription.get.returns(Deferred.createResolvedPromise(subscriptionId));
-          userService.trigger('authenticated');
+          userService.trigger('authenticated', email);
         });
 
         it('fetches the subscription and updates the message', function(done) {
           paymentOverdueMessage.once('updated', this.bubbleErrors(function() {
             expect(paymentOverdueMessage.getSubscriptionName()).to.equal('30 clienţi');
-            expect(paymentOverdueMessage.get2coProductId(), '2CO product ID').to.equal('3');
+            expect(paymentOverdueMessage.getProductIdParam(), 'product_id param').to.equal('3');
+            expect(paymentOverdueMessage.getPINJEmailParam(), 'pinj_email param').to.equal(email);
             expect(paymentOverdueMessage.getPaymentButton(), 'payment button').to.be.visible();
             done();
           }));
@@ -47,7 +49,7 @@
         beforeEach(function() {
           subscriptionId = null;
           subscription.get.returns(Deferred.createResolvedPromise(subscriptionId));
-          userService.trigger('authenticated');
+          userService.trigger('authenticated', email);
         });
 
         it('hides the payment button and shows a button to open the Subscription dialog', function(done) {
@@ -62,7 +64,7 @@
       describe('when first is not selected, and the user goes and selects one', function() {
         beforeEach(function() {
           subscription.get.returns(Deferred.createResolvedPromise(null));
-          userService.trigger('authenticated');
+          userService.trigger('authenticated', email);
         });
 
         it('hides the button to open the subscription dialog, and shows the payment button', function(done) {
@@ -103,6 +105,7 @@
       messageDOMElement.innerHTML =
         '<button id="' + PaymentOverdueMessage.PAYMENT_BUTTON_DOM_ID + '">payment button</button>' +
         '<input type="hidden" name="product_id" value="this is to set" />' +
+        '<input type="hidden" name="pinj_email" value="this is to set" />' +
         '<span id="' + PaymentOverdueMessage.SUBSCRIPTION_NAME_DOM_ID + '">here will go the subscription name</span>' +
         '<button style="display:none" ' +
           'id="' + PaymentOverdueMessage.SUBSCRIPTION_DIALOG_BUTTON_DOM_ID + '">button to open the subscription dialog</a>'

@@ -32,7 +32,7 @@
         deferred.promise
         .catch(function(error) {
           var realPromiseTimeout = Date.now() - startTime;
-          var allowedLag = 10;
+          var allowedLag = 20;
 
           expect(realPromiseTimeout).to.be.within(promiseTimeout, promiseTimeout + allowedLag);
           expect(error.message).to.contain(errorMessage);

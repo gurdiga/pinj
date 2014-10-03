@@ -26,8 +26,8 @@
     });
 
     describe('trial period', function() {
-      it('is 7 days', function() {
-        expect(PaymentTracker.TRIAL_PERIOD).to.eq(7 * 24 * 3600 * 1000);
+      it('is 31 days', function() {
+        expect(PaymentTracker.TRIAL_PERIOD).to.eq(31 * 24 * 3600 * 1000);
       });
     });
 

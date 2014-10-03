@@ -11,7 +11,7 @@
   MicroEvent.mixin(PaymentTracker);
 
   PaymentTracker.PAYMENT_PERIOD = days(31);
-  PaymentTracker.TRIAL_PERIOD = days(7);
+  PaymentTracker.TRIAL_PERIOD = days(31);
 
   PaymentTracker.prototype.listenForRecordedTimestampsEventOnUserTracker = function() {
     this.userTracker.bind('recorded-timestamps', this.checkIfPaymentOverdue.bind(this));

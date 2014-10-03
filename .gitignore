@@ -1,4 +1,3 @@
-payers.json
 secrets.json
 node_modules/
 app/storage/*.txt

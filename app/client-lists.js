@@ -2,67 +2,65 @@
 
 var ClientLists = {};
 
-ClientLists.getFor = function(payerEmails) {
+ClientLists.get = function() {
   return getFirebaseData('/data')
-  .then(pickByEmail(payerEmails));
+  .then(filterPayersAndTrials);
+};
 
-  function pickByEmail(payerEmails) {
-    var payerAIDs = payerEmails.map(aidFromEmail);
+function filterPayersAndTrials(users) {
+  var payerClientLists = [];
 
-    return function(users) {
-      var payerClientLists = [];
+  _(users).each(function(data, aid) {
+    if (hasPayedOrTial(data)) payerClientLists.push({
+      email: emailFromAID(aid),
+      clientList: prepare(data.clients),
+      toString: function() {
+        return emailFromAID(aid);
+      }
+    });
+  });
 
-      console.log('users:', users);
+  return payerClientLists;
 
-      _(users).each(function(data, aid) {
-        if (isPayer(aid)) payerClientLists.push({
-          email: emailFromAID(aid),
-          clientList: prepare(data.clients),
-          toString: function() {
-            return emailFromAID(aid);
-          }
-        });
-      });
+  function hasPayedOrTial(data) {
+    var lastPayment = data.timestamps.lastPayment || 0;
+    var registration = data.timestamps.registration || 0;
 
-      console.log('payerClientLists:', payerClientLists);
+    var SUBSCRIPTION_PERIOD = 31 * 24 * 3600 * 1000;
+    var WAIT_PERIOD = 7 * 24 * 3600 * 1000;
+    var TRIAL_PERIOD = 7 * 24 * 3600 * 1000;
 
-      return payerClientLists;
-    };
+    var hasPayed = Date.now() - lastPayment < SUBSCRIPTION_PERIOD + WAIT_PERIOD;
+    var isTrial = Date.now() - registration < TRIAL_PERIOD;
 
-    function isPayer(aid) {
-      return payerAIDs.indexOf(aid) > -1;
+    return hasPayed || isTrial;
+  }
+
+  function emailFromAID(aid) {
+    return aid.replace(/:/g, '.');
+  }
+
+  function prepare(list) {
+    return list.split('\n')
+    .map(normalizeSpace)
+    .map(removeBadCharacters)
+    .filter(respectsMinLength(5));
+
+    function normalizeSpace(clientName) {
+      return clientName.trim().replace(/\s+/g, ' ');
     }
 
-    function aidFromEmail(email) {
-      return email.replace(/\./g, ':');
+    function removeBadCharacters(clientName) {
+      return clientName.replace(/[^-# 0-9a-zа-яăîşţâ\.]/i, '');
     }
 
-    function emailFromAID(aid) {
-      return aid.replace(/:/g, '.');
-    }
-
-    function prepare(list) {
-      return list.split('\n')
-      .map(normalizeSpace)
-      .map(removeBadCharacters)
-      .filter(respectsMinLength(5));
-
-      function normalizeSpace(clientName) {
-        return clientName.trim().replace(/\s+/g, ' ');
-      }
-
-      function removeBadCharacters(clientName) {
-        return clientName.replace(/[^-# 0-9a-zа-яăîşţâ\.]/i, '');
-      }
-
-      function respectsMinLength(minLength) {
-        return function(clientName) {
-          return clientName.trim().length > minLength;
-        };
-      }
+    function respectsMinLength(minLength) {
+      return function(clientName) {
+        return clientName.trim().length > minLength;
+      };
     }
   }
-};
+}
 
 function getFirebaseData(path) {
   var FIREBASE_URL = 'https://pinj-dev.firebaseio.com';

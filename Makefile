@@ -3,11 +3,11 @@ SHELL = /bin/sh
 .ONESHELL:
 
 export
-	JSON_FILES = payers.json payers.json.example secrets.json secrets.json.example
+	JSON_FILES = secrets.json secrets.json.example
 	JSHINT_FILES = $(JSON_FILES) $(shell find app -name '*.js' -or -name '*.json' | sort)
 
 default: test
-	@node app
+	@NODE_ENV=development node app
 
 test: jshint
 	@node app/util/storage.js

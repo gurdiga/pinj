@@ -1,7 +1,7 @@
 'use strict';
 
 function main() {
-  ClientLists.getFor(payers)
+  ClientLists.get()
   .then(function(payerClientLists) {
     return forEach(payerClientLists).inSeries(function(payer) {
       return Inquirer
@@ -13,7 +13,8 @@ function main() {
         return EmailFormatter.formatAsHTML(results);
       })
       .then(function(htmlContent) {
-        return EmailSender.send(payer.email, htmlContent);
+        if (process.env.NODE_ENV === 'development') return;
+        else return EmailSender.send(payer.email, htmlContent);
       })
       .catch(function(error) {
         if (error.message === 'No news') console.log('No news');
@@ -22,9 +23,11 @@ function main() {
     });
   })
   .catch(logTheErrorAndExit)
-  .then(function() {
-    process.exit(0);
-  });
+  .then(exitEndingFirebaseConnection);
+}
+
+function exitEndingFirebaseConnection() {
+  process.exit(0);
 }
 
 function logTheErrorAndExit(error) {
@@ -38,7 +41,5 @@ var Inquirer = require('./inquirer');
 var Curator = require('./curator');
 var EmailFormatter = require('./email-formatter');
 var EmailSender = require('./email-sender');
-
-var payers = require('../payers');
 
 main();

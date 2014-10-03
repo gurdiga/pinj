@@ -28,7 +28,7 @@ function filterPayersAndTrials(users) {
 
     var SUBSCRIPTION_PERIOD = 31 * 24 * 3600 * 1000;
     var WAIT_PERIOD = 7 * 24 * 3600 * 1000;
-    var TRIAL_PERIOD = 7 * 24 * 3600 * 1000;
+    var TRIAL_PERIOD = 31 * 24 * 3600 * 1000;
 
     var hasPayed = Date.now() - lastPayment < SUBSCRIPTION_PERIOD + WAIT_PERIOD;
     var isTrial = Date.now() - registration < TRIAL_PERIOD;

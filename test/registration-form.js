@@ -178,11 +178,12 @@
             setTimeout(this.bubbleErrors(function() {
               var registerUser = App.userService.registerUser;
               var authenticateUser = App.userService.authenticateUser;
+              var isFirstTime = true;
 
               expect(submitEventPrevented).to.be.true;
               expect(registerUser).to.have.been.calledWith(emailField.value, passwordField.value);
 
-              expect(authenticateUser).to.have.been.calledWith(emailField.value, passwordField.value);
+              expect(authenticateUser).to.have.been.calledWith(emailField.value, passwordField.value, isFirstTime);
               expect(authenticateUser).to.have.been.calledAfter(registerUser);
               done();
             }));

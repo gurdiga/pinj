@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  describe.integration('UserDataService', function() {
+  describe('UserDataService', function() {
     this.timeout(10000);
 
     var UserDataService, App, Firebase, Deferred;
@@ -49,7 +49,8 @@
     function createTestUserAndAuthenticate() {
       return App.userService.registerUser(email, password)
       .then(function() {
-        return App.userService.authenticateUser(email, password);
+        var isFirstTime = true;
+        return App.userService.authenticateUser(email, password, isFirstTime);
       });
     }
 

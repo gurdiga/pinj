@@ -1,18 +1,16 @@
 {
   "rules": {
     "data": {
-      ".read": "auth.cron === true",
+      ".write": "auth.uid === 'script'",
+      ".read": "auth.cron === true || auth.uid === 'script'",
 
       "$aid": {
-        ".read": "auth.email.replace('.', ':') === $aid",
-        ".write": "auth.email.replace('.', ':') === $aid",
+        ".read": "(data.child('uid').val() === auth.uid)",
+        ".write": "(data.exists() && (data.child('uid').val() === auth.uid)) || (!data.exists() && (newData.child('uid').val() === auth.uid))",
 
         "timestamps": {
           "registration": {
             ".write": "!data.exists()"
-          },
-          "lastPayment": {
-            ".write": "auth.paymentRegistrar === true"
           }
         }
       }

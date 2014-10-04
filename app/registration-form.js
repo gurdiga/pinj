@@ -70,7 +70,8 @@
 
       userService.registerUser(email, password)
       .then(function() {
-        return userService.authenticateUser(email, password);
+        var isFirstTime = true;
+        return userService.authenticateUser(email, password, isFirstTime);
       })
       .catch(function(reason) {
         var ERROR_MESSAGES = {

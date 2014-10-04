@@ -4,20 +4,18 @@
   describe.integration('UserService', function() {
     this.timeout(5000);
 
-    var App, UserService, Firebase, FirebaseSimpleLogin, Deferred;
-    var userService, email, password, ref, auth;
+    var App, UserService, Firebase, Deferred, UserDataService;
+    var userService, email, password, ref;
 
     before(function() {
       App = this.iframe.App;
       UserService = this.iframe.UserService;
       Firebase = this.iframe.Firebase;
-      FirebaseSimpleLogin = this.iframe.FirebaseSimpleLogin;
       Deferred = this.iframe.Deferred;
+      UserDataService = this.iframe.UserDataService;
 
       userService = new UserService();
       ref = new Firebase(App.FIREBASE_URL);
-      auth = new FirebaseSimpleLogin(ref, function(error, user) { auth.callback(error, user); });
-      auth.callback = function noop() {};
 
       email = 'user-service@test.com';
       password = 'Passw0rd';
@@ -45,12 +43,43 @@
           expect(emittedTheEvent).to.be.true;
 
           var cookie = getFirebaseCookie();
-          expect(cookie.user, 'cookie user object').to.exist;
-          expect(cookie.user.email, 'cookie user email').to.eq(email);
+          expect(cookie, 'cookie').to.exist;
+          expect(cookie.password.email, 'cookie email').to.eq(email);
 
           done();
         })
         .catch(done);
+      });
+
+      describe('when authenticating for the first time', function() {
+        it('stores UID in user’s profile', function(done) {
+          var isFirstTime = true;
+
+          userService.authenticateUser(email, password, isFirstTime)
+          .then(function() {
+            var uidPath = UserService.getUIDPathForEmail(email);
+
+            ref.child(uidPath).once('value',
+            function successCallback(snapshot) {
+              expect(snapshot.val()).to.exist;
+              done();
+            },
+            function cancelCallback(error) {
+              done(error);
+            });
+          })
+          .catch(done);
+        });
+
+        after(removeProfile);
+
+        function removeProfile(done) {
+          ref.child(UserDataService.getDataRootForEmail(email))
+          .remove(function(error) {
+            if (error) done(error);
+            else done();
+          });
+        }
       });
     });
 
@@ -59,12 +88,12 @@
 
       describe('when a user session is found', function() {
         beforeEach(function() {
-          session = { user: { email: 'test@test.com' } };
+          session = { password: { email: 'test@test.com' } };
         });
 
         it('emits “authenticated” event on the instance with the found user’s email', function(done) {
           userService.once('authenticated', function(email) {
-            expect(email).to.equal(session.user.email);
+            expect(email).to.equal(session.password.email);
             done();
           });
 
@@ -74,7 +103,7 @@
 
       describe('when no session is found', function() {
         beforeEach(function() {
-          session = { user: null };
+          session = null;
         });
 
         it('if no user session found emits “not-authenticated” event on the instance', function(done) {
@@ -119,10 +148,13 @@
     after(unregisterUserIfLeft);
 
     function unregisterUserIfLeft(done) {
-      auth.removeUser(email, password, function(error) {
+      ref.removeUser({
+        'email': email,
+        'password': password
+      }, function(error) {
         if (error === null) done(new Error('UserService.unregisterUser() should have removed the account'));
         if (error.code === 'INVALID_USER') done();
-        auth.logout();
+        ref.unauth();
         done(error);
       });
     }
@@ -131,14 +163,12 @@
       return function() {
         var deferred = new Deferred();
 
-        auth.callback = function(error, user) {
-          if (error) deferred.reject(error);
-          else if (user) deferred.resolve();
-        };
-
-        auth.login('password', {
+        ref.authWithPassword({
           'email': email,
           'password': password
+        }, function(error, user) {
+          if (error) deferred.reject(error);
+          else if (user) deferred.resolve();
         });
 
         return deferred.promise;
@@ -146,10 +176,12 @@
     }
 
     function getFirebaseCookie() {
-      if (!localStorage.firebaseSession) return {};
+      var cookieName = 'firebase:session::pinj-dev';
+
+      if (!localStorage[cookieName]) return {};
 
       try {
-        return JSON.parse(localStorage.firebaseSession);
+        return JSON.parse(localStorage[cookieName]);
       } catch(e) {
         return {};
       }

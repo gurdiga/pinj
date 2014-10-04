@@ -9,6 +9,10 @@
     this.listenForAuthenticationEventsOnUserService();
   }
 
+  UserDataService.getDataRootForEmail = function(email) {
+    return DATA_ROOT + '/' + getAidFromEmail(email);
+  };
+
   UserDataService.prototype.listenForAuthenticationEventsOnUserService = function() {
     this.userService.bind('authenticated', function(email) {
       this.email = email;
@@ -55,11 +59,15 @@
       throw new Error('UserDataService: not authenticated');
     }
 
-    var aid = this.email.replace(/\./g, ':');
+    var aid = getAidFromEmail(this.email);
     var fullPath = DATA_ROOT + '/' + aid + '/' + relativePath;
 
     return this.rootRef.child(fullPath);
   };
+
+  function getAidFromEmail(email) {
+    return email.replace(/\./g, ':');
+  }
 
   window.UserDataService = UserDataService;
 

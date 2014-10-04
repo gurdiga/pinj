@@ -1,73 +1,93 @@
 (function() {
   'use strict';
 
-  var TIMEOUT = 3000;
+  var TIMEOUT = 5000;
 
   function UserService() {
     this.ref = new Firebase(App.FIREBASE_URL);
 
     this.once('firebase-login', this.tryRestoreSession.bind(this));
-    this.auth = new FirebaseSimpleLogin(this.ref, this.emitFirebaseLoginEvent.bind(this));
+    this.ref.onAuth(this.trigger.bind(this, 'firebase-login'));
   }
 
   MicroEvent.mixin(UserService);
 
-  UserService.prototype.tryRestoreSession = function(session) {
-    if (session.user) this.trigger('authenticated', session.user.email);
-    else if (!session.error) this.trigger('not-authenticated');
-  };
+  UserService.prototype.tryRestoreSession = function(authData) {
+    var self = this;
 
-  UserService.prototype.emitFirebaseLoginEvent = function(error, user) {
-    this.trigger('firebase-login', {
-      'error': error,
-      'user': user
-    });
+    if (authData) emit('authenticated', authData.password.email);
+    else emit('not-authenticated');
+
+    function emit(eventName, data) {
+      setTimeout(function() {
+        self.trigger(eventName, data);
+      });
+    }
   };
 
   UserService.prototype.registerUser = function(email, password) {
     var deferred = new Deferred();
 
-    this.auth.createUser(email, password, function(error) {
+    this.ref.createUser({
+      'email': email,
+      'password': password
+    }, function(error) {
       if (error) deferred.reject(error);
       else deferred.resolve();
     });
 
-    deferred.timeout(TIMEOUT, 'Timed out on registration: ' + email);
+    deferred.timeout(TIMEOUT, 'UserService: timed out on registration: ' + email);
 
     return deferred.promise;
   };
 
-  UserService.prototype.authenticateUser = function(email, password) {
+  UserService.prototype.authenticateUser = function(email, password, isFirstTime) {
+    var self = this;
     var deferred = new Deferred();
 
-    this.once('firebase-login', function(data) {
-      if (data.error) deferred.reject(data.error);
-      else if (data.user) deferred.resolve();
-    });
-
-    deferred.timeout(TIMEOUT, 'Timed out on authentication: ' + email);
-
-    this.auth.login('password', {
+    self.ref.authWithPassword({
       'email': email,
       'password': password
+    }, function(error, authData) {
+      if (error) deferred.reject(error);
+      else if (isFirstTime) storeUID(email, authData.uid).then(function() { deferred.resolve(); });
+      else deferred.resolve();
     });
+
+    deferred.timeout(TIMEOUT, 'UserService: timed out on authentication: ' + email);
 
     return deferred.promise
     .then(this.trigger.bind(this, 'authenticated', email));
+
+    function storeUID(email, uid) {
+      var deferred = new Deferred();
+      var uidPath = UserService.getUIDPathForEmail(email);
+
+      self.ref.child(uidPath)
+      .set(uid, function(error) {
+        if (error) deferred.reject(error);
+        else deferred.resolve();
+      });
+
+      return deferred.promise;
+    }
+  };
+
+  UserService.getUIDPathForEmail = function(email) {
+    return UserDataService.getDataRootForEmail(email) + '/' + UserData.UID_PATH;
   };
 
   UserService.prototype.logout = function() {
     var deferred = new Deferred();
 
-    this.once('firebase-login', function(data) {
-      if (data.error) deferred.reject(data.error);
-      else if (data.user) deferred.reject(new Error('Not logged out'));
+    this.once('firebase-login', function(user) {
+      if (user) deferred.reject(new Error('Not logged out'));
       else deferred.resolve();
     });
 
-    this.auth.logout();
+    this.ref.unauth();
 
-    deferred.timeout(TIMEOUT, 'Timed out on logout');
+    deferred.timeout(TIMEOUT, 'UserService: timed out on logout');
 
     return deferred.promise
     .then(this.trigger.bind(this, 'deauthenticated'));
@@ -76,12 +96,15 @@
   UserService.prototype.unregisterUser = function(email, password) {
     var deferred = new Deferred();
 
-    this.auth.removeUser(email, password, function(error) {
-      if (error === null) deferred.resolve();
-      else deferred.reject(error);
+    this.ref.removeUser({
+      'email': email,
+      'password': password
+    }, function(error) {
+      if (error) deferred.reject(error);
+      else deferred.resolve();
     });
 
-    deferred.timeout(TIMEOUT, 'Timed out on unregistration: ' + email);
+    deferred.timeout(TIMEOUT, 'UserService: timed out on user unregistration: ' + email);
 
     return deferred.promise;
   };

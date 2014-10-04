@@ -54,7 +54,6 @@
     "ThankYouMessage": false,
     "PaymentOverdueMessage": false,
 
-    "FirebaseSimpleLogin": false,
     "Firebase": false,
     "$": false,
     "Q": false,

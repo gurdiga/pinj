@@ -2,6 +2,7 @@
   'use strict';
 
   window.UserData = {
+    'UID_PATH': 'uid',
     'CLIENT_LIST_PATH': 'clients',
     'LAST_PAYMENT_TIMESTAMP_PATH': 'timestamps/lastPayment',
     'REGISTRATION_TIMESTAMP_PATH': 'timestamps/registration',

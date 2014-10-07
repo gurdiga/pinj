@@ -34,7 +34,6 @@
 
   var tabLabels = DOM.querySelectorAll('a[data-toggle="tab"]');
   new FirstFieldFocuser(tabLabels);
-  new FormValidationResetter(tabLabels);
   new TabPreselector(location.hash);
 
   new CurrentUserEmailUpdater(App.userService, currentUserEmail);
@@ -65,5 +64,6 @@
 
   new AuthenticationForm(DOM.querySelector('#authentication-form'), App.userService);
   new RegistrationForm(DOM.querySelector('#registration-form'), App.userService);
+  new FormValidationResetter(tabLabels);
 
 }());

@@ -1,0 +1,11 @@
+<div id="top-nav">
+  <h1><a href="/">Monitorul PINJ</a></h1>
+
+  {% if page.private %}
+    <a href="#subscription">Abonament</a>
+    <a href="#exit">Ieşire</a>
+  {% else %}
+    <a href="authentication.html">Autentificare</a>
+    <a href="registration.html">Înregistrare</a>
+  {% endif %}
+</div>

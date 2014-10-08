@@ -1,15 +1,14 @@
 'use strict';
 
-function time(f, label) {
-  label = label || f.name || 'unlabeled';
+function time(promise, label) {
+  label = label.toString();
+  console.time(label);
 
-  return function() {
-    console.time(label);
-    var returnValue = f.apply(this, arguments);
+  return promise
+  .then(function(response) {
     console.timeEnd(label);
-
-    return returnValue;
-  };
+    return response;
+  });
 }
 
 module.exports = time;

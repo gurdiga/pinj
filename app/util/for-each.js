@@ -23,7 +23,7 @@ function forEach(items) {
   function prepareAsyncTasks(items, thenableIterator, thisObject) {
     return _.chain(items)
       .map(function(item) {
-        return [item, timedTask(function(callback) {
+        return [item, function(callback) {
           var promise = thenableIterator.call(thisObject, item);
 
           assert(typeof promise === 'object', 'A thenable should return a promise object.');
@@ -34,7 +34,7 @@ function forEach(items) {
             callback(null, result);
           })
           .catch(callback);
-        }, item.toString())];
+        }];
       })
       .object()
       .value();
@@ -50,16 +50,6 @@ function forEach(items) {
       };
     });
   }
-}
-
-function timedTask(f, label) {
-  return function(callback) {
-    console.time(label);
-    return f(function(err, results) {
-      console.timeEnd(label);
-      return callback(err, results);
-    });
-  };
 }
 
 module.exports = forEach;

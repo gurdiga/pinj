@@ -9,11 +9,13 @@ Inquirer.inquireAbout = function(clientNames) {
   ];
 
   return forEach(clientNames).inSeries(function(clientName) {
-    return forEach(levels).inSeries(function(sections) {
+    var timingLabel = '- ' + clientName;
+
+    return time(forEach(levels).inSeries(function(sections) {
       return forEach(sections).inParallel(function(section) {
         return inquireSection(section).about(clientName);
       });
-    });
+    }), timingLabel);
   });
 };
 
@@ -49,6 +51,7 @@ function attachColumns(columns) {
 var SupremeCourt = require('./supreme-court');
 var DistrictCourts = require('./district-courts');
 
+var time = require('./util/time');
 var forEach = require('./util/for-each');
 var queryAPI = require('./util/query-api');
 

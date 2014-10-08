@@ -4,7 +4,7 @@ function main() {
   ClientLists.get()
   .then(function(payerClientLists) {
     return forEach(payerClientLists).inSeries(function(payer) {
-      return Inquirer
+      return time(Inquirer
       .inquireAbout(payer.clientList)
       .then(function(results) {
         return Curator.curate(results).for(payer.email);
@@ -19,7 +19,7 @@ function main() {
       .catch(function(error) {
         if (error.message === 'No news') console.log('No news');
         else throw error;
-      });
+      }), payer);
     });
   })
   .catch(logTheErrorAndExit)
@@ -35,6 +35,7 @@ function logTheErrorAndExit(error) {
   process.exit(1);
 }
 
+var time = require('./util/time');
 var forEach = require('./util/for-each');
 var ClientLists = require('./client-lists');
 var Inquirer = require('./inquirer');

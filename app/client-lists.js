@@ -3,7 +3,7 @@
 var ClientLists = {};
 
 ClientLists.get = function() {
-  return getFirebaseData('/data')
+  return time(getFirebaseData('/data'), 'getting client lists')
   .then(filterPayersAndTrials);
 };
 
@@ -116,3 +116,4 @@ var _ = require('underscore');
 var Firebase = require('firebase');
 var FirebaseTokenGenerator = require('firebase-token-generator');
 var secrets = require('../secrets');
+var time = require('./util/time');

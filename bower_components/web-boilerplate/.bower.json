@@ -15,11 +15,11 @@
     "sinon-chai": "2.6.0"
   },
   "devDependencies": {},
-  "_release": "4c420e6200",
+  "_release": "96c00d626d",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "4c420e620041093f83c065987a9f013a3304b314"
+    "commit": "96c00d626d959263f9c3cf0abdc8de124332051d"
   },
   "_source": "git://github.com/gurdiga/web-boilerplate.git",
   "_target": "*",

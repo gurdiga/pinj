@@ -9,7 +9,7 @@
   function getNavigateTo(self) {
     return function navigateTo(pathname) {
       expect(pathname, 'pathname to navigate to').to.exist;
-      self.iframe.location.pathname = pathname;
+      self.iframe.location = pathname;
       return waitForIframeOnLoadEvent(self);
     };
   }

@@ -1,0 +1,11 @@
+{
+  "name": "q",
+  "_cacheHeaders": {
+    "Last-Modified": "Mon, 21 Apr 2014 13:45:10 GMT",
+    "Content-Type": "application/javascript"
+  },
+  "main": "index.js",
+  "_source": "http://cdnjs.cloudflare.com/ajax/libs/q.js/1.0.1/q.js",
+  "_target": "*",
+  "_originalSource": "http://cdnjs.cloudflare.com/ajax/libs/q.js/1.0.1/q.js"
+}

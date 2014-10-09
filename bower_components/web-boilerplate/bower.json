@@ -9,7 +9,11 @@
   "private": true,
   "dependencies": {
     "microevent": "*",
-    "web-boilerplate": "gurdiga/web-boilerplate"
+    "q": "http://cdnjs.cloudflare.com/ajax/libs/q.js/1.0.1/q.js",
+    "mocha": "1.21.4",
+    "chai": "1.9.2",
+    "sinon": "http://sinonjs.org/releases/sinon-1.10.3.js",
+    "sinon-chai": "2.6.0"
   },
   "devDependencies": {
   }

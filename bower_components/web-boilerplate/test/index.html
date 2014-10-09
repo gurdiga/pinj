@@ -1,0 +1,36 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Tests:</title>
+  <link rel="stylesheet" href="/bower_components/mocha/mocha.css" />
+</head>
+<body>
+  <div id="mocha"></div>
+  <script src="/bower_components/mocha/mocha.js"></script>
+  <script src="/bower_components/chai/chai.js"></script>
+  <script src="/bower_components/sinon-chai/lib/sinon-chai.js"></script>
+  <script src="/bower_components/sinon/index.js"></script>
+  <script src="/bower_components/microevent/microevent.js"></script>
+  <script src="/bower_components/q/index.js"></script>
+
+  <script src="/bower_components/web-boilerplate/test/helpers/mocha-config.js"></script>
+  <script src="/bower_components/web-boilerplate/test/helpers/wait-for-client-to-be-ready.js"></script>
+  <script src="/bower_components/web-boilerplate/test/helpers/iframe-setup.js"></script>
+  <script src="/bower_components/web-boilerplate/test/helpers/navigation.js"></script>
+
+  <script>var APP_PATH = '/';</script>
+
+  <script src="/bower_components/web-boilerplate/test/navigation.js"></script>
+  <script src="/bower_components/web-boilerplate/test/meta-redirect.js"></script>
+  <script src="/bower_components/web-boilerplate/test/form-submitions.js"></script>
+
+  <!-- app tests go here -->
+
+  <script>
+    window.mocha.checkLeaks();
+    window.mocha.globals(['testRunner']);
+    window.mocha.run();
+    window.testRunner = {};
+  </script>
+</body>
+</html>

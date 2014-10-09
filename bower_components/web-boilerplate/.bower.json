@@ -1,0 +1,27 @@
+{
+  "name": "web-boilerplate",
+  "homepage": "https://github.com/gurdiga/web-boilerplate",
+  "authors": [
+    "Vlad GURDIGA <gurdiga@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "microevent": "*",
+    "q": "http://cdnjs.cloudflare.com/ajax/libs/q.js/1.0.1/q.js",
+    "mocha": "1.21.4",
+    "chai": "1.9.2",
+    "sinon": "http://sinonjs.org/releases/sinon-1.10.3.js",
+    "sinon-chai": "2.6.0"
+  },
+  "devDependencies": {},
+  "_release": "4c420e6200",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "4c420e620041093f83c065987a9f013a3304b314"
+  },
+  "_source": "git://github.com/gurdiga/web-boilerplate.git",
+  "_target": "*",
+  "_originalSource": "gurdiga/web-boilerplate"
+}

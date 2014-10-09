@@ -2,26 +2,32 @@
 <head>
   <meta charset="utf-8">
   <title>Tests:</title>
-  <link rel="stylesheet" href="../bower_components/mocha/mocha.css" />
+  <link rel="stylesheet" href="/bower_components/mocha/mocha.css" />
 </head>
 <body>
   <div id="mocha"></div>
-  <script src="../bower_components/mocha/mocha.js"></script>
-  <script src="../bower_components/chai/chai.js"></script>
-  <script src="../bower_components/sinon-chai/lib/sinon-chai.js"></script>
-  <script src="../bower_components/sinon/index.js"></script>
-  <script src="../bower_components/microevent/microevent.js"></script>
+  <script src="/bower_components/mocha/mocha.js"></script>
+  <script src="/bower_components/chai/chai.js"></script>
+  <script src="/bower_components/sinon-chai/lib/sinon-chai.js"></script>
+  <script src="/bower_components/sinon/index.js"></script>
+  <script src="/bower_components/microevent/microevent.js"></script>
+  <script src="/bower_components/q/index.js"></script>
 
-  <script src="test-helpers/mocha-config.js"></script>
-  <script src="test-helpers/iframe-setup.js"></script>
+  <script src="/bower_components/web-boilerplate/test/helpers/mocha-config.js"></script>
+  <script src="/bower_components/web-boilerplate/test/helpers/wait-for-client-to-be-ready.js"></script>
+  <script src="/bower_components/web-boilerplate/test/helpers/iframe-setup.js"></script>
+  <script src="/bower_components/web-boilerplate/test/helpers/navigation.js"></script>
+
+  <script>var APP_PATH = '/app.html';</script>
+
   <script src="test-helpers/chai-plugins.js"></script>
   <script src="test-helpers/type-into.js"></script>
   <script src="test-helpers/bubble-errors.js"></script>
 
   <script src="util/deferred.js"></script>
+  <script src="util/dom.js"></script>
   <script src="services/user-service.js"></script>
   <script src="services/user-data-service.js"></script>
-  <script src="util/dom.js"></script>
   <script src="authentication-form.js"></script>
   <script src="registration-form.js"></script>
   <script src="client-list-form.js"></script>

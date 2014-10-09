@@ -11,9 +11,9 @@
     "microevent": "*"
   },
   "devDependencies": {
-    "mocha": "~1.21.3",
-    "chai": "~1.9.1",
+    "mocha": "1.21.4",
+    "chai": "1.9.2",
     "sinon": "http://sinonjs.org/releases/sinon-1.10.3.js",
-    "sinon-chai": "~2.5.0"
+    "sinon-chai": "2.6.0"
   }
 }

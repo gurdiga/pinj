@@ -15,8 +15,12 @@
   UserService.prototype.tryRestoreSession = function(authData) {
     var self = this;
 
-    if (authData) emit('authenticated', authData.password.email);
+    if (valid(authData)) emit('authenticated', authData.password.email);
     else emit('not-authenticated');
+
+    function valid(authData) {
+      return authData && authData.expires * 1000 > Date.now();
+    }
 
     function emit(eventName, data) {
       setTimeout(function() {

@@ -41,6 +41,8 @@ function filterPayersAndTrials(users) {
   }
 
   function prepare(list) {
+    list = list || '';
+
     return list.split('\n')
     .map(normalizeSpace)
     .map(removeBadCharacters)

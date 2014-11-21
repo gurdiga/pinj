@@ -17,7 +17,15 @@ EmailSender.send = function send(address, htmlContent) {
 };
 
 function getTransport() {
-  var transportOptions = {};
+  var transportOptions = {
+    'host': secrets.SMTP_HOST,
+    'port': secrets.SMTP_PORT,
+    auth: {
+      user: secrets.SMTP_USER,
+      pass: secrets.SMTP_PASS
+    }
+  };
+
   var transport = require('nodemailer-smtp-transport');
 
   return nodemailer.createTransport(transport(transportOptions));
@@ -28,3 +36,4 @@ module.exports = EmailSender;
 var nodemailer = require('nodemailer');
 var Q = require('q');
 Q.longStackSupport = true;
+var secrets = require('../secrets');

@@ -3,37 +3,40 @@
 var ClientLists = {};
 
 ClientLists.get = function() {
-  return time(getFirebaseData('/data'), 'getting client lists')
-  .then(selectPayersAndTrials);
+  return time(Data.get('/data'), 'getting user lists')
+  .then(prepareForSearch);
 };
 
-function selectPayersAndTrials(users) {
-  var payersAndTrials = [];
+function prepareForSearch(users) {
+  return _(users).map(function(data, aid) {
+    var user = {};
 
-  _(users).each(function(data, aid) {
-    var email = emailFromAID(aid);
+    user.clientList = prepareClientList(data.clients);
+    user.email = emailFromAID(aid);
+    user.aid = aid;
+    user.toString = function() {
+      return user.email;
+    };
 
-    if (isTrialOrPayer(data)) payersAndTrials.push({
-      'email': email,
-      'clientList': prepareClientList(data.clients),
-      'toString': function() { return email; }
-    });
+    if (isTrial(data.timestamps.registration)) user.isTrial = true;
+    else if (isPayer(data.timestamps.lastPayment)) user.isPayer = true;
+
+    return user;
   });
 
-  return payersAndTrials;
-
-  function isTrialOrPayer(data) {
-    var lastPayment = data.timestamps.lastPayment || 0;
-    var registration = data.timestamps.registration || 0;
-
-    var SUBSCRIPTION_PERIOD = 31 * 24 * 3600 * 1000;
-    var GRACE_PERIOD = 7 * 24 * 3600 * 1000;
+  function isTrial(registrationTimestamp) {
     var TRIAL_PERIOD = 31 * 24 * 3600 * 1000;
 
-    var isPayer = Date.now() - lastPayment < SUBSCRIPTION_PERIOD + GRACE_PERIOD;
-    var isTrial = Date.now() - registration < TRIAL_PERIOD;
+    registrationTimestamp = registrationTimestamp || 0;
+    return Date.now() - registrationTimestamp < TRIAL_PERIOD;
+  }
 
-    return isPayer || isTrial;
+  function isPayer(lastPaymentTimestamp) {
+    var SUBSCRIPTION_PERIOD = 31 * 24 * 3600 * 1000;
+    var GRACE_PERIOD = 7 * 24 * 3600 * 1000;
+
+    lastPaymentTimestamp = lastPaymentTimestamp || 0;
+    return Date.now() - lastPaymentTimestamp < SUBSCRIPTION_PERIOD + GRACE_PERIOD;
   }
 
   function emailFromAID(aid) {
@@ -59,58 +62,8 @@ function selectPayersAndTrials(users) {
   }
 }
 
-function getFirebaseData(path) {
-  var FIREBASE_URL = 'https://pinj-dev.firebaseio.com';
-  var ref = new Firebase(FIREBASE_URL);
-
-  return authenticate(ref)
-  .then(function() {
-    var deferred = Q.defer();
-
-    ref.child(path)
-    .on('value', onSuccess, onCancel);
-
-    function onSuccess(snapshot) {
-      deferred.resolve(snapshot.val());
-    }
-
-    function onCancel(error) {
-      deferred.reject(error);
-    }
-
-    return deferred.promise;
-  });
-}
-
-function authenticate(ref) {
-  var deferred = Q.defer();
-  var tokenGenerator = new FirebaseTokenGenerator(secrets.PINJ_FIREBASE_SECRET);
-  var token = tokenGenerator.createToken({
-    isSearchEngine: true
-  });
-
-  ref.auth(token, onAuthComplete, onAuthCanceled);
-
-  function onAuthComplete(err) {
-    if (err) {
-      deferred.reject(err);
-    } else {
-      deferred.resolve();
-    }
-  }
-
-  function onAuthCanceled(err) {
-    deferred.reject(err);
-  }
-
-  return deferred.promise;
-}
-
 module.exports = ClientLists;
 
-var Q = require('q');
 var _ = require('underscore');
-var Firebase = require('firebase');
-var FirebaseTokenGenerator = require('firebase-token-generator');
-var secrets = require('../secrets');
+var Data = require('./data');
 var time = require('./util/time');

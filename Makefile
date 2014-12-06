@@ -9,6 +9,9 @@ export
 default: test
 	@NODE_ENV=development node app
 
+deps:
+	npm install
+
 test: jshint
 	@node app/util/storage.js
 	@node app/curator.js

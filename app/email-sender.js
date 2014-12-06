@@ -2,13 +2,15 @@
 
 var EmailSender = {};
 
-EmailSender.send = function send(address, htmlContent) {
+EmailSender.send = function send(address, subject, htmlContent) {
+  if (process.env.NODE_ENV === 'development' && address !== 'gurdiga@gmail.com') return Q.delay(0);
+
   var emailOptions = {
     to: address,
     html: htmlContent,
     text: 'Please use an email program capable of rendering HTML messages',
     from: 'info@pinj.pentru.md',
-    subject: 'Informaţii PINJ'
+    subject: subject
   };
 
   var transport = getTransport();

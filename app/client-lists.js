@@ -4,43 +4,43 @@ var ClientLists = {};
 
 ClientLists.get = function() {
   return time(getFirebaseData('/data'), 'getting client lists')
-  .then(filterPayersAndTrials);
+  .then(selectPayersAndTrials);
 };
 
-function filterPayersAndTrials(users) {
-  var payerClientLists = [];
+function selectPayersAndTrials(users) {
+  var payersAndTrials = [];
 
   _(users).each(function(data, aid) {
-    if (hasPayedOrTial(data)) payerClientLists.push({
-      email: emailFromAID(aid),
-      clientList: prepare(data.clients),
-      toString: function() {
-        return emailFromAID(aid);
-      }
+    var email = emailFromAID(aid);
+
+    if (isTrialOrPayer(data)) payersAndTrials.push({
+      'email': email,
+      'clientList': prepareClientList(data.clients),
+      'toString': function() { return email; }
     });
   });
 
-  return payerClientLists;
+  return payersAndTrials;
 
-  function hasPayedOrTial(data) {
+  function isTrialOrPayer(data) {
     var lastPayment = data.timestamps.lastPayment || 0;
     var registration = data.timestamps.registration || 0;
 
     var SUBSCRIPTION_PERIOD = 31 * 24 * 3600 * 1000;
-    var WAIT_PERIOD = 7 * 24 * 3600 * 1000;
+    var GRACE_PERIOD = 7 * 24 * 3600 * 1000;
     var TRIAL_PERIOD = 31 * 24 * 3600 * 1000;
 
-    var hasPayed = Date.now() - lastPayment < SUBSCRIPTION_PERIOD + WAIT_PERIOD;
+    var isPayer = Date.now() - lastPayment < SUBSCRIPTION_PERIOD + GRACE_PERIOD;
     var isTrial = Date.now() - registration < TRIAL_PERIOD;
 
-    return hasPayed || isTrial;
+    return isPayer || isTrial;
   }
 
   function emailFromAID(aid) {
     return aid.replace(/:/g, '.');
   }
 
-  function prepare(list) {
+  function prepareClientList(list) {
     list = list || '';
 
     return list.split('\n')
@@ -58,7 +58,7 @@ function filterPayersAndTrials(users) {
 
     function respectsMinLength(minLength) {
       return function(clientName) {
-        return clientName.trim().length > minLength;
+        return clientName.length > minLength;
       };
     }
   }

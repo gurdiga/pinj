@@ -9,6 +9,7 @@ function queryAPI(apiRequestOptions) {
     uri: apiRequestOptions.url,
     form: apiRequestOptions.searchOptions,
     method: 'POST',
+    gzip: true,
     json: true
   };
 

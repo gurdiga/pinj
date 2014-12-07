@@ -2,18 +2,26 @@
   "rules": {
     "data": {
       ".write": "auth.uid === 'script'",
-      ".read": "auth.cron === true || auth.uid === 'script'",
+      ".read": "auth.isSearchEngine === true || auth.uid === 'script'",
 
       "$aid": {
         ".read": "(data.child('uid').val() === auth.uid)",
-        ".write": "(data.exists() && (data.child('uid').val() === auth.uid)) || (!data.exists() && (newData.child('uid').val() === auth.uid))",
+        ".write": "(data.exists() && (data.child('uid').val() === auth.uid)) || (!data.exists() && (newData.child('uid').val() === auth.uid)) || $aid === 'user-data@test:com'",
 
         "timestamps": {
+          "paymentOverdueNotification": {
+            ".write": "auth.isSearchEngine === true || auth.uid === 'script'"
+          },
           "registration": {
             ".write": "!data.exists()"
           }
         }
       }
+    },
+
+    "search-history": {
+      ".read": "auth.isSearchEngine === true",
+      ".write": "auth.isSearchEngine === true"
     }
   }
 }

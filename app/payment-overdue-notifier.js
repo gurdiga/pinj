@@ -10,6 +10,9 @@ PaymentOverdueNotifier.notify = function(aid) {
     if (alreadySent) return;
 
     console.log('- sending notification');
+
+    if (process.env.NODE_ENV === 'development') return;
+
     return Data.set(timestampPath, Firebase.ServerValue.TIMESTAMP)
     .then(function() {
       return fs.readFileSync(__dirname + '/email/payment-overdue-message-template.html', {encoding: 'utf8'});

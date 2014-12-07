@@ -13,4 +13,7 @@ test: jshint
 	@node app/util/storage.js
 	@node app/curator.js
 
+update:
+	git stash && git pull && git stash pop
+
 include $(shell find makefiles -name '*.mk' | sort)

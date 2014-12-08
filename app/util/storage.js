@@ -17,16 +17,6 @@ Storage.get = function(key) {
   return deserialize(readFile(filePath));
 };
 
-Storage.clear = function() {
-  if (!fs.existsSync(root)) return;
-
-  var filesNames = fs.readdirSync(root);
-
-  filesNames.forEach(function(fileName) {
-    fs.unlinkSync(root + '/' + fileName);
-  });
-};
-
 function readFile(filePath) {
   try {
     return fs.readFileSync(filePath, {encoding: 'utf8'});
@@ -70,14 +60,3 @@ var fs = require('fs');
 var crypto = require('crypto');
 var nodeFs = require('node-fs');
 var path = require('path');
-
-(function selfTest() {
-  var assert = require('assert');
-
-  var key = 'test-key';
-  var value = [{a: 1}, {a: 2}, {a: 3}];
-
-  Storage.set(key, value);
-  assert.deepEqual(Storage.get(key), value, 'Storage can store and retrieve by key an array of objects');
-  assert.strictEqual(Storage.get('unset'), undefined, 'Storage.get(key) returns undefined if key not found');
-}());

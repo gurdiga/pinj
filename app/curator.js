@@ -64,7 +64,7 @@ function excludeAllOldRows(results, lawyerEmail) {
             court.label
           ].join(' ');
 
-          excludeOldRows(court.results, cacheKey);
+          excludeOldRows(court.results, cacheKey, lawyerEmail, client.label);
         });
       });
     });
@@ -93,12 +93,26 @@ function stopIfNoNews(results) {
   if (results.length === 0) throw new Error('No news');
 }
 
-function excludeOldRows(currentRows, cacheKey) {
+function excludeOldRows(currentRows, cacheKey, lawyerEmail, client) {
   var previousRows = Storage.get(cacheKey) || [];
   var oldRowIndexes = rowsIn(currentRows).thatExistIn(previousRows);
 
   Storage.set(cacheKey, currentRows);
+  alsoStoreInFirebase(currentRows, lawyerEmail, client);
   removeItemsAt(oldRowIndexes).from(currentRows);
+}
+
+function alsoStoreInFirebase(currentRows, lawyerEmail, client) {
+  if (process.env.NODE_ENV === 'development') return Q.delay(0);
+
+  var aid = lawyerEmail.replace(/\./g, ':');
+  var escapedClient = client.replace(/[.#$[\]]/g, '_');
+
+  Data.set('/search-history/' + aid + '/' + escapedClient, JSON.stringify(currentRows))
+  .catch(function(error) {
+    console.log('Can’t save search results to Firebase:', error);
+    throw error;
+  });
 }
 
 function removeItemsAt(indexes) {
@@ -131,98 +145,10 @@ function stringify(array) {
   });
 }
 
-var Storage = require('./util/storage');
-var _ = require('underscore');
-
 module.exports = Curator;
 
-(function selfTest() {
-  var assert = require('assert');
-
-  (function testNullifyUnusedCells() {
-    var visibleColumns = ['0', '2'];
-    var row = [1, 2, 3];
-    var expectedRow = [1, null, 3];
-
-    nullifyUnusedCells(visibleColumns)(row);
-    assert.deepEqual(row, expectedRow, 'Nullifies the columns that are not shown');
-  }());
-
-  (function() {
-    var items = [];
-
-    assert.deepEqual(compact(items), []);
-
-    items = [{
-      'label': 'ceva',
-      'results': []
-    }];
-    assert.deepEqual(compact(items), []);
-
-    items = [{
-      'label': 'level11',
-      'results': [
-        {
-          'label': 'level21',
-          'results': []
-        }, {
-          'label': 'level22',
-          'results': []
-        }
-      ]
-    }];
-    assert.deepEqual(compact(items), []);
-
-    items = [{
-      'label': 'level11',
-      'results': [
-        {
-          'label': 'level21',
-          'results': []
-        }, {
-          'label': 'level22',
-          'results': [
-            [' --- this is not empty --- ']
-          ]
-        }
-      ]
-    }];
-    assert.deepEqual(compact(items), [{
-      'label': 'level11',
-      'results': [
-        {
-          'label': 'level22',
-          'results': [
-            [' --- this is not empty --- ']
-          ]
-        }
-      ]
-    }]);
-  }());
-
-  (function testExcludeOldRows() {
-    var clientName = 'Cutărescu Ion';
-    var sectionName = 'AgendaSection';
-
-    var rowsOnDay1 = [[1], [2], [3]];
-    excludeOldRows(rowsOnDay1, clientName, sectionName);
-    assert.deepEqual(rowsOnDay1, [[1], [2], [3]], 'Initially do not remove any rows, since there are no old ones.');
-
-    var rowsOnDay2 = [[1], [2], [3], [4]];
-    excludeOldRows(rowsOnDay2, clientName, sectionName);
-    assert.deepEqual(rowsOnDay2, [[4]], 'removes old rows');
-
-    var rowsOnDay3 = [[1], [2], [3], [4]];
-    excludeOldRows(rowsOnDay3, clientName, sectionName);
-    assert.deepEqual(rowsOnDay3, [], 'empties rows when all of them are old');
-
-    var rowsOnDay4 = [];
-    excludeOldRows(rowsOnDay4, clientName, sectionName);
-    assert.deepEqual(rowsOnDay4, [], 'given no rows ignore old ones');
-
-    var rowsOnDay5 = [[5], [6]];
-    excludeOldRows(rowsOnDay5, clientName, sectionName);
-    assert.deepEqual(rowsOnDay5, [[5], [6]], 'leaves the new rows');
-  }());
-
-}());
+var Storage = require('./util/storage');
+var Data = require('./data');
+var _ = require('underscore');
+var Q = require('q');
+Q.longStackSupport = true;

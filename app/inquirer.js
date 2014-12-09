@@ -13,7 +13,7 @@ Inquirer.inquireAbout = function(clientNames) {
 
     return time(forEach(levels).inSeries(function(sections) {
       return forEach(sections).inParallel(function(section) {
-        return inquireSection(section).about(clientName);
+        return inquireSection(section).about(mysqlEscape(clientName));
       });
     }), timingLabel);
   });
@@ -54,5 +54,6 @@ var DistrictCourts = require('./district-courts');
 var time = require('./util/time');
 var forEach = require('./util/for-each');
 var queryAPI = require('./util/query-api');
+var mysqlEscape = require('./util/mysql-escape');
 
 module.exports = Inquirer;

@@ -21,7 +21,6 @@ var CivilianCollegeSentenceSection = {
           {'field': 'nr_dosar', 'op': 'cn', 'data': query.substr(1)}
         ],
         'name': [
-          {'field': 'data_examinare', 'op': 'cn', 'data': (new Date()).getFullYear()},
           {'field': 'partile_dosar', 'op': 'cn', 'data': query}
         ]
       };

@@ -21,7 +21,6 @@ var CaseInquirySection = {
           {'field': 'nr_inregistrare', 'op': 'cn', 'data': query.substr(1)}
         ],
         'name': [
-          {'field': 'data_inregistrare', 'op': 'cn', 'data': (new Date()).getFullYear()},
           {'field': 'parti_dosar', 'op': 'cn', 'data': query}
         ]
       };

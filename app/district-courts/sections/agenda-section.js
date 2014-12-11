@@ -19,7 +19,6 @@ var AgendaSection = {
           {'field': 'nr_dosar', 'op': 'cn', 'data': query.substr(1)}
         ],
         'name': [
-          {'field': 'data_sedinta', 'op': 'cn', 'data': (new Date()).getFullYear()},
           {'field': 'denumire_dosar', 'op': 'cn', 'data': query}
         ]
       };

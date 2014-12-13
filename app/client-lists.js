@@ -91,7 +91,7 @@ function authenticate(ref) {
   var deferred = Q.defer();
   var tokenGenerator = new FirebaseTokenGenerator(secrets.PINJ_FIREBASE_SECRET);
   var token = tokenGenerator.createToken({
-    cron: true
+    isSearchEngine: true
   });
 
   ref.auth(token, onAuthComplete, onAuthCanceled);

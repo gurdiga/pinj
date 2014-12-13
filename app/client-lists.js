@@ -45,15 +45,10 @@ function selectPayersAndTrials(users) {
 
     return list.split('\n')
     .map(normalizeSpace)
-    .map(removeBadCharacters)
     .filter(respectsMinLength(5));
 
     function normalizeSpace(clientName) {
       return clientName.trim().replace(/\s+/g, ' ');
-    }
-
-    function removeBadCharacters(clientName) {
-      return clientName.replace(/[^-# 0-9a-zа-яăîşţâ\.]/i, '');
     }
 
     function respectsMinLength(minLength) {

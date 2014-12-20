@@ -2,12 +2,14 @@ SHELL = /bin/sh
 .SHELLFLAGS := -e
 .ONESHELL:
 
-export
-	JSON_FILES = secrets.json secrets.json.example
-	JSHINT_FILES = $(JSON_FILES) $(shell find app -name '*.js' -or -name '*.json' | sort)
+default: jshint test
 
-default: jshint
+run: jshint
 	@NODE_ENV=development node app
+
+test:
+	@mocha --recursive test
+.PHONY: test
 
 deps:
 	npm prune && npm install

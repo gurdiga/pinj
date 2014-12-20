@@ -2,6 +2,8 @@
 
 // http://jurisprudenta.csj.md/db_col_civil.php
 
+var ROWID_INDEX = 7;
+
 var CivilianCollegeSentenceSection = {
   toString: function() {
     return 'Hotărîrile Colegiului civil, comercial şi de contencios administrativ al CSJ';
@@ -44,11 +46,6 @@ var CivilianCollegeSentenceSection = {
     }
   },
 
-  rowPreprocessor: function addPdfUrl(row, rowId) {
-    row.pdfUrl = 'http://jurisprudenta.csj.md/search_col_civil.php?id=' + rowId;
-    return row;
-  },
-
   columns: [
     {
       'title': 'Numărul dosarului',
@@ -75,14 +72,21 @@ var CivilianCollegeSentenceSection = {
       'index': 6,
       'show': true
     }, {
+      'title': 'ROWID',
+      'index': ROWID_INDEX,
+      'used': true
+    }, {
       'title': 'PDF',
-      'index': 'pdfUrl',
-      'link': true,
+      'getPDFURL': getPDFURL,
       'show': true
     }
   ]
 };
 
+function getPDFURL(row) {
+  return 'http://jurisprudenta.csj.md/search_col_civil.php?id=' + row[ROWID_INDEX];
+}
+
 module.exports = CivilianCollegeSentenceSection;
 
-var queryType = require('../../util/query-type');
+var queryType = require('app/util/query-type');

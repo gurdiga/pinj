@@ -2,9 +2,11 @@
 
 // http://jurisprudenta.csj.md/db_lista_dosare.php
 
+var ROWID_INDEX = 10;
+
 var CaseInquirySection = {
   toString: function() {
-    return 'Lista cererilor pendinte spre examinare la CSJ';
+    return 'Cereri pendinte spre examinare la CSJ';
   },
 
   subsectionNames: ['only one'],
@@ -42,11 +44,6 @@ var CaseInquirySection = {
 
       return searchOptions;
     }
-  },
-
-  rowPreprocessor: function addPdfUrl(row, rowId) {
-    row.pdfUrl = 'http://jurisprudenta.csj.md/pdf_gen_dosare.php?id=' + rowId;
-    return row;
   },
 
   columns: [
@@ -87,14 +84,21 @@ var CaseInquirySection = {
       'index': 9,
       'show': true
     }, {
+      'title': 'ROWID',
+      'index': ROWID_INDEX,
+      'used': true
+    }, {
       'title': 'PDF',
-      'index': 'pdfUrl',
-      'link': true,
+      'getPDFURL': getPDFURL,
       'show': true
     }
   ]
 };
 
+function getPDFURL(row) {
+  return 'http://jurisprudenta.csj.md/pdf_gen_dosare.php?id=' + row[ROWID_INDEX];
+}
+
 module.exports = CaseInquirySection;
 
-var queryType = require('../../util/query-type');
+var queryType = require('app/util/query-type');

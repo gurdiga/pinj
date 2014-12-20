@@ -2,6 +2,8 @@
 
 // http://agenda.csj.md/civil.php
 
+var ROWID_INDEX = 11;
+
 var CivilianCollegeAgendaSection = {
   toString: function() {
     return 'Agenda şedinţelor Colegiului civil, comercial şi de contencios administrativ al CSJ';
@@ -44,11 +46,6 @@ var CivilianCollegeAgendaSection = {
     }
   },
 
-  rowPreprocessor: function addPdfUrl(row, rowId) {
-    row.pdfUrl = 'http://agenda.csj.md/pdf_creator_civil.php?id=' + rowId;
-    return row;
-  },
-
   columns: [
     {
       'title': 'Numărul dosarului',
@@ -87,14 +84,25 @@ var CivilianCollegeAgendaSection = {
       'index': 9,
       'show': true
     }, {
+      'title': 'Data publicării',
+      'index': 10,
+      'show': false
+    }, {
+      'title': 'ROWID',
+      'index': ROWID_INDEX,
+      'used': true
+    }, {
       'title': 'PDF',
-      'index': 'pdfUrl',
-      'link': true,
+      'getPDFURL': getPDFURL,
       'show': true
     }
   ]
 };
 
+function getPDFURL(row) {
+  return 'http://agenda.csj.md/pdf_creator_civil.php?id=' + row[ROWID_INDEX];
+}
+
 module.exports = CivilianCollegeAgendaSection;
 
-var queryType = require('../../util/query-type');
+var queryType = require('app/util/query-type');

@@ -2,6 +2,8 @@
 
 // http://agenda.csj.md/plen_penal.php
 
+var ROWID_INDEX = 12;
+
 var CriminalPlenumAgendaSection = {
   toString: function() {
     return 'Agenda şedinţelor Plenului Colegiului Penal al CSJ';
@@ -42,11 +44,6 @@ var CriminalPlenumAgendaSection = {
 
       return searchOptions;
     }
-  },
-
-  rowPreprocessor: function addPdfUrl(row, rowId) {
-    row.pdfUrl = 'http://agenda.csj.md/pdf_creator_plen_penal.php?id=' + rowId;
-    return row;
   },
 
   columns: [
@@ -91,14 +88,26 @@ var CriminalPlenumAgendaSection = {
       'index': 10,
       'show': true
     }, {
+      'title': 'Data publicării',
+      'index': 11,
+      'show': false
+    }, {
+      'title': 'ROWID',
+      'index': ROWID_INDEX,
+      'used': true
+    }, {
       'title': 'PDF',
-      'index': 'pdfUrl',
-      'link': true,
+      'getPDFURL': getPDFURL,
       'show': true
     }
   ]
 };
 
+function getPDFURL(row) {
+  return 'http://agenda.csj.md/pdf_creator_plen_penal.php?id=' + row[ROWID_INDEX];
+}
+
+
 module.exports = CriminalPlenumAgendaSection;
 
-var queryType = require('../../util/query-type');
+var queryType = require('app/util/query-type');

@@ -1,4 +1,4 @@
-<% _(results).each(function(client) { %>
+<% _(changes).each(function(client) { %>
   <h2><%= client.label %></h2>
 
   <% _(client.results).each(function(level) { %>
@@ -12,7 +12,7 @@
           <tr>
             <th style="<%= css.th %>">#</th>
 
-            <% _(section.results.columns).each(function(column) { %>
+            <% _(sectionColumns[section.label]).each(function(column) { %>
               <% if (column.show) { columnCount++ %>
                 <th style="<%= css.th %>"><%= column.title %></th>
               <% } %>
@@ -22,20 +22,26 @@
 
         <tbody>
           <% _(section.results).each(function(court) { %>
-            <% _(court.results).each(function(row) { %>
+            <% _(court.results).each(function(row) { row = JSON.parse(row); %>
               <% if (recordCount <= MAX_ROWS_PER_SECTION) { %>
                 <tr>
                   <td style="<%= css.td %>"><%= recordCount %></td>
-                  <% _(section.results.columns).each(function(column) { %>
-                    <% if (column.show) { %>
-                      <% if (column.link) { %>
-                        <td style="<%= css.td %>">
-                          <a href="<%= row[column.index] %>"><%= column.title %></a>
-                        </td>
-                      <% } else { %>
-                        <td style="<%= css.td %>"> <%= row[column.index].trim() %> </td>
+                  <% _(sectionColumns[section.label]).each(function(column) { %>
+                    <td style="<%= css.td %>">
+                    <% if ('index' in column) { %>
+                      <%= row[column.index].trim() %>
+                    <% } else { %>
+                      <% if (column.title === 'PDF') { %>
+                        <a href="<%= column.getPDFURL(row, court.label) %>"><%= column.title %></a>
+                      <% } else if (column.title === 'Instanţa') { %>
+                        <%= courts.getName(court.label) %>
+                      <% } else if (column.title === 'Persoana vizată') { %>
+                        <%= column.getName(row, court.label) %>
+                      <% } else if (column.title === 'Calitatea procesuală') { %>
+                        <%= column.getRole(row, court.label) %>
                       <% } %>
                     <% } %>
+                    </td>
                   <% }) %>
                 </tr>
               <% }; recordCount++ %>

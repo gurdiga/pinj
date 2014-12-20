@@ -1,61 +1,83 @@
 'use strict';
 
-var Data = {};
+module.exports.get = get;
+module.exports.set = set;
+module.exports.getLastChildOf = getLastChildOf;
 
-Data.get = function(path) {
-  return authenticate.then(function() {
-    return Q.Promise(function(resolve, reject) {
-      ref.child(path).once('value', onSuccess, onCancel);
+function get(path) {
+  return authenticated(function(resolve, reject) {
+    ref.child(path).once('value', onSuccess, onCancel);
 
-      function onSuccess(snapshot) {
-        resolve(snapshot.val());
-      }
+    function onSuccess(snapshot) {
+      resolve(snapshot.val());
+    }
 
-      function onCancel(error) {
-        reject(error);
-      }
-    });
+    function onCancel(error) {
+      reject(error);
+    }
   });
-};
+}
 
-Data.set = function(path, value) {
-  return authenticate.then(function() {
-    return Q.Promise(function(resolve, reject) {
-      ref.child(path).set(value, onComplete);
+function set(path, value) {
+  if (value === 'CURRENT_TIMESTAMP') value = Firebase.ServerValue.TIMESTAMP;
 
-      function onComplete(error) {
-        if (error) reject(error);
-        else resolve();
-      }
-    });
+  return authenticated(function(resolve, reject) {
+    ref.child(path).set(value, onComplete);
+
+    function onComplete(error) {
+      if (!error) resolve();
+      else reject(error);
+    }
   });
-};
+}
+
+function getLastChildOf(path) {
+  return authenticated(function(resolve, reject) {
+    ref.child(path).limitToLast(1).once('value', onSuccess, onCancel);
+
+    function onSuccess(snapshot) {
+      var pair = snapshot.val();
+
+      if (!pair) return resolve({});
+
+      var key = Object.keys(pair)[0];
+      var value = pair[key];
+      resolve(value);
+    }
+
+    function onCancel(error) {
+      reject(error);
+    }
+  });
+}
+
+function authenticated(f) {
+  return authenticate.then(function() {
+    return Q.Promise(f);
+  });
+}
 
 var authenticate;
 var ref;
 
 function main() {
   ref = new Firebase('https://pinj-dev.firebaseio.com');
+
   authenticate = Q.Promise(function(resolve, reject) {
     var tokenGenerator = new FirebaseTokenGenerator(secrets.PINJ_FIREBASE_SECRET);
     var token = tokenGenerator.createToken({
+      uid: '1',
       isSearchEngine: true
     });
 
-    ref.auth(token, onAuthComplete, onAuthCanceled);
+    ref.authWithCustomToken(token, onComplete);
 
-    function onAuthComplete(err) {
-      if (err) reject(err);
-      else resolve();
-    }
-
-    function onAuthCanceled(err) {
-      reject(err);
+    function onComplete(error) {
+      if (!error) resolve();
+      else reject(error);
     }
   });
 }
-
-module.exports = Data;
 
 var Q = require('q');
 var Firebase = require('firebase');

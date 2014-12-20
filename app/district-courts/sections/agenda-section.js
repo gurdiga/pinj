@@ -5,11 +5,11 @@ var AgendaSection = {
     return 'Agenda şedinţelor';
   },
 
-  subsectionNames: courtIds(),
+  subsectionNames: courtLabels(),
 
-  getAPIRequestParams: function(courtId, clientName) {
+  getAPIRequestParams: function(courtLabel, clientName) {
     return {
-      url: 'http://instante.justice.md/apps/agenda_judecata/inst/' + courtId + '/agenda_grid.php',
+      url: 'http://instante.justice.md/apps/agenda_judecata/inst/' + courtLabel + '/agenda_grid.php',
       searchOptions: getSearchOptions(clientName)
     };
 
@@ -42,11 +42,6 @@ var AgendaSection = {
     }
   },
 
-  rowPreprocessor: function addCourtName(row, rowId, courtId) {
-    row.courtName = Courts.getName(courtId);
-    return row;
-  },
-
   columns: [
     {
       'title': 'Părţile dosarului',
@@ -62,7 +57,6 @@ var AgendaSection = {
       'show': true
     }, {
       'title': 'Instanţa',
-      'index': 'courtName',
       'show': true
     }, {
       'title': 'Sala şedinţei',
@@ -92,14 +86,13 @@ var AgendaSection = {
   ]
 };
 
-module.exports = AgendaSection;
-
-var Courts = require('../courts');
-var queryType = require('../../util/query-type');
-
-function courtIds() {
+function courtLabels() {
   var Courts = require('../courts');
   var _ = require('underscore');
 
   return _(Courts.getIds()).without('jslb');
 }
+
+module.exports = AgendaSection;
+
+var queryType = require('app/util/query-type');

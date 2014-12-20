@@ -81,4 +81,4 @@ var CaseInquirySection = {
 
 module.exports = CaseInquirySection;
 
-var queryType = require('../../util/query-type');
+var queryType = require('app/util/query-type');

@@ -8,8 +8,8 @@ Courts.getIds = function() {
   return _(list).keys();
 };
 
-Courts.getName = function(courtId) {
-  return list[courtId];
+Courts.getName = function(courtLabel) {
+  return list[courtLabel];
 };
 
 var list = {

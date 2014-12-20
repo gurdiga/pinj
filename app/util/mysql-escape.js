@@ -14,7 +14,6 @@
 // Thanks to felixge/node-mysql for this function; I have stripped it to only
 // hanlde strings.
 module.exports = function(val) {
-  /*jshint maxcomplexity:7 */
   val = val.replace(/[\0\n\r\b\t\\\'\"\x1a]/g, function(s) {
     switch(s) {
       case '\0': return '\\0';

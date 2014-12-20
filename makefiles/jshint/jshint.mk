@@ -1,7 +1,5 @@
-jshint: makefiles/jshint/jshintrc.json
+JSON_FILES = secrets.json secrets.json.example
+JSHINT_FILES = $(JSON_FILES) $(shell find app -name '*.js' -or -name '*.json' | sort)
 
-makefiles/jshint/jshintrc.json: $(JSHINT_FILES)
-	@clear; jshint -c $@ $? && touch $@
-
-jshint-force:
-	@clear; jshint -c makefiles/jshint/jshintrc.json $(JSHINT_FILES)
+jshint:
+	@jshint -c makefiles/jshint/jshintrc.json $(JSHINT_FILES)

@@ -5,11 +5,11 @@ var SentenceSection = {
     return 'Hotărîrile instanţei';
   },
 
-  subsectionNames: courtIds(),
+  subsectionNames: courtLabels(),
 
-  getAPIRequestParams: function(courtId, clientName) {
+  getAPIRequestParams: function(courtLabel, clientName) {
     return {
-      url: 'http://instante.justice.md/apps/hotariri_judecata/inst/' + courtId + '/db_hot_grid.php',
+      url: 'http://instante.justice.md/apps/hotariri_judecata/inst/' + courtLabel + '/db_hot_grid.php',
       searchOptions: getSearchOptions(clientName)
     };
 
@@ -42,20 +42,11 @@ var SentenceSection = {
     }
   },
 
-  rowPreprocessor: function addPdfUrl(row, rowId, courtId) {
-    var pdfUrlFormat = 'http://instante.justice.md/apps/hotariri_judecata/inst/%s/%s';
-    var pdfLink = row[0];
-    var hrefRegExp = /a href="([^"]+)"/;
-
-    if (hrefRegExp.test(pdfLink)) {
-      var relativePdfUrl = pdfLink.match(hrefRegExp)[1];
-      row.pdfUrl = format(pdfUrlFormat, courtId, relativePdfUrl);
-    }
-
-    return row;
-  },
-
   columns: [{
+      'title': 'relative PDF link',
+      'index': 0,
+      'used': true
+    }, {
       'title': 'Denumirea dosarului',
       'index': 3,
       'show': true
@@ -65,13 +56,8 @@ var SentenceSection = {
       'show': true
     }, {
       'title': 'PDF',
-      'index': 'pdfUrl',
-      'link': true,
+      'getPDFURL': getPDFURL,
       'show': true
-    }, {
-      'title': 'SKIP',
-      'index': 0,
-      'show': false
     }, {
       'title': 'Data pronunţării',
       'index': 1,
@@ -81,21 +67,31 @@ var SentenceSection = {
       'index': 4,
       'show': false
     }, {
-      'title': 'SKIP',
+      'title': 'ROWID',
       'index': 5,
       'show': false
     }
   ]
 };
 
-module.exports = SentenceSection;
+var hrefRegExp = /a href="([^"]+)"/;
+var pdfUrlFormat = 'http://instante.justice.md/apps/hotariri_judecata/inst/%s/%s';
 
-var format = require('util').format;
-var queryType = require('../../util/query-type');
+function getPDFURL(row, courtLabel) {
+  var pdfLink = row[0];
+  var relativePdfUrl = pdfLink.match(hrefRegExp)[1];
 
-function courtIds() {
+  return format(pdfUrlFormat, courtLabel, relativePdfUrl);
+}
+
+function courtLabels() {
   var Courts = require('../courts');
   var _ = require('underscore');
 
   return _(Courts.getIds()).without('jslb');
 }
+
+module.exports = SentenceSection;
+
+var format = require('util').format;
+var queryType = require('app/util/query-type');

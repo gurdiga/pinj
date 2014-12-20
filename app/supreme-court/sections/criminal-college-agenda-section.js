@@ -2,6 +2,8 @@
 
 // http://agenda.csj.md/penal.php
 
+var ROWID_INDEX = 13;
+
 var CriminalCollegeAgendaSection = {
   toString: function() {
     return 'Agenda şedinţelor Colegiului Penal al CSJ';
@@ -11,7 +13,7 @@ var CriminalCollegeAgendaSection = {
 
   getAPIRequestParams: function(subsectionName, clientName) {
     return {
-      url: 'http://agenda.csj.md/plen_penal_grid.php',
+      url: 'http://agenda.csj.md/penal_grid.php',
       searchOptions: getSearchOptions(clientName)
     };
 
@@ -42,11 +44,6 @@ var CriminalCollegeAgendaSection = {
 
       return searchOptions;
     }
-  },
-
-  rowPreprocessor: function addPdfUrl(row, rowId) {
-    row.pdfUrl = 'http://agenda.csj.md/pdf_creator_plen_penal.php?id=' + rowId;
-    return row;
   },
 
   columns: [
@@ -83,22 +80,37 @@ var CriminalCollegeAgendaSection = {
       'index': 8,
       'show': true
     }, {
-      'title': 'Procedura',
+      'title': 'Numărul completului',
       'index': 9,
       'show': true
     }, {
-      'title': 'Rezultatul examinării',
+      'title': 'Procedura',
       'index': 10,
       'show': true
     }, {
+      'title': 'Rezultatul examinării',
+      'index': 11,
+      'show': true
+    }, {
+      'title': 'Data publicării',
+      'index': 12,
+      'show': true
+    }, {
+      'title': 'ROWID',
+      'index': ROWID_INDEX,
+      'used': true
+    }, {
       'title': 'PDF',
-      'index': 'pdfUrl',
-      'link': true,
+      'getPDFURL': getPDFURL,
       'show': true
     }
   ]
 };
 
+function getPDFURL(row) {
+  return 'http://agenda.csj.md/pdf_creator_penal.php?id=' + row[ROWID_INDEX];
+}
+
 module.exports = CriminalCollegeAgendaSection;
 
-var queryType = require('../../util/query-type');
+var queryType = require('app/util/query-type');

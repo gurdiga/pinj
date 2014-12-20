@@ -2,6 +2,8 @@
 
 // http://jurisprudenta.csj.md/db_col_penal.php
 
+var ROWID_INDEX = 7;
+
 var CriminalCollegeSentenceSection = {
   toString: function() {
     return 'Hotărîrile Colegiului Penal al CSJ';
@@ -44,18 +46,13 @@ var CriminalCollegeSentenceSection = {
     }
   },
 
-  rowPreprocessor: function addPdfUrl(row, rowId) {
-    row.pdfUrl = 'http://jurisprudenta.csj.md/search_col_penal.php?id=' + rowId;
-    return row;
-  },
-
   columns: [
     {
       'title': 'Numărul dosarului',
       'index': 1,
       'show': true
     }, {
-      'title': 'Data',
+      'title': 'Data pronunţării',
       'index': 2,
       'show': true
     }, {
@@ -71,14 +68,26 @@ var CriminalCollegeSentenceSection = {
       'index': 5,
       'show': true
     }, {
+      'title': 'Procedura',
+      'index': 6,
+      'show': true
+    }, {
+      'title': 'ROWID',
+      'index': ROWID_INDEX,
+      'used': true
+    }, {
       'title': 'PDF',
-      'index': 'pdfUrl',
-      'link': true,
+      'getPDFURL': getPDFURL,
       'show': true
     }
   ]
 };
 
+function getPDFURL(row) {
+  return 'http://jurisprudenta.csj.md/search_col_penal.php?id=' + row[ROWID_INDEX];
+}
+
+
 module.exports = CriminalCollegeSentenceSection;
 
-var queryType = require('../../util/query-type');
+var queryType = require('app/util/query-type');

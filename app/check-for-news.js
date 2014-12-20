@@ -1,0 +1,64 @@
+'use strict';
+
+module.exports = checkForNews;
+
+function checkForNews(user) {
+  return first(
+    getPreviousSearchResults(user.aid),
+    getCurrentSearchResults(user.clientList)
+  )
+  .then(sendNewsTo(user))
+  .then(storeCurrentSearchResults(user.aid))
+  .catch(handleErrors);
+}
+
+function first(promise1, promise2) {
+  return Q.allSettled([promise1, promise2])
+  .spread(function(response1, response2) {
+    if (response1.state === 'rejected') throw response1.reason;
+    if (response2.state === 'rejected') throw response2.reason;
+
+    var searchResults = {
+      previous: response1.value,
+      current: response2.value
+    };
+
+    return searchResults;
+  });
+}
+
+function storeCurrentSearchResults(aid) {
+  return function(results) {
+    return SearchHistory.add(aid, results);
+  };
+}
+
+function sendNewsTo(user) {
+  return function(searchResults) {
+    if (process.env.NODE_ENV === 'import') return searchResults.current;
+
+    return new Q(findNews(searchResults))
+    .then(prepareEmailBodies)
+    .then(sendEmail(user.email, 'Monitorul PINJ: informaţii despre clienţi'))
+    .then(forward(searchResults.current));
+  };
+}
+
+function handleErrors(error) {
+  if (error.message === 'No news') console.log(error.message);
+  else throw error;
+}
+
+function forward(data) {
+  return function() {
+    return data;
+  };
+}
+
+var Q = require('q');
+var SearchHistory = require('app/search-history');
+var getPreviousSearchResults = SearchHistory.getPreviousResults;
+var getCurrentSearchResults = require('app/get-current-search-results');
+var findNews = require('app/find-news');
+var prepareEmailBodies = require('app/prepare-email-bodies');
+var sendEmail = require('app/send-email');

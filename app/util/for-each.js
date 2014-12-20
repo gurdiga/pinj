@@ -8,15 +8,14 @@ function forEach(items) {
 
   function asyncRun(flowType) {
     return function(thenableIterator, thisObject) {
-      var asyncTasks = prepareAsyncTasks(items, thenableIterator, thisObject);
-      var deferred = Q.defer();
+      return Q.Promise(function(resolve, reject) {
+        var asyncTasks = prepareAsyncTasks(items, thenableIterator, thisObject);
 
-      async[flowType](asyncTasks, function(err, results) {
-        if (err) deferred.reject(err);
-        else deferred.resolve(zip(items, results));
+        async[flowType](asyncTasks, function(err, results) {
+          if (err) reject(err);
+          else resolve(zip(items, results));
+        });
       });
-
-      return deferred.promise;
     };
   }
 

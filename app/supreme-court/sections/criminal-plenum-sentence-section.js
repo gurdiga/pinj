@@ -2,6 +2,8 @@
 
 // http://jurisprudenta.csj.md/db_plen_penal.php
 
+var ROWID_INDEX = 7;
+
 var CriminalPlenumSentenceSection = {
   toString: function() {
     return 'Hotărîrile Plenului Colegiului Penal al CSJ';
@@ -44,11 +46,6 @@ var CriminalPlenumSentenceSection = {
     }
   },
 
-  rowPreprocessor: function addPdfUrl(row, rowId) {
-    row.pdfUrl = 'http://jurisprudenta.csj.md/search_plen_penal.php?id=' + rowId;
-    return row;
-  },
-
   columns: [
     {
       'title': 'Numărul dosarului',
@@ -75,14 +72,21 @@ var CriminalPlenumSentenceSection = {
       'index': 6,
       'show': true
     }, {
+      'title': 'ROWID',
+      'index': ROWID_INDEX,
+      'used': true
+    }, {
       'title': 'PDF',
-      'index': 'pdfUrl',
-      'link': true,
+      'getPDFURL': getPDFURL,
       'show': true
     }
   ]
 };
 
+function getPDFURL(row) {
+  return 'http://jurisprudenta.csj.md/search_plen_penal.php?id=' + row[ROWID_INDEX];
+}
+
 module.exports = CriminalPlenumSentenceSection;
 
-var queryType = require('../../util/query-type');
+var queryType = require('app/util/query-type');

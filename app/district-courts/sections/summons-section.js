@@ -42,34 +42,14 @@ var SummonsSection = {
     }
   },
 
-  rowPreprocessor: function addRoleAndName(row, rowId, fieldName) {
-    var name, role;
-
-    var accuser = row[6];
-    var culprit = row[4];
-
-    if (fieldName === 'persoana_citata') {
-      name = culprit;
-      role = 'pîrît';
-    } else {
-      name = accuser;
-      role = 'reclamant';
-    }
-
-    row.name = name;
-    row.role = role;
-
-    return row;
-  },
-
   columns: [
     {
       'title': 'Persoana vizată',
-      'index': 'name',
+      'getName': getName,
       'show': true
     }, {
       'title': 'Calitatea procesuală',
-      'index': 'role',
+      'getRole': getRole,
       'show': true
     }, {
       'title': 'Data şedinţei',
@@ -98,11 +78,11 @@ var SummonsSection = {
     }, {
       'title': 'Pîrît',
       'index': 4,
-      'show': false
+      'used': true
     }, {
       'title': 'Reclamant',
       'index': 6,
-      'show': false
+      'used': true
     }, {
       'title': 'Judecător',
       'index': 8,
@@ -123,6 +103,25 @@ var SummonsSection = {
   ]
 };
 
+function getName(row, fieldName) {
+  var accuser = row[6];
+  var culprit = row[4];
+
+  if (fieldName === 'persoana_citata') {
+    return culprit;
+  } else {
+    return accuser;
+  }
+}
+
+function getRole(row, fieldName) {
+  if (fieldName === 'persoana_citata') {
+    return 'pîrît';
+  } else {
+    return 'reclamant';
+  }
+}
+
 module.exports = SummonsSection;
 
-var queryType = require('../../util/query-type');
+var queryType = require('app/util/query-type');

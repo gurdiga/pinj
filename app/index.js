@@ -1,54 +1,45 @@
 'use strict';
 
 function main() {
-  ClientLists.get()
-  .then(function(users) {
-    return forEach(users).inSeries(function(user) {
-      if (user.isPayer || user.isTrial) {
-        return time(Inquirer.inquireAbout(user.clientList)
-        .then(function(results) {
-          return Curator.curate(results).for(user.email);
-        })
-        .then(function(results) {
-          return EmailFormatter.formatAsHTML(results);
-        })
-        .then(function(htmlContent) {
-          return EmailSender.send(user.email, 'Monitorul PINJ: informaţii despre clienţi', htmlContent);
-        })
-        .catch(function(error) {
-          if (error.message === 'No news') console.log(error.message);
-          else throw error;
-        }), user.email);
-      } else {
-        if (user.clientList.length > 0) {
-          return time(PaymentOverdueNotifier.notify(user.aid)
-          .then(function(htmlContent) {
-            return EmailSender.send(user.email, 'Monitorul PINJ: a expirat abonamentul', htmlContent);
-          }), user.email + ' - payment overdue');
-        }
-      }
-    });
-  })
-  .catch(logTheErrorAndExit)
+  getUserList()
+  .then(processUsers)
+  .catch(logErrorAndExitWithErrorStatus)
   .then(exitEndingFirebaseConnection);
+}
+
+function processUsers(users) {
+  return forEach(users).inSeries(processUser);
+}
+
+function processUser(user) {
+  var action;
+
+  if (user.clientList.length === 0) action = skip('. empty client list');
+  else if (user.isPayer || user.isTrial) action = checkForNews(user);
+  else action = sendPaymentOverdueNotification(user); // TODO: is this if needed? would it just work with an else?
+
+  return time(action, user.email);
 }
 
 function exitEndingFirebaseConnection() {
   process.exit(0);
 }
 
-function logTheErrorAndExit(error) {
+function logErrorAndExitWithErrorStatus(error) {
   console.error('Oh my! I’ve got an error!', error.stack);
   process.exit(1);
 }
 
-var time = require('./util/time');
-var forEach = require('./util/for-each');
-var ClientLists = require('./client-lists');
-var Inquirer = require('./inquirer');
-var Curator = require('./curator');
-var EmailFormatter = require('./email-formatter');
-var EmailSender = require('./email-sender');
-var PaymentOverdueNotifier = require('./payment-overdue-notifier');
+function skip(label) {
+  console.log(label);
+  return new Q();
+}
+
+var time = require('app/util/time');
+var forEach = require('app/util/for-each');
+var getUserList = require('app/get-user-lists');
+var checkForNews = require('app/check-for-news');
+var sendPaymentOverdueNotification = require('app/send-payment-overdue-notification');
+var Q = require('q');
 
 main();

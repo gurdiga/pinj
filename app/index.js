@@ -1,10 +1,26 @@
 'use strict';
 
 function run() {
-  getUserList()
+  assertEnvironmentVariables()
+  .then(getUserList)
   .then(processUsers)
   .catch(logErrorAndExitWithErrorStatus)
   .then(exitEndingFirebaseConnection);
+}
+
+function assertEnvironmentVariables() {
+  return Q.Promise(function(resolve) {
+    [
+      'PINJ_FIREBASE_SECRET',
+      'SMTP_HOST',
+      'SMTP_PORT',
+      'SMTP_USER',
+      'SMTP_PASS'
+    ].forEach(function(variable) {
+      assert(process.env[variable], variable + ' variable is expected to exist in the environment');
+      resolve();
+    });
+  });
 }
 
 function processUsers(users) {
@@ -41,6 +57,7 @@ var getUserList = require('app/get-user-lists');
 var checkForNews = require('app/check-for-news');
 var sendPaymentOverdueNotification = require('app/send-payment-overdue-notification');
 var Q = require('q');
+var assert = require('assert');
 
 
 if (require.main === module) {

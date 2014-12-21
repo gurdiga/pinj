@@ -1,7 +1,8 @@
 'use strict';
 
 module.exports.getPreviousResults = getPreviousResults;
-module.exports.record = record;
+module.exports.recordResults = recordResults;
+module.exports.recordTimestamp = recordTimestamp;
 module.exports.TIMESTAMP_FORMAT = 'yyyy-mm-dd hh:MM:ss';
 
 function getPreviousResults(aid) {
@@ -18,11 +19,17 @@ function getPreviousResults(aid) {
   }
 }
 
-function record(aid, results) {
+function recordResults(aid, results) {
   var date = dateFormat(new Date(), module.exports.TIMESTAMP_FORMAT);
   var path = '/search-history/' + aid + '/' + date;
 
-  return time(Data.set(path, results), '. Storing new search results');
+  return time(Data.set(path, results), '. Recording search results');
+}
+
+function recordTimestamp(aid) {
+  var path = '/data/' + aid + '/timestamps/lastSearch';
+
+  return time(Data.set(path, 'CURRENT_TIMESTAMP'), '. Storing last search timestamp');
 }
 
 var Data = require('./data');

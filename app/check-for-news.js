@@ -8,7 +8,8 @@ function checkForNews(user) {
     getCurrentSearchResults(user.clientList)
   )
   .then(sendNewsTo(user))
-  .then(storeCurrentSearchResults(user.aid))
+  .then(recordSearchResults(user.aid))
+  .then(recordSearchTimestamp(user.aid))
   .catch(handleErrors);
 }
 
@@ -25,12 +26,6 @@ function first(promise1, promise2) {
 
     return searchResults;
   });
-}
-
-function storeCurrentSearchResults(aid) {
-  return function(results) {
-    return SearchHistory.record(aid, results);
-  };
 }
 
 function sendNewsTo(user) {
@@ -52,6 +47,18 @@ function handleErrors(error) {
 function forward(data) {
   return function() {
     return data;
+  };
+}
+
+function recordSearchResults(aid) {
+  return function(results) {
+    return SearchHistory.recordResults(aid, results);
+  };
+}
+
+function recordSearchTimestamp(aid) {
+  return function() {
+    return SearchHistory.recordTimestamp(aid);
   };
 }
 

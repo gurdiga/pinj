@@ -86,5 +86,5 @@ function main() {
 var Q = require('q');
 var Firebase = require('firebase');
 var FirebaseTokenGenerator = require('firebase-token-generator');
-var secrets = require('../secrets');
+var secrets = require('app/secrets');
 main();

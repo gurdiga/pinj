@@ -39,5 +39,5 @@ function getTransport() {
 var nodemailer = require('nodemailer');
 var Q = require('q');
 Q.longStackSupport = true;
-var secrets = require('../secrets');
+var secrets = require('app/secrets');
 var time = require('app/util/time');

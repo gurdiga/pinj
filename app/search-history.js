@@ -1,23 +1,23 @@
 'use strict';
 
 module.exports.getPreviousResults = getPreviousResults;
-module.exports.add = add;
+module.exports.record = record;
 module.exports.TIMESTAMP_FORMAT = 'yyyy-mm-dd hh:MM:ss';
 
 function getPreviousResults(aid) {
   var path = '/search-history/' + aid;
 
   return time(Data.getLastChildOf(path), '. Getting previous search results')
-  .then(defaultTo({}));
+  .then(defaultTo([]));
 
-  function defaultTo(value) {
+  function defaultTo(defaultValue) {
     return function(searchResults) {
-      return searchResults || value;
+      return searchResults.value || defaultValue;
     };
   }
 }
 
-function add(aid, results) {
+function record(aid, results) {
   var date = dateFormat(new Date(), module.exports.TIMESTAMP_FORMAT);
   var path = '/search-history/' + aid + '/' + date;
 

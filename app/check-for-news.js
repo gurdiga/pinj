@@ -29,7 +29,7 @@ function first(promise1, promise2) {
 
 function storeCurrentSearchResults(aid) {
   return function(results) {
-    return SearchHistory.add(aid, results);
+    return SearchHistory.record(aid, results);
   };
 }
 

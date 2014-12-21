@@ -42,7 +42,11 @@ function getLastChildOf(path) {
 
       var key = Object.keys(pair)[0];
       var value = pair[key];
-      resolve(value);
+
+      resolve({
+        'key': key,
+        'value': value
+      });
     }
 
     function onCancel(error) {

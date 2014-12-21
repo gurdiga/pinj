@@ -1,6 +1,6 @@
 'use strict';
 
-function main() {
+function run() {
   getUserList()
   .then(processUsers)
   .catch(logErrorAndExitWithErrorStatus)
@@ -42,4 +42,9 @@ var checkForNews = require('app/check-for-news');
 var sendPaymentOverdueNotification = require('app/send-payment-overdue-notification');
 var Q = require('q');
 
-main();
+
+if (require.main === module) {
+  run();
+} else {
+  module.exports.run = run;
+}

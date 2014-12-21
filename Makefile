@@ -4,8 +4,11 @@ SHELL = /bin/sh
 
 default: jshint test
 
+import: jshint
+	@NODE_ENV=import node .
+
 run: jshint
-	@NODE_ENV=development node app
+	@NODE_ENV=development node .
 
 test:
 	@mocha --recursive test

@@ -3,8 +3,9 @@
 module.exports = getUserList;
 
 function getUserList() {
-  return time(Data.get('/data'), 'Getting user data')
-  .then(prepareForSearch);
+  return time(Data.get('/data'), 'Getting user list')
+  .then(prepareForSearch)
+  .then(checkIfThereIsAnythingToSearch);
 }
 
 function prepareForSearch(users) {
@@ -12,6 +13,11 @@ function prepareForSearch(users) {
   .map(prepareUserData)
   .filter(notYetServedToday)
   .filter(accountForDevelopmentMode);
+}
+
+function checkIfThereIsAnythingToSearch(users) {
+  if (users.length === 0) console.log('. all users have already been served today');
+  return users;
 }
 
 function prepareUserData(data, aid) {

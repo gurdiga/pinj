@@ -29,7 +29,7 @@ function recordResults(aid, results) {
 function recordTimestamp(aid) {
   var path = '/data/' + aid + '/timestamps/lastSearch';
 
-  return time(Data.set(path, 'CURRENT_TIMESTAMP'), '. Storing last search timestamp');
+  return time(Data.set(path, 'CURRENT_TIMESTAMP'), '. Recording last search timestamp');
 }
 
 var Data = require('app/util/data');

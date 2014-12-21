@@ -16,7 +16,7 @@ function processUser(user) {
 
   if (user.clientList.length === 0) action = skip('. empty client list');
   else if (user.isPayer || user.isTrial) action = checkForNews(user);
-  else action = sendPaymentOverdueNotification(user); // TODO: is this if needed? would it just work with an else?
+  else action = sendPaymentOverdueNotification(user);
 
   return time(action, user.email);
 }
@@ -30,8 +30,8 @@ function logErrorAndExitWithErrorStatus(error) {
   process.exit(1);
 }
 
-function skip(label) {
-  console.log(label);
+function skip(reason) {
+  console.log(reason);
   return new Q();
 }
 

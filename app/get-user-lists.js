@@ -38,6 +38,7 @@ function prepareUserData(data, aid) {
 }
 
 function notYetServedToday(user) {
+  if (process.env.NODE_ENV === 'import') return true;
   if (!user.lastSearch) return true;
 
   var lastSearchDate = new Date(user.lastSearch).getDate();

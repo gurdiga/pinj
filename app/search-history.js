@@ -8,12 +8,13 @@ function getPreviousResults(aid) {
   var path = '/search-history/' + aid;
 
   return time(Data.getLastChildOf(path), '. Getting previous search results')
-  .then(defaultTo([]));
+  .then(extractResultsAndTimestamp);
 
-  function defaultTo(defaultValue) {
-    return function(searchResults) {
-      return searchResults.value || defaultValue;
-    };
+  function extractResultsAndTimestamp(pair) {
+    var searchResults = pair.value || [];
+    searchResults.timestamp = pair.key;
+
+    return searchResults;
   }
 }
 

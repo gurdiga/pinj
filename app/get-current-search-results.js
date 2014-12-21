@@ -118,5 +118,5 @@ var forEach = require('app/util/for-each');
 var queryAPI = require('app/util/query-api');
 var escapeQuotes = require('app/util/mysql-escape');
 var time = require('app/util/time');
-var sectionColumns = require('app/util/get-section-columns')();
+var sectionColumns = require('app/util/get-useful-section-columns')();
 var _ = require('underscore');

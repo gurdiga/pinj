@@ -12,7 +12,7 @@ function prepareEmailBodies(changes) {
 }
 
 function formatAsHTML(changes) {
-  var displayableColumns = getSectionColumns(function(column) {
+  var displayableColumns = getUsefulSectionColumns(function(column) {
     return column.show;
   });
 
@@ -46,7 +46,7 @@ function prepareCSS() {
     .value();
 }
 
-var getSectionColumns = require('app/util/get-section-columns');
+var getUsefulSectionColumns = require('app/util/get-useful-section-columns');
 var Courts = require('app/district-courts/courts');
 var _ = require('underscore');
 var fs = require('fs');

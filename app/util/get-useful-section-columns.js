@@ -1,9 +1,9 @@
 'use strict';
 
-module.exports = getSectionColumns;
+module.exports = getUsefulSectionColumns;
 
-function getSectionColumns(filter) {
-  filter = filter || function noop() { return true; };
+function getUsefulSectionColumns(customFilter) {
+  customFilter = customFilter || function noop() { return true; };
 
   var columns = {};
   var levels = [
@@ -14,7 +14,7 @@ function getSectionColumns(filter) {
   levels.forEach(function(sections) {
     sections.forEach(function(section) {
       columns[section.toString()] = section.columns
-      .filter(filter)
+      .filter(customFilter)
       .filter(function(column) {
         return column.show || column.used;
       });

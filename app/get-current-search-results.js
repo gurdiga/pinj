@@ -77,7 +77,6 @@ function deleteUnusedColumns(results) {
 }
 
 function deleteUnusedCells(section) {
-  var sectionColumns = getSectionColumns();
   var usedColumns = getUsedColumnIndexes(sectionColumns[section.label]);
 
   return function(row) {
@@ -119,5 +118,5 @@ var forEach = require('app/util/for-each');
 var queryAPI = require('app/util/query-api');
 var escapeQuotes = require('app/util/mysql-escape');
 var time = require('app/util/time');
-var getSectionColumns = require('app/util/get-section-columns');
+var sectionColumns = require('app/util/get-section-columns')();
 var _ = require('underscore');

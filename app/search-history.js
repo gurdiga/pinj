@@ -32,6 +32,6 @@ function recordTimestamp(aid) {
   return time(Data.set(path, 'CURRENT_TIMESTAMP'), '. Storing last search timestamp');
 }
 
-var Data = require('./data');
-var time = require('./util/time');
+var Data = require('app/util/data');
+var time = require('app/util/time');
 var dateFormat = require('dateformat');

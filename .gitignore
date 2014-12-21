@@ -1,2 +1,5 @@
 secrets.json
 node_modules/
+
+# quick experiments
+?.js

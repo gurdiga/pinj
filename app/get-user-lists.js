@@ -10,6 +10,7 @@ function getUserList() {
 function prepareForSearch(users) {
   return _(users)
   .map(prepareUserData)
+  .filter(notYetServedToday)
   .filter(accountForDevelopmentMode);
 }
 
@@ -19,6 +20,7 @@ function prepareUserData(data, aid) {
   user.clientList = prepareClientList(data.clients);
   user.email = emailFromAID(aid);
   user.aid = aid;
+  user.lastSearch = data.timestamps.lastSearch;
   user.toString = function() {
     return user.email;
   };
@@ -27,6 +29,15 @@ function prepareUserData(data, aid) {
   else if (isPayer(data.timestamps.lastPayment)) user.isPayer = true;
 
   return user;
+}
+
+function notYetServedToday(user) {
+  if (!user.lastSearch) return true;
+
+  var lastSearchDate = new Date(user.lastSearch).getDate();
+  var todayDate = new Date().getDate();
+
+  return lastSearchDate !== todayDate;
 }
 
 function accountForDevelopmentMode(user) {

@@ -47,15 +47,15 @@ function extractRows(result) {
 }
 
 function removeEmptySearchResults(items) {
-  var emptyItems = [];
+  var emptyItemIndexes = [];
 
   items.forEach(function(item, i) {
     if (!('results' in item)) return;
     if (item.results.length > 0) removeEmptySearchResults(item.results);
-    if (item.results.length === 0) emptyItems.push(i);
+    if (item.results.length === 0) emptyItemIndexes.push(i);
   });
 
-  emptyItems.reverse().forEach(function(i) {
+  emptyItemIndexes.reverse().forEach(function(i) {
     items.splice(i, 1);
   });
 

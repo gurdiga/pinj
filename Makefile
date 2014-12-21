@@ -2,6 +2,8 @@ SHELL = /bin/sh
 .SHELLFLAGS := -e
 .ONESHELL:
 
+-include app/.env
+
 default: jshint test
 
 import: jshint

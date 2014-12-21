@@ -1,4 +1,4 @@
-app/secrets.json
+app/.env
 node_modules/
 
 # quick experiments

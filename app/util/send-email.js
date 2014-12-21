@@ -23,11 +23,11 @@ function sendEmail(email, subject) {
 
 function getTransport() {
   var transportOptions = {
-    'host': secrets.SMTP_HOST,
-    'port': secrets.SMTP_PORT,
+    'host': process.env.SMTP_HOST,
+    'port': process.env.SMTP_PORT,
     auth: {
-      user: secrets.SMTP_USER,
-      pass: secrets.SMTP_PASS
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS
     }
   };
 
@@ -39,5 +39,4 @@ function getTransport() {
 var nodemailer = require('nodemailer');
 var Q = require('q');
 Q.longStackSupport = true;
-var secrets = require('app/secrets');
 var time = require('app/util/time');

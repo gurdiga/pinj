@@ -68,4 +68,4 @@ var getPreviousSearchResults = SearchHistory.getPreviousResults;
 var getCurrentSearchResults = require('app/get-current-search-results');
 var findNews = require('app/find-news');
 var prepareEmailBodies = require('app/prepare-news-email-bodies');
-var sendEmail = require('app/send-email');
+var sendEmail = require('app/util/send-email');

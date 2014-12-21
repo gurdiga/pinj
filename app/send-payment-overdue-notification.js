@@ -44,4 +44,4 @@ function handleErrors(error) {
 
 var fs = require('fs');
 var Data = require('app/util/data');
-var sendEmail = require('app/send-email');
+var sendEmail = require('app/util/send-email');

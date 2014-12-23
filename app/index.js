@@ -32,7 +32,7 @@ function processUsers(users) {
 }
 
 function logSuccessfulEnd() {
-  console.log('. successful end');
+  console.log('. Happy end!');
 }
 
 function rethrowError(error) {

@@ -1,11 +1,13 @@
 'use strict';
 
+require('newrelic');
+
 function run() {
   assertEnvironmentVariables()
   .then(getUserList)
   .then(processUsers)
-  .catch(logErrorAndExitWithErrorStatus)
-  .then(exitEndingFirebaseConnection);
+  .then(logSuccessfulEnd)
+  .catch(rethrowError);
 }
 
 function assertEnvironmentVariables() {
@@ -20,11 +22,21 @@ function assertEnvironmentVariables() {
       assert(process.env[variable], variable + ' variable is expected to exist in the environment');
       resolve();
     });
+
+    console.log('Starting pinj-serch-engine in “' + process.env.NODE_ENV + '” mode');
   });
 }
 
 function processUsers(users) {
   return forEach(users).inSeries(processUser);
+}
+
+function logSuccessfulEnd() {
+  console.log('. successful end');
+}
+
+function rethrowError(error) {
+  throw error;
 }
 
 function processUser(user) {
@@ -35,15 +47,6 @@ function processUser(user) {
   else action = sendPaymentOverdueNotification(user);
 
   return time(action, user.email);
-}
-
-function exitEndingFirebaseConnection() {
-  process.exit(0);
-}
-
-function logErrorAndExitWithErrorStatus(error) {
-  console.error('Oh my! I’ve got an error!', error.stack);
-  process.exit(1);
 }
 
 function skip(reason) {

@@ -1,9 +1,3 @@
-SHELL = /bin/sh
-.SHELLFLAGS := -e
-.ONESHELL:
-
--include app/.env
-
 default: jshint test
 
 import: jshint
@@ -19,7 +13,16 @@ test:
 deps:
 	npm prune && npm install
 
-update:
-	git stash && git pull && git stash pop
+log:
+	@heroku logs --tail
+
+start:
+	@foreman start
+
+config:
+	@heroku config:set $$(cat .env)
 
 include $(shell find makefiles -name '*.mk' | sort)
+
+include .env
+.EXPORT_ALL_VARIABLES:

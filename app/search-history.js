@@ -3,7 +3,7 @@
 module.exports.getPreviousResults = getPreviousResults;
 module.exports.recordResults = recordResults;
 module.exports.recordTimestamp = recordTimestamp;
-module.exports.TIMESTAMP_FORMAT = 'yyyy-mm-dd hh:MM:ss';
+module.exports.TIMESTAMP_FORMAT = 'yyyy-mm-dd HH:MM:ss';
 
 function getPreviousResults(aid) {
   var path = '/search-history/' + aid;

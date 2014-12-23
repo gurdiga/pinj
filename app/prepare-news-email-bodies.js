@@ -26,7 +26,7 @@ function formatAsHTML(changes) {
   };
 
   var templateCode = fs.readFileSync(__dirname + '/email-templates/search-results-template.html._', {encoding: 'utf8'});
-  var html = _.template(templateCode, templateContext);
+  var html = _.template(templateCode)(templateContext);
 
   return html;
 }

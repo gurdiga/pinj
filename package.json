@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "main": "app/index.js",
   "scripts": {
-    "postinstall": "ln --verbose --symbolic --target=node_modules ../app"
+    "postinstall": "ln --force --verbose --symbolic --target=node_modules ../app"
   },
   "engines": {
     "node": "0.10.x"

@@ -68,7 +68,7 @@ function main() {
   ref = new Firebase('https://pinj-dev.firebaseio.com');
 
   authenticate = Q.Promise(function(resolve, reject) {
-    var tokenGenerator = new FirebaseTokenGenerator(process.env.PINJ_FIREBASE_SECRET);
+    var tokenGenerator = new FirebaseTokenGenerator(process.env.FIREBASE_SECRET);
     var token = tokenGenerator.createToken({
       uid: '1',
       isSearchEngine: true

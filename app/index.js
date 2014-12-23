@@ -11,7 +11,7 @@ function run() {
 function assertEnvironmentVariables() {
   return Q.Promise(function(resolve) {
     [
-      'PINJ_FIREBASE_SECRET',
+      'FIREBASE_SECRET',
       'SMTP_HOST',
       'SMTP_PORT',
       'SMTP_USER',

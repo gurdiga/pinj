@@ -1,8 +1,7 @@
 'use strict';
 
 function main() {
-  //new CronJob('0 0-6/* * * *', runSearch).start();
-  new CronJob('0 * * * *', runSearch).start();
+  new CronJob('0 1,3 * * *', runSearch).start();
 }
 
 function runSearch() {

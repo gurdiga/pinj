@@ -1,5 +1,8 @@
 default: jshint test
 
+x:
+	node 1.js
+
 import: jshint
 	@NODE_ENV=import node .
 

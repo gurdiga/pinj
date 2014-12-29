@@ -15,7 +15,8 @@ function getCurrentSearchResults(clientList) {
           var apiRequestParams = section.getAPIRequestParams(subsectionName, escapeQuotes(clientName));
 
           return queryAPI(apiRequestParams)
-          .then(extractRows);
+          .then(extractRows)
+          .then(preprocessRows(section.rowPreprocessor));
         });
       });
     }), '- ' + clientName);
@@ -44,6 +45,13 @@ function extractRows(result) {
     rowData.push(row.id);
     return rowData;
   }
+}
+
+function preprocessRows(rowPreprocessor) {
+  return function(rows) {
+    if (!rowPreprocessor) return rows;
+    else return rows.map(rowPreprocessor);
+  };
 }
 
 function removeEmptySearchResults(items) {

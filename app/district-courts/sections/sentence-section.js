@@ -42,6 +42,19 @@ var SentenceSection = {
     }
   },
 
+  rowPreprocessor: function(row) {
+    var relativePdfUrl = row[0];
+    var caseNo = row[2];
+
+    relativePdfUrl = relativePdfUrl.replace(
+      /case_title=Dosar-[^"&]+/,
+      'case_title=Dosar-' + caseNo
+    );
+
+    row[0] = relativePdfUrl;
+    return row;
+  },
+
   columns: [{
       'title': 'relative PDF link',
       'index': 0,

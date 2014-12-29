@@ -9,7 +9,7 @@ import: jshint
 run: jshint
 	@NODE_ENV=development node .
 
-test:
+test: jshint
 	@mocha --recursive test
 .PHONY: test
 
@@ -19,7 +19,7 @@ deps:
 log:
 	@heroku logs --tail
 
-start:
+start: jshint
 	@foreman start
 
 config:

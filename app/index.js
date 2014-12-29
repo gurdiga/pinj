@@ -2,11 +2,12 @@
 
 require('newrelic');
 
-function run() {
+function main() {
   assertEnvironmentVariables()
   .then(getUserList)
   .then(processUsers)
   .then(logSuccessfulEnd)
+  .then(disconnectFirebase)
   .catch(rethrowError);
 }
 
@@ -33,6 +34,11 @@ function processUsers(users) {
 
 function logSuccessfulEnd() {
   console.log('. Happy end!');
+}
+
+function disconnectFirebase() {
+  // Firebase keeps node hanging.
+  process.exit();
 }
 
 function rethrowError(error) {
@@ -62,9 +68,4 @@ var sendPaymentOverdueNotification = require('app/send-payment-overdue-notificat
 var Q = require('q');
 var assert = require('assert');
 
-
-if (require.main === module) {
-  run();
-} else {
-  module.exports.run = run;
-}
+main();

@@ -1,18 +1,30 @@
 'use strict';
 
+var jobs = [{
+  'schedule': '0 1,3 * * *',
+  'action'  : runSearch
+}];
+
 function main() {
-  new CronJob('0 1,3 * * *', runSearch).start();
+  jobs.forEach(function(job) {
+    new CronJob(job.schedule, job.action, null, true, 'Europe/Chisinau');
+  });
 }
 
 function runSearch() {
-  var emailBodies;
+  var exec = require('child_process').exec;
+  var child = exec('node app');
 
-  try {
-    app.run();
-    notify('Monitorul PINJ: executat cu success', 'Yes.');
-  } catch(error) {
-    console.error(error.stack);
-    notify('Monitorul PINJ: eroare', error.stack);
+  child.stdout.pipe(process.stdout);
+  child.stderr.pipe(process.stderr);
+  child.on('exit', checkExitCode);
+
+  function checkExitCode(code) {
+    if (code === 0) {
+      notify('Monitorul PINJ: executat cu success', 'Yes.');
+    } else {
+      notify('Monitorul PINJ: eroare', code);
+    }
   }
 }
 
@@ -26,7 +38,6 @@ function notify(subject, body) {
 }
 
 var CronJob = require('cron').CronJob;
-var app = require('app');
 var sendEmail = require('app/util/send-email');
 
 main();

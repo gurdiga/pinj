@@ -21,8 +21,7 @@
     "JSONPath": "0.10.0",
     "underscore": "1.7.0",
     "cron": "1.0.5",
-    "time": "0.11.0",
-    "newrelic": "1.14.4"
+    "time": "0.11.0"
   },
   "devDependencies": {
     "mocha": "2.0.1",

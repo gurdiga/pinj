@@ -1,7 +1,5 @@
 'use strict';
 
-require('newrelic');
-
 function main() {
   assertEnvironmentVariables()
   .then(getUserList)

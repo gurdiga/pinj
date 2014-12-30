@@ -1,7 +1,7 @@
 'use strict';
 
 var jobs = [{
-  'schedule': '0 1,3 * * *',
+  'schedule': '10 0 * * *',
   'action'  : runSearch
 }];
 

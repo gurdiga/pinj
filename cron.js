@@ -1,7 +1,7 @@
 'use strict';
 
 var jobs = [{
-  'schedule': '10 0 * * *',
+  'schedule': process.env.SEARCH_SCHEDULE,
   'action'  : runSearch
 }];
 

@@ -13,6 +13,9 @@ test: jshint
 	@mocha --recursive test
 .PHONY: test
 
+deploy:
+	@git push -f heroku
+
 deps:
 	npm prune && npm install
 

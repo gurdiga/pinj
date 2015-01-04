@@ -4,7 +4,6 @@ function main() {
   assertEnvironmentVariables()
   .then(getUserList)
   .then(processUsers)
-  .then(logSuccessfulEnd)
   .then(disconnectFirebase)
   .catch(rethrowError);
 }
@@ -27,11 +26,7 @@ function assertEnvironmentVariables() {
 }
 
 function processUsers(users) {
-  return forEach(users).inSeries(processUser);
-}
-
-function logSuccessfulEnd() {
-  console.log('. Happy end!');
+  return time(forEach(users).inSeries(processUser), '. Happy end!');
 }
 
 function disconnectFirebase() {

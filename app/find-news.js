@@ -10,11 +10,9 @@ function findNews(searchResults) {
       level.results.forEach(function(section) {
         section.results.forEach(function(court) {
           var newRows = getNews(searchResults, client, level, section, court);
-
           if (_.isEmpty(newRows)) return;
 
           var path = preparePath(news, [client.label, level.label, section.label, court.label]);
-
           newRows.forEach(function(row) {
             path.push(row);
           });
@@ -24,8 +22,7 @@ function findNews(searchResults) {
   });
 
   if (_.isEmpty(news)) throw new Error('No news');
-
-  return news;
+  else return news;
 }
 
 function getNews(searchResults, client, level, section, court) {
@@ -36,36 +33,40 @@ function getNews(searchResults, client, level, section, court) {
 }
 
 function getPreviousCourtRows(searchResults, clientLabel, levelLabel, sectionLabel, courtLabel) {
-  var rowSets = jsonPath.eval(searchResults.previous, '$' +
-    '[?(@.label=="' + clientLabel   + '")].results' +
-    '[?(@.label=="' + levelLabel    + '")].results' +
-    '[?(@.label=="' + sectionLabel  + '")].results' +
-    '[?(@.label=="' + courtLabel    + '")].results'
-  );
+  return searchResults.previous
+  .filter(havingLabel(clientLabel )).reduce(collectResults, [])
+  .filter(havingLabel(levelLabel  )).reduce(collectResults, [])
+  .filter(havingLabel(sectionLabel)).reduce(collectResults, [])
+  .filter(havingLabel(courtLabel  )).reduce(collectResults, []);
 
-  return rowSets.reduce(function(allRows, rowSet) {
-    return allRows.concat(rowSet);
-  }, []);
+  function collectResults(collectedResults, item) {
+    return collectedResults.concat(item.results);
+  }
 }
 
-function preparePath(news, steps) {
-  var cursor = news;
+function preparePath(news, labels) {
+  return labels.reduce(function(items, label) {
+    var existingItem = items.filter(havingLabel(label))[0];
 
-  steps.forEach(function(step) {
-    var doesNotExist = _.isEmpty(jsonPath.eval(cursor, '$[?(@.label=="' + step + '")]'));
+    if (existingItem) return existingItem.results;
+    else return appendNewEmptyItem(items, label).results;
+  }, news);
 
-    if (doesNotExist) {
-      cursor.push({
-        'label': step,
-        'results': []
-      });
-    }
+  function appendNewEmptyItem(items, label) {
+    var newItem = {
+      'label': label,
+      'results': []
+    };
 
-    cursor = cursor[cursor.length-1].results;
-  });
+    items.push(newItem);
+    return newItem;
+  }
+}
 
-  return cursor;
+function havingLabel(label) {
+  return function(item) {
+    return item.label === label;
+  };
 }
 
 var _ = require('underscore');
-var jsonPath = require('JSONPath');

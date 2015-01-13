@@ -5,7 +5,7 @@ function main() {
   .then(getUserList)
   .then(processUsers)
   .then(disconnectFirebase)
-  .catch(rethrowError);
+  .catch(logErrorAndExit);
 }
 
 function assertEnvironmentVariables() {
@@ -31,12 +31,13 @@ function processUsers(users) {
 }
 
 function disconnectFirebase() {
-  // Firebase keeps node hanging.
+  // Prevent Firebase from hanging node.
   process.exit();
 }
 
-function rethrowError(error) {
-  throw error;
+function logErrorAndExit(error) {
+  console.error(error.stack);
+  process.exit(1);
 }
 
 function processUser(user) {

@@ -76,7 +76,8 @@ function prepareClientList(list) {
 
   return list.split('\n')
   .map(normalizeSpace)
-  .filter(respectsMinLength(5));
+  .filter(respectsMinLength(5))
+  .filter(uniq);
 
   function normalizeSpace(clientName) {
     return clientName.trim().replace(/\s+/g, ' ');
@@ -86,6 +87,11 @@ function prepareClientList(list) {
     return function(clientName) {
       return clientName.length > minLength;
     };
+  }
+
+  // thanks to http://stackoverflow.com/a/14438954/227167
+  function uniq(v, i, a) {
+    return a.indexOf(v) === i;
   }
 }
 

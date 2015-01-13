@@ -1,4 +1,5 @@
 node_modules/
+heroku.log
 .env
 
 # quick experiments

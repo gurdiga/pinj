@@ -11,7 +11,7 @@ function getUserList() {
 function prepareForSearch(users) {
   return _(users)
   .map(prepareUserData)
-  .filter(notYetServedToday)
+  .filter(notYetServed)
   .filter(accountForDevelopmentMode);
 }
 
@@ -37,14 +37,12 @@ function prepareUserData(data, aid) {
   return user;
 }
 
-function notYetServedToday(user) {
+function notYetServed(user) {
   if (process.env.NODE_ENV === 'import') return true;
   if (!user.lastSearch) return true;
 
-  var lastSearchDate = new Date(user.lastSearch).getDate();
-  var todayDate = new Date().getDate();
-
-  return lastSearchDate !== todayDate;
+  var TIME_BETWEEN_THE_SECOND_RUN = 3600 * 1000;
+  return Date.now() - user.lastSearch > TIME_BETWEEN_THE_SECOND_RUN;
 }
 
 function accountForDevelopmentMode(user) {

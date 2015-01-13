@@ -26,6 +26,7 @@ function assertEnvironmentVariables() {
 }
 
 function processUsers(users) {
+  console.log(users.length);
   return time(forEach(users).inSeries(processUser), '. Happy end!');
 }
 

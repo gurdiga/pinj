@@ -48,7 +48,7 @@ function notYetServedToday(user) {
 }
 
 function accountForDevelopmentMode(user) {
-  if (process.env.NODE_ENV === 'development') return user.email === 'gurdiga@gmail.com';
+  if (process.env.NODE_ENV === 'development') return /gurdiga.*@gmail.com/.test(user.email);
   else return true;
 }
 

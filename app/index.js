@@ -3,25 +3,23 @@
 function main() {
   console.log('Starting pinj-serch-engine in “' + process.env.NODE_ENV + '” mode');
 
-  assertEnvironmentVariables()
-  .then(getUserList)
+  assertEnvironmentVariables();
+
+  return getUserList()
   .then(processUsers)
   .then(disconnectFirebase)
   .catch(logErrorAndExit);
 }
 
 function assertEnvironmentVariables() {
-  return Q.Promise(function(resolve) {
-    [
-      'FIREBASE_SECRET',
-      'SMTP_HOST',
-      'SMTP_PORT',
-      'SMTP_USER',
-      'SMTP_PASS'
-    ].forEach(function(variable) {
-      if (!process.env[variable]) throw new Error(variable + ' variable is expected to exist in the environment');
-      resolve();
-    });
+  [
+    'FIREBASE_SECRET',
+    'SMTP_HOST',
+    'SMTP_PORT',
+    'SMTP_USER',
+    'SMTP_PASS'
+  ].forEach(function(variable) {
+    if (!process.env[variable]) throw new Error(variable + ' variable is expected to exist in the environment');
   });
 }
 

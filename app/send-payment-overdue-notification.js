@@ -3,19 +3,9 @@
 module.exports = sendPaymentOverdueNotification;
 
 function sendPaymentOverdueNotification(user) {
-  return ensureNotAlreadyNotified(user.aid)
-  .then(prepareEmailBodies)
+  return new Q(prepareEmailBodies())
   .then(sendEmail(user.email, 'Monitorul PINJ: a expirat abonamentul'))
-  .then(registerNotification(user.aid))
-  .catch(handleErrors);
-}
-
-function ensureNotAlreadyNotified(aid) {
-  return Data.get(getTimestampPath(aid))
-  .then(function(timestamp) {
-    var alreadyNotified = !!timestamp;
-    if (alreadyNotified) throw new Error('Already notified');
-  });
+  .then(registerNotification(user.aid));
 }
 
 function prepareEmailBodies() {
@@ -29,19 +19,11 @@ function prepareEmailBodies() {
 
 function registerNotification(aid) {
   return function() {
-    return Data.set(getTimestampPath(aid), 'CURRENT_TIMESTAMP');
+    return Data.set('/data/' + aid + '/timestamps/paymentOverdueNotification', 'CURRENT_TIMESTAMP');
   };
 }
 
-function getTimestampPath(aid) {
-  return '/data/' + aid + '/timestamps/paymentOverdueNotification';
-}
-
-function handleErrors(error) {
-  if (error.message === 'Already notified') console.log('. payment overdue; already notified');
-  else throw error;
-}
-
+var Q = require('q');
 var fs = require('fs');
 var Data = require('app/util/data');
 var sendEmail = require('app/util/send-email');

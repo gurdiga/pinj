@@ -27,6 +27,7 @@ function prepareUserData(data, aid) {
   user.email = emailFromAID(aid);
   user.aid = aid;
   user.lastSearch = data.timestamps.lastSearch;
+  user.paymentOverdueNotification = data.timestamps.paymentOverdueNotification;
   user.toString = function() {
     return user.email;
   };

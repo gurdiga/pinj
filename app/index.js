@@ -44,6 +44,7 @@ function processUser(user) {
   var action;
 
   if (user.clientList.length === 0) action = skip('. empty client list');
+  else if (user.paymentOverdueNotification) action = skip('. payment overdue; already notified');
   else if (user.isPayer || user.isTrial) action = checkForNews(user);
   else action = sendPaymentOverdueNotification(user);
 

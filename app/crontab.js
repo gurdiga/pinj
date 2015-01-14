@@ -20,11 +20,8 @@ function runSearch() {
   child.on('exit', checkExitCode);
 
   function checkExitCode(code) {
-    if (code === 0) {
-      notify('Monitorul PINJ: executat cu success', 'Yes.');
-    } else {
-      notify('Monitorul PINJ: eroare', code);
-    }
+    if (code === 0) notify('Monitorul PINJ: executat cu success', 'Yes.');
+    else notify('Monitorul PINJ: eroare', code);
   }
 }
 

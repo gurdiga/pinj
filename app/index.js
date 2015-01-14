@@ -1,6 +1,8 @@
 'use strict';
 
 function main() {
+  console.log('Starting pinj-serch-engine in “' + process.env.NODE_ENV + '” mode');
+
   assertEnvironmentVariables()
   .then(getUserList)
   .then(processUsers)
@@ -17,11 +19,9 @@ function assertEnvironmentVariables() {
       'SMTP_USER',
       'SMTP_PASS'
     ].forEach(function(variable) {
-      assert(process.env[variable], variable + ' variable is expected to exist in the environment');
+      if (!process.env[variable]) throw new Error(variable + ' variable is expected to exist in the environment');
       resolve();
     });
-
-    console.log('Starting pinj-serch-engine in “' + process.env.NODE_ENV + '” mode');
   });
 }
 
@@ -62,6 +62,5 @@ var getUserList = require('app/get-user-lists');
 var checkForNews = require('app/check-for-news');
 var sendPaymentOverdueNotification = require('app/send-payment-overdue-notification');
 var Q = require('q');
-var assert = require('assert');
 
 main();

@@ -1,5 +1,7 @@
 default: jshint test
 
+pre-commit: test
+
 x:
 	node 1.js
 
@@ -9,9 +11,14 @@ import: jshint
 run: jshint
 	@NODE_ENV=development node .
 
-test: jshint
-	@mocha --recursive test
 .PHONY: test
+test: jshint
+	@mocha \
+		--reporter dot \
+		--bail \
+		--check-leaks \
+		--inline-diffs \
+		--recursive test
 
 deploy:
 	@git push -f heroku

@@ -27,7 +27,8 @@
     "chai": "1.10.0",
     "sinon": "1.12.2",
     "sinon-chai": "2.6.0",
-    "mocha-sinon": "1.1.4"
+    "mocha-sinon": "1.1.4",
+    "chai-as-promised": "4.1.1"
   },
   "repository": {
     "type": "git",

@@ -35,6 +35,15 @@ start: jshint
 config:
 	@heroku config:set $$(cat .env)
 
+debug-on:
+	heroku labs:enable log-runtime-metrics
+
+debug-off:
+	heroku labs:disable log-runtime-metrics
+
+restart:
+	heroku restart
+
 include $(shell find makefiles -name '*.mk' | sort)
 
 include .env

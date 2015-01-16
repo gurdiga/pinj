@@ -1,4 +1,4 @@
-<% _(changes).each(function(client) { %>
+<% _(news).each(function(client) { %>
   <h2><%= client.label %></h2>
 
   <% _(client.results).each(function(level) { %>

@@ -2,22 +2,22 @@
 
 module.exports = prepareEmailBodies;
 
-function prepareEmailBodies(changes) {
+function prepareEmailBodies(news) {
   var bodies = {
-    html: formatAsHTML(changes),
-    text: JSON.stringify(changes)
+    html: formatAsHTML(news),
+    text: JSON.stringify(news)
   };
 
   return bodies;
 }
 
-function formatAsHTML(changes) {
+function formatAsHTML(news) {
   var displayableColumns = getUsefulSectionColumns(function(column) {
     return column.show;
   });
 
   var templateContext = {
-    'changes': changes,
+    'news': news,
     'sectionColumns': displayableColumns,
     'courts': Courts,
     'MAX_ROWS_PER_SECTION': 20,

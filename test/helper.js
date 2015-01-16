@@ -3,6 +3,7 @@
 var chai = require('chai');
 
 global.expect = chai.expect;
+global.proxyquire = require('proxyquire');
 
 chai.use(require('chai-as-promised'));
 chai.use(require('sinon-chai'));

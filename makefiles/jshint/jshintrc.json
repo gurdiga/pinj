@@ -25,7 +25,9 @@
     "process": false,
     "__dirname": false,
 
+    "proxyquire": false,
     "describe": false,
+    "before": false,
     "beforeEach": false,
     "afterEach": false,
     "it": false,

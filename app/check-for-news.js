@@ -19,21 +19,21 @@ function first(promise1, promise2) {
     if (response1.state === 'rejected') throw response1.reason;
     if (response2.state === 'rejected') throw response2.reason;
 
-    var searchResults = {
+    var searchResultSets = {
       previous: response1.value,
       current: response2.value
     };
 
-    return searchResults;
+    return searchResultSets;
   });
 }
 
 function sendNewsTo(user) {
-  return function(searchResults) {
-    return new Q(findNews(searchResults))
+  return function(searchResultSets) {
+    return new Q(findNews(searchResultSets))
     .then(prepareEmailBodies)
     .then(sendEmail(user.email, 'Monitorul PINJ: informaţii despre clienţi'))
-    .then(forward(searchResults.current));
+    .then(forward(searchResultSets.current));
   };
 }
 

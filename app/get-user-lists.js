@@ -4,8 +4,7 @@ module.exports = getUserList;
 
 function getUserList() {
   return time(Data.get('/data'), 'Getting user list')
-  .then(prepareForSearch)
-  .then(checkIfThereIsAnythingToSearch);
+  .then(prepareForSearch);
 }
 
 function prepareForSearch(users) {
@@ -13,11 +12,6 @@ function prepareForSearch(users) {
   .map(prepareUserData)
   .filter(notYetServed)
   .filter(accountForDevelopmentMode);
-}
-
-function checkIfThereIsAnythingToSearch(users) {
-  if (users.length === 0) console.log('. all users have already been served today');
-  return users;
 }
 
 function prepareUserData(data, aid) {
@@ -42,8 +36,7 @@ function notYetServed(user) {
   if (process.env.NODE_ENV === 'import') return true;
   if (!user.lastSearch) return true;
 
-  var TIME_BETWEEN_THE_SECOND_RUN = 3600 * 1000;
-  return Date.now() - user.lastSearch > TIME_BETWEEN_THE_SECOND_RUN;
+  return Date.now() - user.lastSearch > config.TIME_BEFORE_THE_COVER_RUN;
 }
 
 function accountForDevelopmentMode(user) {
@@ -56,18 +49,13 @@ function emailFromAID(aid) {
 }
 
 function isTrial(registrationTimestamp) {
-  var TRIAL_PERIOD = 31 * 24 * 3600 * 1000;
-
   registrationTimestamp = registrationTimestamp || 0;
-  return Date.now() - registrationTimestamp < TRIAL_PERIOD;
+  return Date.now() - registrationTimestamp < config.TRIAL_PERIOD;
 }
 
 function isPayer(lastPaymentTimestamp) {
-  var SUBSCRIPTION_PERIOD = 31 * 24 * 3600 * 1000;
-  var GRACE_PERIOD = 7 * 24 * 3600 * 1000;
-
   lastPaymentTimestamp = lastPaymentTimestamp || 0;
-  return Date.now() - lastPaymentTimestamp < SUBSCRIPTION_PERIOD + GRACE_PERIOD;
+  return Date.now() - lastPaymentTimestamp < config.SUBSCRIPTION_PERIOD + config.GRACE_PERIOD;
 }
 
 function prepareClientList(list) {
@@ -75,17 +63,15 @@ function prepareClientList(list) {
 
   return list.split('\n')
   .map(normalizeSpace)
-  .filter(respectsMinLength(5))
+  .filter(longEnough)
   .filter(uniq);
 
   function normalizeSpace(clientName) {
     return clientName.trim().replace(/\s+/g, ' ');
   }
 
-  function respectsMinLength(minLength) {
-    return function(clientName) {
-      return clientName.length > minLength;
-    };
+  function longEnough(clientName) {
+    return clientName.length >= config.CLIENT_MIN_LENGTH;
   }
 
   // thanks to http://stackoverflow.com/a/14438954/227167
@@ -97,3 +83,4 @@ function prepareClientList(list) {
 var _ = require('underscore');
 var Data = require('app/util/data');
 var time = require('app/util/time');
+var config = require('app/config');

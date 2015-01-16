@@ -24,7 +24,8 @@ function assertEnvironmentVariables() {
 }
 
 function processUsers(users) {
-  console.log('Processing %s users.', users.length);
+  console.log('Serving %s users.', users.length);
+
   return time(forEach(users).inSeries(processUser), '. Happy end!');
 }
 

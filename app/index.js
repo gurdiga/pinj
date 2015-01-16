@@ -44,7 +44,7 @@ function processUser(user) {
 
   if (user.clientList.length === 0) action = skip('. empty client list');
   else if (user.paymentOverdueNotification) action = skip('. payment overdue; already notified');
-  else if (user.isPayer || user.isTrial) action = checkForNews(user);
+  else if (user.isPayer || user.isTrial) action = serveUser(user);
   else action = sendPaymentOverdueNotification(user);
 
   return time(action, user.email);
@@ -58,7 +58,7 @@ function skip(reason) {
 var time = require('app/util/time');
 var forEach = require('app/util/for-each');
 var getUserList = require('app/get-user-lists');
-var checkForNews = require('app/check-for-news');
+var serveUser = require('app/serve-user');
 var sendPaymentOverdueNotification = require('app/send-payment-overdue-notification');
 var Q = require('q');
 

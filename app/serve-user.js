@@ -1,8 +1,8 @@
 'use strict';
 
-module.exports = checkForNews;
+module.exports = serveUser;
 
-function checkForNews(user) {
+function serveUser(user) {
   return first(
     getPreviousSearchResults(user.aid),
     getCurrentSearchResults(user.clientList)

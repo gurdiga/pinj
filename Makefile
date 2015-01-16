@@ -13,7 +13,7 @@ run: jshint
 
 .PHONY: test
 test: jshint
-	@mocha \
+	@NODE_ENV=test mocha \
 		--reporter dot \
 		--bail \
 		--check-leaks \

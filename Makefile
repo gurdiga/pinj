@@ -18,7 +18,7 @@ test: jshint
 		--bail \
 		--check-leaks \
 		--inline-diffs \
-		--recursive test
+		--recursive test/helper test
 
 deploy:
 	@git push -f heroku

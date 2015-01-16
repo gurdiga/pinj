@@ -33,7 +33,6 @@ function prepareUserData(data, aid) {
 }
 
 function notYetServed(user) {
-  if (process.env.NODE_ENV === 'import') return true;
   if (!user.lastSearch) return true;
 
   return Date.now() - user.lastSearch > config.TIME_BEFORE_THE_COVER_RUN;

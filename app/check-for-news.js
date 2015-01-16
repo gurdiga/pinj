@@ -30,8 +30,6 @@ function first(promise1, promise2) {
 
 function sendNewsTo(user) {
   return function(searchResults) {
-    if (process.env.NODE_ENV === 'import') return searchResults.current;
-
     return new Q(findNews(searchResults))
     .then(prepareEmailBodies)
     .then(sendEmail(user.email, 'Monitorul PINJ: informaţii despre clienţi'))

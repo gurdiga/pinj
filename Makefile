@@ -5,9 +5,6 @@ pre-commit: test
 x:
 	node 1.js
 
-import: jshint
-	@NODE_ENV=import node .
-
 run: jshint
 	@NODE_ENV=development node .
 

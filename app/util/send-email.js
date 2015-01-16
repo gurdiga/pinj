@@ -4,7 +4,6 @@ module.exports = sendEmail;
 
 function sendEmail(email, subject) {
   return function(bodies) {
-    if (process.env.NODE_ENV === 'import') return;
     if (process.env.NODE_ENV === 'development' && email !== 'gurdiga@gmail.com') return;
 
     var transport = getTransport();

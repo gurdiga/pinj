@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "pinj",
   "version": "2.0.0",
   "main": "app/index.js",

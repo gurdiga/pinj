@@ -9,6 +9,8 @@ var JOB_DEFINITIONS = [{
 }];
 
 function main() {
+  console.log('Starting cron');
+
   assertEnvironmentVariables([
     'SEARCH_SCHEDULE',
     'PURGE_SCHEDULE'

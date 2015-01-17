@@ -9,6 +9,11 @@ var JOB_DEFINITIONS = [{
 }];
 
 function main() {
+  assertEnvironmentVariables([
+    'SEARCH_SCHEDULE',
+    'PURGE_SCHEDULE'
+  ]);
+
   JOB_DEFINITIONS.forEach(function(job) {
     new CronJob(job.schedule, executeCommand(job.command), null, true, 'Europe/Chisinau');
   });
@@ -37,5 +42,6 @@ function notify(result) {
 var CronJob = require('cron').CronJob;
 var sendEmail = require('app/util/send-email');
 var execute = require('app/util/execute');
+var assertEnvironmentVariables = require('app/util/assert-environment-variables');
 
 main();

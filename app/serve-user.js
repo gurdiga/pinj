@@ -3,37 +3,36 @@
 module.exports = serveUser;
 
 function serveUser(user) {
-  return first(
-    getPreviousSearchResults(user.aid),
-    getCurrentSearchResults(user.clientList)
-  )
-  .then(sendNewsTo(user))
-  .then(recordSearchResults(user.aid))
-  .then(recordSearchTimestamp(user.aid))
-  .catch(handleErrors);
+  var searchResultSets = {};
+
+  return SearchHistory.getPreviousResults(user.aid)
+  .then(collectIn(searchResultSets, 'previous'))
+  .then(getCurrentSearchResults(user.clientList))
+  .then(collectIn(searchResultSets, 'current'))
+  .then(findNews)
+  .then(prepareEmailBodies)
+  .then(sendEmail(user.email, 'Monitorul PINJ: informaţii despre clienţi'))
+  .then(recordCurrentSearchResults(user.aid, searchResultSets))
+  .catch(handleErrors)
+  .then(recordLastSearchTimestamp(user.aid));
 }
 
-function first(promise1, promise2) {
-  return Q.allSettled([promise1, promise2])
-  .spread(function(response1, response2) {
-    if (response1.state === 'rejected') throw response1.reason;
-    if (response2.state === 'rejected') throw response2.reason;
-
-    var searchResultSets = {
-      previous: response1.value,
-      current: response2.value
-    };
-
-    return searchResultSets;
-  });
+function collectIn(container, key) {
+  return function(value) {
+    container[key] = value;
+    return container;
+  };
 }
 
-function sendNewsTo(user) {
-  return function(searchResultSets) {
-    return new Q(findNews(searchResultSets))
-    .then(prepareEmailBodies)
-    .then(sendEmail(user.email, 'Monitorul PINJ: informaţii despre clienţi'))
-    .then(forward(searchResultSets.current));
+function recordCurrentSearchResults(aid, searchResultSets) {
+  return function() {
+    return SearchHistory.recordResults(aid, searchResultSets.current);
+  };
+}
+
+function recordLastSearchTimestamp(aid) {
+  return function() {
+    return SearchHistory.recordTimestamp(aid);
   };
 }
 
@@ -42,27 +41,7 @@ function handleErrors(error) {
   else throw error;
 }
 
-function forward(data) {
-  return function() {
-    return data;
-  };
-}
-
-function recordSearchResults(aid) {
-  return function(results) {
-    return SearchHistory.recordResults(aid, results);
-  };
-}
-
-function recordSearchTimestamp(aid) {
-  return function() {
-    return SearchHistory.recordTimestamp(aid);
-  };
-}
-
-var Q = require('q');
 var SearchHistory = require('app/search-history');
-var getPreviousSearchResults = SearchHistory.getPreviousResults;
 var getCurrentSearchResults = require('app/get-current-search-results');
 var findNews = require('app/find-news');
 var prepareEmailBodies = require('app/prepare-news-email-bodies');

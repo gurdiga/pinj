@@ -3,27 +3,29 @@
 module.exports = getCurrentSearchResults;
 
 function getCurrentSearchResults(clientList) {
-  var levels = [
-    DistrictCourts,
-    SupremeCourt
-  ];
+  return function() {
+    var levels = [
+      DistrictCourts,
+      SupremeCourt
+    ];
 
-  return forEach(clientList).inSeries(function(clientName) {
-    return time(forEach(levels).inSeries(function(sections) {
-      return forEach(sections).inParallel(function(section) {
-        return forEach(section.subsectionNames).inParallel(function(subsectionName) {
-          var apiRequestParams = section.getAPIRequestParams(subsectionName, escapeQuotes(clientName));
+    return forEach(clientList).inSeries(function(clientName) {
+      return time(forEach(levels).inSeries(function(sections) {
+        return forEach(sections).inParallel(function(section) {
+          return forEach(section.subsectionNames).inParallel(function(subsectionName) {
+            var apiRequestParams = section.getAPIRequestParams(subsectionName, escapeQuotes(clientName));
 
-          return queryAPI(apiRequestParams)
-          .then(extractRows)
-          .then(preprocessRows(section.rowPreprocessor));
+            return queryAPI(apiRequestParams)
+            .then(extractRows)
+            .then(preprocessRows(section.rowPreprocessor));
+          });
         });
-      });
-    }), '- ' + clientName);
-  })
-  .then(removeEmptySearchResults)
-  .then(deleteUnusedColumns)
-  .then(stringifyRows);
+      }), '- ' + clientName);
+    })
+    .then(removeEmptySearchResults)
+    .then(deleteUnusedColumns)
+    .then(stringifyRows);
+  };
 }
 
 function extractRows(result) {

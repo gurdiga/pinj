@@ -1,0 +1,33 @@
+[ {
+  "label" : "Georgescu George",
+  "results" : [ {
+    "label" : "Instanţele de gradul 1 şi 2 de jurisdicţie",
+    "results" : [ {
+      "label" : "Agenda şedinţelor",
+      "results" : [ {
+        "label" : "cac",
+        "results" : [
+          "[null,\"18-12-2014\",\"10:00\",null,\"02-2r-19549-31102014\",\"Georgescu George vs Ex.Cogilnicean Victor\",null,\"Sala nr.8 str. Teilor 4\",null,null,null]"
+        ]
+      }, {
+        "label" : "jbu",
+        "results" : [
+          "[null,\"05-05-2014\",\"08:30\",null,\"14-25-2093-03032014\",\"Georgescu George vs Ministerul Justiției\",null,\"bir.606., et.6\",null,null,null]",
+          "[null,\"07-04-2014\",\"09:30\",null,\"14-25-2093-03032014\",\"Georgescu George vs Ministerul Justiției\",null,\"bir.606., et.6\",null,null,null]"
+        ]
+      }, {
+        "label" : "jcc",
+        "results" : [
+          "[null,\"04-02-2015\",\"09:30\",null,\"20-2-5451-29052014\",\"IMGFL nr-12 vs Georgescu George\",null,\"Biroul nr. 62\",null,null,null]",
+          "[null,\"21-11-2014\",\"10:00\",null,\"20-2-5451-29052014\",\"IMGFL nr-12 vs Georgescu George\",null,\"Biroul nr. 62\",null,null,null]",
+          "[null,\"18-07-2014\",\"09:00\",null,\"20-2-5451-29052014\",\"IMGFL nr-12 vs Georgescu George\",null,\"Biroul nr. 62\",null,null,null]"
+        ]
+      }, {
+        "label" : "jun",
+        "results" : [
+          "[null,\"08-11-2010\",\"16:00\",null,\"51-4-3403-08112010\",\"Georgescu George Cosmin\",null,\"Sala de şedinţe nr. 1\",null,null,null]"
+        ]
+      } ]
+    } ]
+  } ]
+} ]

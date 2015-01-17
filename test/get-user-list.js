@@ -9,7 +9,7 @@ describe('getUserList', function() {
       'paymentOverdueNotification': 1321343414543
     }
   };
-  var allUserData = { 'test@test:com': userData };
+  var allUserData = { 'test@example:com': userData };
 
   beforeEach(function() {
     this.sinon.stub(Data, 'get').withArgs('/data');
@@ -89,11 +89,11 @@ describe('getUserList', function() {
     });
 
     it('infers the email from aid', function() {
-      expect(preparedUser.email).to.equal('test@test.com');
+      expect(preparedUser.email).to.equal('test@example.com');
     });
 
     it('remembers the aid', function() {
-      expect(preparedUser.aid).to.equal('test@test:com');
+      expect(preparedUser.aid).to.equal('test@example:com');
     });
 
     it('remembers the lastSearch', function() {
@@ -233,6 +233,22 @@ describe('getUserList', function() {
         return getUserList().then(function(preparedUsers) {
           preparedUsers.forEach(function(user) {
             expect(user.email).to.match(/gurdiga.*@gmail.com/);
+          });
+        });
+      });
+    });
+
+    describe('test accounts', function() {
+      beforeEach(function() {
+        allUserData['test@test:com'] = { 'timestamps': {} };
+        allUserData['test1@test:com'] = { 'timestamps': {} };
+        allUserData['test2@test:com'] = { 'timestamps': {} };
+      });
+
+      it('excludes users with the @test.com emails', function() {
+        return getUserList().then(function(preparedUsers) {
+          preparedUsers.forEach(function(user) {
+            expect(user.email, 'this user should have been excluded').not.to.match(/.*@test.com/);
           });
         });
       });

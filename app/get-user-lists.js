@@ -11,6 +11,7 @@ function prepareForSearch(users) {
   return _(users)
   .map(prepareUserData)
   .filter(notYetServed)
+  .filter(nonTestUsers)
   .filter(accountForDevelopmentMode);
 }
 
@@ -36,6 +37,10 @@ function notYetServed(user) {
   if (!user.lastSearch) return true;
 
   return Date.now() - user.lastSearch > config.TIME_BEFORE_THE_COVER_RUN;
+}
+
+function nonTestUsers(user) {
+  return user.email.indexOf('@test.com') === -1;
 }
 
 function accountForDevelopmentMode(user) {

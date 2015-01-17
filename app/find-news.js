@@ -2,14 +2,14 @@
 
 module.exports = findNews;
 
-function findNews(searchResults) {
+function findNews(searchResultSets) {
   var news = [];
 
-  searchResults.current.forEach(function(client) {
+  searchResultSets.current.forEach(function(client) {
     client.results.forEach(function(level) {
       level.results.forEach(function(section) {
         section.results.forEach(function(court) {
-          var newRows = getNews(searchResults, client, level, section, court);
+          var newRows = getNews(searchResultSets, client, level, section, court);
           if (_.isEmpty(newRows)) return;
 
           var path = preparePath(news, [client.label, level.label, section.label, court.label]);
@@ -25,15 +25,15 @@ function findNews(searchResults) {
   else return news;
 }
 
-function getNews(searchResults, client, level, section, court) {
-  var previousSectionRows = getPreviousCourtRows(searchResults, client.label, level.label, section.label, court.label);
+function getNews(searchResultSets, client, level, section, court) {
+  var previousSectionRows = getPreviousCourtRows(searchResultSets, client.label, level.label, section.label, court.label);
   var currentSectionRows = court.results;
 
   return _(currentSectionRows).difference(previousSectionRows);
 }
 
-function getPreviousCourtRows(searchResults, clientLabel, levelLabel, sectionLabel, courtLabel) {
-  return searchResults.previous
+function getPreviousCourtRows(searchResultSets, clientLabel, levelLabel, sectionLabel, courtLabel) {
+  return searchResultSets.previous
   .filter(havingLabel(clientLabel )).reduce(collectResults, [])
   .filter(havingLabel(levelLabel  )).reduce(collectResults, [])
   .filter(havingLabel(sectionLabel)).reduce(collectResults, [])

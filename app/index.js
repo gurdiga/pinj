@@ -3,24 +3,18 @@
 function main() {
   console.log('Starting pinj-serch-engine in “' + process.env.NODE_ENV + '” mode');
 
-  assertEnvironmentVariables();
-
-  return getUserList()
-  .then(processUsers)
-  .then(disconnectFirebase)
-  .catch(logErrorAndExit);
-}
-
-function assertEnvironmentVariables() {
-  [
+  assertEnvironmentVariables([
     'FIREBASE_SECRET',
     'SMTP_HOST',
     'SMTP_PORT',
     'SMTP_USER',
     'SMTP_PASS'
-  ].forEach(function(variable) {
-    if (!process.env[variable]) throw new Error(variable + ' variable is expected to exist in the environment');
-  });
+  ]);
+
+  return getUserList()
+  .then(processUsers)
+  .then(disconnectFirebase)
+  .catch(logErrorAndExit);
 }
 
 function processUsers(users) {
@@ -60,6 +54,7 @@ var forEach = require('app/util/for-each');
 var getUserList = require('app/get-user-lists');
 var serveUser = require('app/serve-user');
 var sendPaymentOverdueNotification = require('app/send-payment-overdue-notification');
+var assertEnvironmentVariables = require('app/util/assert-environment-variables');
 var Q = require('q');
 
 main();

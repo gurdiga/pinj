@@ -21,8 +21,7 @@ function findNews(searchResultSets) {
     });
   });
 
-  if (_.isEmpty(news)) throw new Error('No news');
-  else return news;
+  return news;
 }
 
 function getNews(searchResultSets, client, level, section, court) {

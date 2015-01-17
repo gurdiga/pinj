@@ -10,6 +10,7 @@ function serveUser(user) {
   .then(getCurrentSearchResults(user.clientList))
   .then(collectIn(searchResultSets, 'current'))
   .then(findNews)
+  .then(assertNotEmptyNews)
   .then(prepareEmailBodies)
   .then(sendEmail(user.email, 'Monitorul PINJ: informaţii despre clienţi'))
   .then(recordCurrentSearchResults(user.aid, searchResultSets))
@@ -34,6 +35,11 @@ function recordLastSearchTimestamp(aid) {
   return function() {
     return SearchHistory.recordTimestamp(aid);
   };
+}
+
+function assertNotEmptyNews(news) {
+  if (news.length === 0) throw new Error('No news');
+  else return news;
 }
 
 function handleErrors(error) {

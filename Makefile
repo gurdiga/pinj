@@ -1,11 +1,11 @@
-default: jshint test
+default: test
 
 pre-commit: test
 
 x:
 	node 1.js
 
-run: jshint
+run: test
 	@NODE_ENV=development node .
 
 .PHONY: test

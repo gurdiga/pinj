@@ -1,40 +1,41 @@
 'use strict';
 
-var jobs = [{
+var JOB_DEFINITIONS = [{
   'schedule': process.env.SEARCH_SCHEDULE,
-  'action'  : runSearch
+  'command' : 'node app/index'
+}, {
+  'schedule': process.env.PURGE_SCHEDULE,
+  'command' : 'node app/crontab/purge-search-history'
 }];
 
 function main() {
-  jobs.forEach(function(job) {
-    new CronJob(job.schedule, job.action, null, true, 'Europe/Chisinau');
+  JOB_DEFINITIONS.forEach(function(job) {
+    new CronJob(job.schedule, executeCommand(job.command), null, true, 'Europe/Chisinau');
   });
 }
 
-function runSearch() {
-  var exec = require('child_process').exec;
-  var child = exec('node app');
-
-  child.stdout.pipe(process.stdout);
-  child.stderr.pipe(process.stderr);
-  child.on('exit', checkExitCode);
-
-  function checkExitCode(code) {
-    if (code === 0) notify('Monitorul PINJ: executat cu success', 'Yes.');
-    else notify('Monitorul PINJ: eroare', code);
-  }
+function executeCommand(command) {
+  return function() {
+    execute(command).then(notify).catch(notify);
+  };
 }
 
-function notify(subject, body) {
-  var emailBodies = {
-    html: '<pre>' + body + '</pre>',
-    text: body
-  };
+function notify(result) {
+  var subject, body;
 
-  sendEmail('gurdiga@gmail.com', subject)(emailBodies);
+  if (result instanceof Error) {
+    subject ='Monitorul PINJ: eroare';
+    body = result.message;
+  } else {
+    subject ='Monitorul PINJ: executat cu success';
+    body = 'Yes';
+  }
+
+  sendEmail('gurdiga@gmail.com', subject)({ html: body });
 }
 
 var CronJob = require('cron').CronJob;
 var sendEmail = require('app/util/send-email');
+var execute = require('app/util/execute');
 
 main();

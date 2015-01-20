@@ -9,13 +9,10 @@ function getPreviousResults(aid) {
   var path = '/search-history/' + aid;
 
   return time(Data.getLastChildOf(path), '. Getting previous search results')
-  .then(extractResultsAndTimestamp);
+  .then(normalize);
 
-  function extractResultsAndTimestamp(pair) {
-    var searchResults = pair.value || [];
-    searchResults.timestamp = pair.key;
-
-    return searchResults;
+  function normalize(pair) {
+    return pair.value || [];
   }
 }
 

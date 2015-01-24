@@ -32,5 +32,7 @@
     "afterEach": false,
     "it": false,
     "expect": false
-  }
+  },
+
+  "predef": [ "-Promise" ]
 }

@@ -1,6 +1,6 @@
 'use strict';
 
-describe('getUserList', function() {
+describe('getUsers', function() {
   var preparedUser;
   var userData = {
     'clients': '',
@@ -23,7 +23,7 @@ describe('getUserList', function() {
     });
 
     it('resolves to an empty list', function() {
-      return expect(getUserList()).to.eventually.deep.equal([]);
+      return expect(getUsers()).to.eventually.deep.equal([]);
     });
   });
 
@@ -31,7 +31,7 @@ describe('getUserList', function() {
     beforeEach(function() {
       Data.get.returns(Q.resolve(allUserData));
 
-      return getUserList().then(function(preparedUsers) {
+      return getUsers().then(function(preparedUsers) {
         expect(preparedUsers).to.have.length(1);
         preparedUser = preparedUsers[0];
       });
@@ -82,7 +82,7 @@ describe('getUserList', function() {
       function prepareUserWithClients(clients) {
         userData.clients = clients;
 
-        return getUserList().then(function(preparedUsers) {
+        return getUsers().then(function(preparedUsers) {
           preparedUser = preparedUsers[0];
         });
       }
@@ -178,7 +178,7 @@ describe('getUserList', function() {
     function prepareUserWith(timestampName, value) {
       userData.timestamps[timestampName] = value;
 
-      return getUserList().then(function(preparedUsers) {
+      return getUsers().then(function(preparedUsers) {
         preparedUser = preparedUsers[0];
       });
     }
@@ -201,7 +201,7 @@ describe('getUserList', function() {
       });
 
       it('excludes users that were served on the first run', function() {
-        return getUserList().then(function(preparedUsers) {
+        return getUsers().then(function(preparedUsers) {
           preparedUsers.forEach(function(user) {
             expect(user.aid).not.to.equal('already-served@test:com');
           });
@@ -230,7 +230,7 @@ describe('getUserList', function() {
       });
 
       it('only returns users with email matching gurdiga.*@gmail.com', function() {
-        return getUserList().then(function(preparedUsers) {
+        return getUsers().then(function(preparedUsers) {
           preparedUsers.forEach(function(user) {
             expect(user.email).to.match(/gurdiga.*@gmail.com/);
           });
@@ -246,7 +246,7 @@ describe('getUserList', function() {
       });
 
       it('excludes users with the @test.com emails', function() {
-        return getUserList().then(function(preparedUsers) {
+        return getUsers().then(function(preparedUsers) {
           preparedUsers.forEach(function(user) {
             expect(user.email, 'this user should have been excluded').not.to.match(/.*@test.com/);
           });
@@ -256,7 +256,7 @@ describe('getUserList', function() {
   });
 });
 
-var getUserList = require('app/get-user-lists');
+var getUsers = require('app/get-users');
 var Data = require('app/util/data');
 var config = require('app/config');
 var Q = require('q');

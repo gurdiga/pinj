@@ -1,8 +1,8 @@
 'use strict';
 
-module.exports = getUserList;
+module.exports = getUsers;
 
-function getUserList() {
+function getUsers() {
   return time(Data.get('/data'), 'Getting user list')
   .then(prepareForSearch);
 }

@@ -36,7 +36,7 @@ var CaseInquirySection = {
         'sord': 'desc',
         'filters': {
           'groupOp': 'AND',
-          'rules': RULE_PER_QUERY_TYPE[queryType(query)]
+          'rules': RULE_PER_QUERY_TYPE[getQueryType(query)]
         }
       };
 
@@ -101,4 +101,4 @@ function getPDFURL(row) {
 
 module.exports = CaseInquirySection;
 
-var queryType = require('app/util/query-type');
+var getQueryType = require('app/util/get-query-type');

@@ -11,6 +11,10 @@ var CaseInquirySection = {
 
   subsectionNames: ['only one'],
 
+  getURL: function() {
+    return 'http://jurisprudenta.csj.md/grid_lista_dosare.php';
+  },
+
   getAPIRequestParams: function(subsectionName, clientName) {
     return {
       url: 'http://jurisprudenta.csj.md/grid_lista_dosare.php',

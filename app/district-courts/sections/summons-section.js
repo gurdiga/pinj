@@ -5,7 +5,11 @@ var SummonsSection = {
     return 'Citaţii în instanţă';
   },
 
-  subsectionNames: ['persoana_citata', 'reclamantul'],
+  subsectionNames: ['only one'],
+
+  getURL: function() {
+    return 'http://instante.justice.md/apps/citatii_judecata/citatii_grid.php';
+  },
 
   getAPIRequestParams: function(fieldName, clientName) {
     return {

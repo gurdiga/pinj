@@ -11,6 +11,10 @@ var CriminalPlenumSentenceSection = {
 
   subsectionNames: ['only one'],
 
+  getURL: function() {
+    return 'http://jurisprudenta.csj.md/plen_penal_grid.php';
+  },
+
   getAPIRequestParams: function(subsectionName, clientName) {
     return {
       url: 'http://jurisprudenta.csj.md/plen_penal_grid.php',

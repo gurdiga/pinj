@@ -7,6 +7,10 @@ var CaseInquirySection = {
 
   subsectionNames: ['only one'],
 
+  getURL: function() {
+    return 'http://instante.justice.md/apps/cereri_pendinte/cereri_grid.php';
+  },
+
   getAPIRequestParams: function(subsectionName, clientName) {
     return {
       url: 'http://instante.justice.md/apps/cereri_pendinte/cereri_grid.php',

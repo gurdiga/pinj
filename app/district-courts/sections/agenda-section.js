@@ -7,6 +7,10 @@ var AgendaSection = {
 
   subsectionNames: courtLabels(),
 
+  getURL: function(courtLabel) {
+    return 'http://instante.justice.md/apps/agenda_judecata/inst/' + courtLabel + '/agenda_grid.php';
+  },
+
   getAPIRequestParams: function(courtLabel, clientName) {
     return {
       url: 'http://instante.justice.md/apps/agenda_judecata/inst/' + courtLabel + '/agenda_grid.php',
@@ -46,6 +50,8 @@ var AgendaSection = {
     {
       'title': 'Părţile dosarului',
       'index': 5,
+      'searchable': true,
+      'queryType': 'name',
       'show': true
     }, {
       'title': 'Data şedinţei',
@@ -65,6 +71,8 @@ var AgendaSection = {
     }, {
       'title': 'Numărul dosarului',
       'index': 4,
+      'searchable': true,
+      'queryType': 'caseNumber',
       'show': true
     }, {
       'title': 'SKIP',

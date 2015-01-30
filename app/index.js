@@ -6,13 +6,13 @@ function main() {
   assertEnvironment();
 
   return Promise.all([
-    getUsers,
-    getNewRows
+    getUsers(),
+    getNewRows()
   ])
-  .then(matchRowsToUsers)
+  .then(findMatchingRowsForEachUser)
   .then(prepareEmailBodies)
   .then(sendEmails)
-  .then(recordLastIDs)
+  .then(recordNewLastIDs)
   .catch(logErrors);
 }
 
@@ -26,26 +26,23 @@ function assertEnvironment() {
   ]);
 }
 
-function getNewRows() {
-}
-
-function matchRowsToUsers() {
-}
-
 function prepareEmailBodies() {
 }
 
 function sendEmails() {
 }
 
-function recordLastIDs() {
+function recordNewLastIDs() {
 }
 
-function logErrors() {
+function logErrors(error) {
+  console.log('Error:', error.stack);
 }
 
 var Promise = require('app/util/promise');
 var assertEnvironmentVariables = require('app/util/assert-environment-variables');
 var getUsers = require('app/get-users');
+var getNewRows = require('app/get-new-rows');
+var findMatchingRowsForEachUser = require('app/find-matching-rows-for-each-user');
 
 main();

@@ -13,7 +13,7 @@ function getUsefulSectionColumns(customFilter) {
 
   levels.forEach(function(sections) {
     sections.forEach(function(section) {
-      columns[section.toString()] = section.columns
+      columns[section] = section.columns
       .filter(customFilter)
       .filter(function(column) {
         return column.show || column.used;

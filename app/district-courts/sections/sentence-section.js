@@ -7,6 +7,10 @@ var SentenceSection = {
 
   subsectionNames: courtLabels(),
 
+  getURL: function(courtLabel) {
+    return 'http://instante.justice.md/apps/hotariri_judecata/inst/' + courtLabel + '/db_hot_grid.php';
+  },
+
   getAPIRequestParams: function(courtLabel, clientName) {
     return {
       url: 'http://instante.justice.md/apps/hotariri_judecata/inst/' + courtLabel + '/db_hot_grid.php',

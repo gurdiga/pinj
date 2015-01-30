@@ -11,6 +11,10 @@ var CivilianCollegeAgendaSection = {
 
   subsectionNames: ['only one'],
 
+  getURL: function() {
+    return 'http://agenda.csj.md/civil_grid.php';
+  },
+
   getAPIRequestParams: function(subsectionName, clientName) {
     return {
       url: 'http://agenda.csj.md/civil_grid.php',

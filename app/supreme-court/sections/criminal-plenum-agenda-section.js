@@ -11,6 +11,10 @@ var CriminalPlenumAgendaSection = {
 
   subsectionNames: ['only one'],
 
+  getURL: function() {
+    return 'http://agenda.csj.md/plen_penal_grid.php';
+  },
+
   getAPIRequestParams: function(subsectionName, clientName) {
     return {
       url: 'http://agenda.csj.md/plen_penal_grid.php',

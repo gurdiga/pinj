@@ -1,7 +1,7 @@
 default: test
 pre-commit: test
 
-x:
+x: jshint
 	node 1.js
 
 run: test

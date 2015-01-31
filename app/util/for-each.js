@@ -1,5 +1,7 @@
 'use strict';
 
+module.exports = forEach;
+
 function forEach(items) {
   return {
     inSeries: asyncRun('series'),
@@ -50,8 +52,6 @@ function forEach(items) {
     });
   }
 }
-
-module.exports = forEach;
 
 var _ = require('underscore');
 var async = require('async');

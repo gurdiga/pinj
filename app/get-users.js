@@ -3,7 +3,7 @@
 module.exports = getUsers;
 
 function getUsers() {
-  return time(Data.get('/data'), 'Getting user list')
+  return time('. getting user list', Data.get('/data'))
   .then(prepareForSearch);
 }
 

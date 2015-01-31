@@ -8,8 +8,9 @@ function getNewResults() {
     SupremeCourt
   ];
 
-  return Data.get('/last-ids').then(function(lastIDs) {
-    return forEach(levels).inSeries(function(level) {
+  return time('. getting previous last IDs', Data.get('/last-ids'))
+  .then(function(lastIDs) {
+    return time('. getting new results', forEach(levels).inSeries(function(level) {
       return forEach(level).inParallel(function(section) {
         return forEach(section.subsectionNames).inParallel(function(subsectionName) {
           var lastID = getLastID(lastIDs, level.toString(), section.toString(), subsectionName);
@@ -18,7 +19,7 @@ function getNewResults() {
         })
         .then(addSectionReferences(section));
       });
-    });
+    }));
   })
   .then(removeEmptySearchResults)
   .then(deleteUnusedColumns);
@@ -173,6 +174,7 @@ var sectionColumns = require('app/util/get-useful-section-columns')();
 var Data = require('app/util/data');
 var forEach = require('app/util/for-each');
 var Promise = require('app/util/promise');
+var time = require('app/util/time');
 
 var SupremeCourt = require('app/supreme-court');
 var DistrictCourts = require('app/district-courts');

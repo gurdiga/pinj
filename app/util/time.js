@@ -1,14 +1,14 @@
 'use strict';
 
-function time(promise, label) {
-  label = label.toString();
-  console.time(label);
+module.exports = time;
+
+function time(description, promise) {
+  description = description.toString();
+  console.time(description);
 
   return promise
   .then(function(response) {
-    console.timeEnd(label);
+    console.timeEnd(description);
     return response;
   });
 }
-
-module.exports = time;

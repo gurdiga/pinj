@@ -1,8 +1,8 @@
 'use strict';
 
-module.exports = getNewRows;
+module.exports = getNewResults;
 
-function getNewRows() {
+function getNewResults() {
   var levels = [
     DistrictCourts,
     SupremeCourt
@@ -14,7 +14,7 @@ function getNewRows() {
         return forEach(section.subsectionNames).inParallel(function(subsectionName) {
           var lastID = getLastID(lastIDs, level.toString(), section.toString(), subsectionName);
           return getRows(section, subsectionName, lastID)
-          .then(extractRows);
+          .then(extractRowsAndLastID(lastID));
         })
         .then(addSectionReferences(section));
       });
@@ -74,23 +74,34 @@ function getRows(section, subsectionName, lastID) {
   });
 }
 
-function extractRows(result) {
-  return result.rows
-  .filter(withValidID)
-  .filter(withValidData)
-  .map(extractData);
+function extractRowsAndLastID(previousLastID) {
+  return function(result) {
+    var rows = result.rows
+    .filter(withValidID)
+    .filter(withValidData)
+    .map(extractData);
 
-  function withValidID(row) {
-    return !!row.id;
-  }
+    if (result.rows.length === 0) {
+      rows.lastID = previousLastID;
+    } else {
+      var lastRow = result.rows[result.rows.length - 1];
+      rows.lastID = lastRow.id;
+    }
 
-  function withValidData(row) {
-    return !!row.cell;
-  }
+    return rows;
 
-  function extractData(row) {
-    return row.cell;
-  }
+    function withValidID(row) {
+      return !!row.id;
+    }
+
+    function withValidData(row) {
+      return !!row.cell;
+    }
+
+    function extractData(row) {
+      return row.cell;
+    }
+  };
 }
 
 function addSectionReferences(section) {

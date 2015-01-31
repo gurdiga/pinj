@@ -1,13 +1,10 @@
 'use strict';
 
-module.exports = findMatchingRowsForEachUser;
+module.exports = matchResultsToUsers;
 
-function findMatchingRowsForEachUser(data) {
+function matchResultsToUsers(data) {
   var userList = data[0];
   var newRows = data[1];
-
-  console.log('userList', JSON.stringify(userList, null, '  '));
-  console.log('newRows', JSON.stringify(newRows, null, '  '));
 
   var matchingRows = [];
 
@@ -16,18 +13,17 @@ function findMatchingRowsForEachUser(data) {
       section.results.forEach(function(subsection) {
         subsection.results.forEach(function(row) {
           userList.forEach(function(user) {
-            user.clientList(function(clientName) {
-              var path = preparePath(matchingRows, [level.label, section.label, subsection.label]);
-              if (rowMatches(section.label, row, clientName)) path.push(row);
+            user.clientList.forEach(function(clientName) {
+              if (!rowMatches(subsection.section, row, clientName)) return;
+
+              var path = preparePath(matchingRows, [user.email, clientName, level.label, section.label, subsection.label]);
+              path.push(row);
             });
           });
         });
       });
     });
   });
-
-  console.log('matchingRows', matchingRows);
-  process.exit();
 
   return matchingRows;
 }

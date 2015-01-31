@@ -15,7 +15,8 @@ function getNewRows() {
           var lastID = getLastID(lastIDs, level.toString(), section.toString(), subsectionName);
           return getRows(section, subsectionName, lastID)
           .then(extractRows);
-        });
+        })
+        .then(addSectionReferences(section));
       });
     });
   })
@@ -89,6 +90,17 @@ function extractRows(result) {
 
   function extractData(row) {
     return row.cell;
+  }
+}
+
+function addSectionReferences(section) {
+  return function(results) {
+    results.forEach(addReference);
+    return results;
+  };
+
+  function addReference(result) {
+    result.section = section;
   }
 }
 

@@ -15,41 +15,6 @@ var CaseInquirySection = {
     return 'http://jurisprudenta.csj.md/grid_lista_dosare.php';
   },
 
-  getAPIRequestParams: function(subsectionName, clientName) {
-    return {
-      url: 'http://jurisprudenta.csj.md/grid_lista_dosare.php',
-      searchOptions: getSearchOptions(clientName)
-    };
-
-    function getSearchOptions(query) {
-      var RULE_PER_QUERY_TYPE = {
-        'caseNumber': [
-          {'field': 'nr_inregistrare', 'op': 'cn', 'data': query.substr(1)}
-        ],
-        'name': [
-          {'field': 'parti_dosar', 'op': 'cn', 'data': query}
-        ]
-      };
-
-      var searchOptions = {
-        '_search': true,
-        'nd': Date.now(),
-        'rows': 500,
-        'page': 1,
-        'sidx': 'data_inregistrare desc, data_inregistrare',
-        'sord': 'desc',
-        'filters': {
-          'groupOp': 'AND',
-          'rules': RULE_PER_QUERY_TYPE[getQueryType(query)]
-        }
-      };
-
-      searchOptions.filters = JSON.stringify(searchOptions.filters);
-
-      return searchOptions;
-    }
-  },
-
   columns: [
     {
       'title': 'Numărul de înregistrare',
@@ -62,6 +27,8 @@ var CaseInquirySection = {
     }, {
       'title': 'Numărul dosarului',
       'index': 3,
+      'searchable': true,
+      'queryType': 'caseNumber',
       'show': true
     }, {
       'title': 'Statutul',
@@ -74,6 +41,8 @@ var CaseInquirySection = {
     }, {
       'title': 'Părţile',
       'index': 6,
+      'searchable': true,
+      'queryType': 'name',
       'show': true
     }, {
       'title': 'Recurentul/Revizuientul',
@@ -104,5 +73,3 @@ function getPDFURL(row) {
 }
 
 module.exports = CaseInquirySection;
-
-var getQueryType = require('app/util/get-query-type');

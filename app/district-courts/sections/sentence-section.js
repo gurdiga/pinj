@@ -11,41 +11,6 @@ var SentenceSection = {
     return 'http://instante.justice.md/apps/hotariri_judecata/inst/' + courtLabel + '/db_hot_grid.php';
   },
 
-  getAPIRequestParams: function(courtLabel, clientName) {
-    return {
-      url: 'http://instante.justice.md/apps/hotariri_judecata/inst/' + courtLabel + '/db_hot_grid.php',
-      searchOptions: getSearchOptions(clientName)
-    };
-
-    function getSearchOptions(query) {
-      var RULE_PER_QUERY_TYPE = {
-        'caseNumber': [
-          {'field': 'nr_dosar', 'op': 'cn', 'data': query.substr(1)}
-        ],
-        'name': [
-          {'field': 'denumire_dosar', 'op': 'cn', 'data': query}
-        ]
-      };
-
-      var searchOptions = {
-        '_search': true,
-        'nd': Date.now(),
-        'rows': 500,
-        'page': 1,
-        'sidx': 'id',
-        'sord': 'asc',
-        'filters': {
-          'groupOp': 'AND',
-          'rules': RULE_PER_QUERY_TYPE[getQueryType(query)]
-        }
-      };
-
-      searchOptions.filters = JSON.stringify(searchOptions.filters);
-
-      return searchOptions;
-    }
-  },
-
   rowPreprocessor: function(row) {
     var relativePdfUrl = row[0];
     var caseNo = row[2];
@@ -66,10 +31,14 @@ var SentenceSection = {
     }, {
       'title': 'Denumirea dosarului',
       'index': 3,
+      'searchable': true,
+      'queryType': 'name',
       'show': true
     }, {
       'title': 'Numărul dosarului',
       'index': 2,
+      'searchable': true,
+      'queryType': 'caseNumber',
       'show': true
     }, {
       'title': 'PDF',
@@ -111,4 +80,3 @@ function courtLabels() {
 module.exports = SentenceSection;
 
 var format = require('util').format;
-var getQueryType = require('app/util/get-query-type');

@@ -11,41 +11,6 @@ var AgendaSection = {
     return 'http://instante.justice.md/apps/agenda_judecata/inst/' + courtLabel + '/agenda_grid.php';
   },
 
-  getAPIRequestParams: function(courtLabel, clientName) {
-    return {
-      url: 'http://instante.justice.md/apps/agenda_judecata/inst/' + courtLabel + '/agenda_grid.php',
-      searchOptions: getSearchOptions(clientName)
-    };
-
-    function getSearchOptions(query) {
-      var RULE_PER_QUERY_TYPE = {
-        'caseNumber': [
-          {'field': 'nr_dosar', 'op': 'cn', 'data': query.substr(1)}
-        ],
-        'name': [
-          {'field': 'denumire_dosar', 'op': 'cn', 'data': query}
-        ]
-      };
-
-      var searchOptions = {
-        '_search': true,
-        'nd': Date.now(),
-        'rows': 500,
-        'page': 1,
-        'sidx': 'data_inregistrare asc, data_inregistrare',
-        'sord': 'asc',
-        'filters': {
-          'groupOp': 'AND',
-          'rules': RULE_PER_QUERY_TYPE[getQueryType(query)]
-        }
-      };
-
-      searchOptions.filters = JSON.stringify(searchOptions.filters);
-
-      return searchOptions;
-    }
-  },
-
   columns: [
     {
       'title': 'Părţile dosarului',
@@ -102,5 +67,3 @@ function courtLabels() {
 }
 
 module.exports = AgendaSection;
-
-var getQueryType = require('app/util/get-query-type');

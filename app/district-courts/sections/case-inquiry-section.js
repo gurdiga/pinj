@@ -11,45 +11,12 @@ var CaseInquirySection = {
     return 'http://instante.justice.md/apps/cereri_pendinte/cereri_grid.php';
   },
 
-  getAPIRequestParams: function(subsectionName, clientName) {
-    return {
-      url: 'http://instante.justice.md/apps/cereri_pendinte/cereri_grid.php',
-      searchOptions: getSearchOptions(clientName)
-    };
-
-    function getSearchOptions(query) {
-      var RULE_PER_QUERY_TYPE = {
-        'caseNumber': [
-          {'field': 'nr_dosar', 'op': 'cn', 'data': query.substr(1)}
-        ],
-        'name': [
-          {'field': 'parti_dosar', 'op': 'cn', 'data': query}
-        ]
-      };
-
-      var searchOptions = {
-        '_search': true,
-        'nd': Date.now(),
-        'rows': 500,
-        'page': 1,
-        'sidx': 'site_name desc, site_name',
-        'sord': 'desc',
-        'filters': {
-          'groupOp': 'AND',
-          'rules': RULE_PER_QUERY_TYPE[getQueryType(query)]
-        }
-      };
-
-      searchOptions.filters = JSON.stringify(searchOptions.filters);
-
-      return searchOptions;
-    }
-  },
-
   columns: [
     {
       'title': 'Părţile',
       'index': 2,
+      'searchable': true,
+      'queryType': 'name',
       'show': true
     }, {
       'title': 'Tipul dosarului',
@@ -70,6 +37,8 @@ var CaseInquirySection = {
     }, {
       'title': 'Numărul dosarului',
       'index': 1,
+      'searchable': true,
+      'queryType': 'caseNumber',
       'show': true
     }, {
       'title': 'SKIP',
@@ -84,5 +53,3 @@ var CaseInquirySection = {
 };
 
 module.exports = CaseInquirySection;
-
-var getQueryType = require('app/util/get-query-type');

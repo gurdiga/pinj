@@ -22,7 +22,7 @@
 
         <tbody>
           <% _(section.results).each(function(court) { %>
-            <% _(court.results).each(function(row) { row = JSON.parse(row); %>
+            <% _(court.results).each(function(row) { %>
               <% if (recordCount <= MAX_ROWS_PER_SECTION) { %>
                 <tr>
                   <td style="<%= css.td %>"><%= recordCount %></td>
@@ -36,9 +36,9 @@
                       <% } else if (column.title === 'Instanţa') { %>
                         <%= courts.getName(court.label) %>
                       <% } else if (column.title === 'Persoana vizată') { %>
-                        <%= column.getName(row, court.label) %>
+                        <%= client.label %>
                       <% } else if (column.title === 'Calitatea procesuală') { %>
-                        <%= column.getRole(row, court.label) %>
+                        <%= column.getRole(row, client.label) %>
                       <% } %>
                     <% } %>
                     </td>

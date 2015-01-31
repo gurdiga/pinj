@@ -15,8 +15,7 @@ function sendEmail(email, subject) {
       subject: subject
     };
 
-    var action = Q.ninvoke(transport, 'sendMail', emailOptions);
-    return time(action, '. sending email: ' + subject);
+    return Q.ninvoke(transport, 'sendMail', emailOptions);
   };
 }
 
@@ -38,4 +37,3 @@ function getTransport() {
 var nodemailer = require('nodemailer');
 var Q = require('q');
 Q.longStackSupport = true;
-var time = require('app/util/time');

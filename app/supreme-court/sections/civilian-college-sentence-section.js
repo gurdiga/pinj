@@ -15,45 +15,12 @@ var CivilianCollegeSentenceSection = {
     return 'http://jurisprudenta.csj.md/col_civil_grid.php';
   },
 
-  getAPIRequestParams: function(subsectionName, clientName) {
-    return {
-      url: 'http://jurisprudenta.csj.md/col_civil_grid.php',
-      searchOptions: getSearchOptions(clientName)
-    };
-
-    function getSearchOptions(query) {
-      var RULE_PER_QUERY_TYPE = {
-        'caseNumber': [
-          {'field': 'nr_dosar', 'op': 'cn', 'data': query.substr(1)}
-        ],
-        'name': [
-          {'field': 'partile_dosar', 'op': 'cn', 'data': query}
-        ]
-      };
-
-      var searchOptions = {
-        '_search': true,
-        'nd': Date.now(),
-        'rows': 500,
-        'page': 1,
-        'sidx': 'data_examinare desc, data_examinare',
-        'sord': 'desc',
-        'filters': {
-          'groupOp': 'AND',
-          'rules': RULE_PER_QUERY_TYPE[getQueryType(query)]
-        }
-      };
-
-      searchOptions.filters = JSON.stringify(searchOptions.filters);
-
-      return searchOptions;
-    }
-  },
-
   columns: [
     {
       'title': 'Numărul dosarului',
       'index': 1,
+      'searchable': true,
+      'queryType': 'caseNumber',
       'show': true
     }, {
       'title': 'Data',
@@ -62,6 +29,8 @@ var CivilianCollegeSentenceSection = {
     }, {
       'title': 'Părţile dosarului',
       'index': 3,
+      'searchable': true,
+      'queryType': 'name',
       'show': true
     }, {
       'title': 'Obiectul',
@@ -92,5 +61,3 @@ function getPDFURL(row) {
 }
 
 module.exports = CivilianCollegeSentenceSection;
-
-var getQueryType = require('app/util/get-query-type');

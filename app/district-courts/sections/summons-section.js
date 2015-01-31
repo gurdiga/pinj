@@ -11,45 +11,9 @@ var SummonsSection = {
     return 'http://instante.justice.md/apps/citatii_judecata/citatii_grid.php';
   },
 
-  getAPIRequestParams: function(fieldName, clientName) {
-    return {
-      url: 'http://instante.justice.md/apps/citatii_judecata/citatii_grid.php',
-      searchOptions: getSearchOptions(fieldName, clientName)
-    };
-
-    function getSearchOptions(fieldName, query) {
-      var RULE_PER_QUERY_TYPE = {
-        'caseNumber': [
-          {'field': 'nr_dosar', 'op': 'cn', 'data': query.substr(1)}
-        ],
-        'name': [
-          {'field': fieldName, 'op': 'cn', 'data': query}
-        ]
-      };
-
-      var searchOptions = {
-        '_search': true,
-        'nd': Date.now(),
-        'rows': 500,
-        'page': 1,
-        'sidx': 'judecatoria_vizata desc, judecatoria_vizata',
-        'sord': 'desc',
-        'filters': {
-          'groupOp': 'AND',
-          'rules': RULE_PER_QUERY_TYPE[getQueryType(query)]
-        }
-      };
-
-      searchOptions.filters = JSON.stringify(searchOptions.filters);
-
-      return searchOptions;
-    }
-  },
-
   columns: [
     {
       'title': 'Persoana vizată',
-      'getName': getName,
       'show': true
     }, {
       'title': 'Calitatea procesuală',
@@ -74,6 +38,8 @@ var SummonsSection = {
     }, {
       'title': 'Numărul dosarului',
       'index': 1,
+      'searchable': true,
+      'queryType': 'caseNumber',
       'show': true
     }, {
       'title': 'SKIP',
@@ -82,10 +48,14 @@ var SummonsSection = {
     }, {
       'title': 'Pîrît',
       'index': 4,
+      'searchable': true,
+      'queryType': 'name',
       'used': true
     }, {
       'title': 'Reclamant',
       'index': 6,
+      'searchable': true,
+      'queryType': 'name',
       'used': true
     }, {
       'title': 'Judecător',
@@ -107,25 +77,14 @@ var SummonsSection = {
   ]
 };
 
-function getName(row, fieldName) {
+function getRole(row, clientName) {
   var accuser = row[6];
-  var culprit = row[4];
 
-  if (fieldName === 'persoana_citata') {
-    return culprit;
-  } else {
-    return accuser;
-  }
-}
-
-function getRole(row, fieldName) {
-  if (fieldName === 'persoana_citata') {
-    return 'pîrît';
-  } else {
+  if (accuser.indexOf(clientName) > -1) {
     return 'reclamant';
+  } else {
+    return 'pîrît';
   }
 }
 
 module.exports = SummonsSection;
-
-var getQueryType = require('app/util/get-query-type');

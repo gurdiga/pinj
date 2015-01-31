@@ -15,7 +15,7 @@ function queryAPI(apiRequestOptions) {
     json: true
   };
 
-  return Q.Promise(function(resolve) {
+  return new Promise(function(resolve) {
     request(requestOptions, function(err, res, body) {
       if (err) console.error(err, apiRequestOptions);
 
@@ -37,6 +37,5 @@ function prepareBody(body) {
 }
 
 var assert = require('assert');
-var Q = require('q');
-Q.longStackSupport = true;
 var request = require('request');
+var Promise = request('app/util/promise');

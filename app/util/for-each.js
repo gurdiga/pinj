@@ -8,7 +8,7 @@ function forEach(items) {
 
   function asyncRun(flowType) {
     return function(thenableIterator, thisObject) {
-      return Q.Promise(function(resolve, reject) {
+      return new Promise(function(resolve, reject) {
         var asyncTasks = prepareAsyncTasks(items, thenableIterator, thisObject);
 
         async[flowType](asyncTasks, function(err, results) {
@@ -55,6 +55,5 @@ module.exports = forEach;
 
 var _ = require('underscore');
 var async = require('async');
-var Q = require('q');
-Q.longStackSupport = true;
 var assert = require('assert');
+var Promise = require('app/util/promise');

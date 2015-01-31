@@ -19,7 +19,7 @@ describe('getUsers', function() {
 
   describe('with an empty list', function() {
     beforeEach(function() {
-      Data.get.returns(Q.resolve({}));
+      Data.get.returns(Promise.resolve({}));
     });
 
     it('resolves to an empty list', function() {
@@ -29,7 +29,7 @@ describe('getUsers', function() {
 
   describe('preparation', function() {
     beforeEach(function() {
-      Data.get.returns(Q.resolve(allUserData));
+      Data.get.returns(Promise.resolve(allUserData));
 
       return getUsers().then(function(preparedUsers) {
         expect(preparedUsers).to.have.length(1);
@@ -186,7 +186,7 @@ describe('getUsers', function() {
 
   describe('filtering', function() {
     beforeEach(function() {
-      Data.get.returns(Q.resolve(allUserData));
+      Data.get.returns(Promise.resolve(allUserData));
     });
 
     describe('cover run', function() {
@@ -259,4 +259,4 @@ describe('getUsers', function() {
 var getUsers = require('app/get-users');
 var Data = require('app/util/data');
 var config = require('app/config');
-var Q = require('q');
+var Promise = require('app/util/promise');

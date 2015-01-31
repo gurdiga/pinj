@@ -57,7 +57,7 @@ function getLastChildOf(path) {
 
 function authenticated(f) {
   return authenticate.then(function() {
-    return Q.Promise(f);
+    return new Promise(f);
   });
 }
 
@@ -67,7 +67,7 @@ var ref;
 function main() {
   ref = new Firebase('https://pinj-dev.firebaseio.com');
 
-  authenticate = Q.Promise(function(resolve, reject) {
+  authenticate = new Promise(function(resolve, reject) {
     var tokenGenerator = new FirebaseTokenGenerator(process.env.FIREBASE_SECRET);
     var token = tokenGenerator.createToken({
       uid: '1',
@@ -83,7 +83,7 @@ function main() {
   });
 }
 
-var Q = require('q');
 var Firebase = require('firebase');
 var FirebaseTokenGenerator = require('firebase-token-generator');
+var Promise = require('app/util/promise');
 main();

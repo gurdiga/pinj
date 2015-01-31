@@ -3,7 +3,7 @@
 module.exports = execute;
 
 function execute(command) {
-  return Q.Promise(function(resolve, reject) {
+  return new Promise(function(resolve, reject) {
     var exec = require('child_process').exec;
     var child = exec(command);
 
@@ -18,4 +18,4 @@ function execute(command) {
   });
 }
 
-var Q = require('q');
+var Promise = require('app/util/promise');

@@ -7,7 +7,7 @@ function sendEmails(emails) {
     var email = meta.label;
     var subject = 'Monitorul PINJ: informaţii despre clienţi';
 
-    return new Q(extractBodies(meta))
+    return Promise.resolve(extractBodies(meta))
     .then(sendEmail(email, subject));
   });
 }
@@ -18,5 +18,4 @@ function extractBodies(meta) {
 
 var forEach = require('app/util/for-each');
 var sendEmail = require('app/util/send-email');
-var Q = require('q');
-Q.longStackSupport = true;
+var Promise = require('app/util/promise');

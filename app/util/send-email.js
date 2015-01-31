@@ -4,18 +4,23 @@ module.exports = sendEmail;
 
 function sendEmail(email, subject) {
   return function(bodies) {
-    if (process.env.NODE_ENV === 'development' && email !== 'gurdiga@gmail.com') return;
+    return new Promise(function(resolve, reject) {
+      if (process.env.NODE_ENV === 'development' && email !== 'gurdiga@gmail.com') return;
 
-    var transport = getTransport();
-    var emailOptions = {
-      to: email,
-      html: bodies.html,
-      text: bodies.text,
-      from: 'info@pinj.pentru.md',
-      subject: subject
-    };
+      var transport = getTransport();
+      var emailOptions = {
+        to: email,
+        html: bodies.html,
+        text: bodies.text,
+        from: 'info@pinj.pentru.md',
+        subject: subject
+      };
 
-    return Q.ninvoke(transport, 'sendMail', emailOptions);
+      transport.sendMail(emailOptions, function(error) {
+        if (error) reject(error);
+        else resolve();
+      });
+    });
   };
 }
 
@@ -34,6 +39,5 @@ function getTransport() {
   return nodemailer.createTransport(transport(transportOptions));
 }
 
+var Promise = require('app/util/promise');
 var nodemailer = require('nodemailer');
-var Q = require('q');
-Q.longStackSupport = true;

@@ -35,22 +35,17 @@ function saveNewLastIDs(lastIDs) {
 }
 
 function getNewLastID(newResults, levelLabel, sectionLabel, subsectionLabel) {
-  var level = newResults.filter(havingLabel(levelLabel))[0];
+  var level = newResults.filter(where('label', levelLabel))[0];
   if (!level) return;
 
-  var section = level.results.filter(havingLabel(sectionLabel))[0];
+  var section = level.results.filter(where('label', sectionLabel))[0];
   if (!section) return;
 
-  var subsection = section.results.filter(havingLabel(subsectionLabel))[0];
+  var subsection = section.results.filter(where('label', subsectionLabel))[0];
   if (!subsection) return;
 
   return subsection.results.lastID;
-
-  function havingLabel(label) {
-    return function(item) {
-      return item.label === label;
-    };
-  }
 }
 
 var Data = require('app/util/data');
+var where = require('app/util/where');

@@ -27,15 +27,9 @@ function getNewResults() {
 
 function getLastID(lastIDs, levelLabel, sectionLabel, subsectionName) {
   return lastIDs
-  .filter(havingLabel(levelLabel)).reduce(noop).results
-  .filter(havingLabel(sectionLabel)).reduce(noop).results
-  .filter(havingLabel(subsectionName)).reduce(noop).results;
-
-  function havingLabel(label) {
-    return function(item) {
-      return item.label === label;
-    };
-  }
+  .filter(where('label', levelLabel)).reduce(noop).results
+  .filter(where('label', sectionLabel)).reduce(noop).results
+  .filter(where('label', subsectionName)).reduce(noop).results;
 
   // “If the array is empty and no initialValue was provided, TypeError would
   // be thrown. If the array has only one element (regardless of position) and
@@ -175,6 +169,7 @@ var Data = require('app/util/data');
 var forEach = require('app/util/for-each');
 var Promise = require('app/util/promise');
 var time = require('app/util/time');
+var where = require('app/util/where');
 
 var SupremeCourt = require('app/supreme-court');
 var DistrictCourts = require('app/district-courts');

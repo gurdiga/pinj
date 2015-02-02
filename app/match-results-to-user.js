@@ -40,7 +40,7 @@ function rowMatches(section, row, query) {
 
 function preparePath(news, labels) {
   return labels.reduce(function(items, label) {
-    var existingItem = items.filter(havingLabel(label))[0];
+    var existingItem = items.filter(where('label', label))[0];
 
     if (existingItem) return existingItem.results;
     else return appendNewEmptyItem(items, label).results;
@@ -55,12 +55,7 @@ function preparePath(news, labels) {
     items.push(newItem);
     return newItem;
   }
-
-  function havingLabel(label) {
-    return function(item) {
-      return item.label === label;
-    };
-  }
 }
 
 var getQueryType = require('app/util/get-query-type');
+var where = require('app/util/where');

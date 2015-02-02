@@ -8,21 +8,23 @@ function getNewResults() {
     SupremeCourt
   ];
 
-  return time('. getting previous last IDs', Data.get('/last-ids'))
-  .then(function(lastIDs) {
-    return time('. getting new results', forEach(levels).inSeries(function(level) {
-      return forEach(level).inParallel(function(section) {
-        return forEach(section.subsectionNames).inParallel(function(subsectionName) {
-          var lastID = getLastID(lastIDs, level.toString(), section.toString(), subsectionName);
-          return getRows(section, subsectionName, lastID)
-          .then(extractRowsAndLastID(lastID));
-        })
-        .then(addSectionReferences(section));
+  return time('. getting new results',
+    Data.get('/last-ids')
+    .then(function(lastIDs) {
+      return forEach(levels).inSeries(function(level) {
+        return forEach(level).inParallel(function(section) {
+          return forEach(section.subsectionNames).inParallel(function(subsectionName) {
+            var lastID = getLastID(lastIDs, level.toString(), section.toString(), subsectionName);
+            return getRows(section, subsectionName, lastID)
+            .then(extractRowsAndLastID(lastID));
+          })
+          .then(addSectionReferences(section));
+        });
       });
-    }));
-  })
-  .then(removeEmptySearchResults)
-  .then(deleteUnusedColumns);
+    })
+    .then(removeEmptySearchResults)
+    .then(deleteUnusedColumns)
+  ).then(reportRowCount);
 }
 
 function getLastID(lastIDs, levelLabel, sectionLabel, subsectionName) {
@@ -158,6 +160,19 @@ function getUsedColumnIndexes(columns) {
     .map(function(column) {
       return column.index.toString();
     });
+}
+
+function reportRowCount(results) {
+  var totalNewRowCount = results.reduce(function(rowCount, level) {
+    return rowCount + level.results.reduce(function(rowCount, section) {
+      return rowCount + section.results.reduce(function(rowCount, subsection) {
+        return rowCount + subsection.results.length;
+      }, 0);
+    }, 0);
+  }, 0);
+
+  console.log('.. %s new rows', totalNewRowCount);
+  return results;
 }
 
 var request = require('request');

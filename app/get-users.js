@@ -8,6 +8,8 @@ function getUsers() {
 }
 
 function prepareForSearch(users) {
+  console.log('.. %s users', _.size(users));
+
   return _(users)
   .map(prepareUserData)
   .filter(notYetServed)

@@ -19,9 +19,7 @@
     "q": "1.1.2",
     "request": "2.51.0",
     "dateformat": "1.0.11",
-    "underscore": "1.7.0",
-    "cron": "1.0.5",
-    "time": "0.11.0"
+    "underscore": "1.7.0"
   },
   "devDependencies": {
     "mocha": "2.0.1",

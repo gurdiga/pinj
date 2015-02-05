@@ -17,4 +17,4 @@ restart:
 	heroku restart
 
 start: test
-	@foreman start
+	foreman start

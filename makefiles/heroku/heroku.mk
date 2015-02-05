@@ -1,11 +1,16 @@
 deploy: test
-	@git push -f heroku
+	git push -f heroku
 
 log:
-	@heroku logs --tail
+	heroku logs --tail
 
 config:
-	@heroku config:set $$(cat .env)
+	@heroku config:set $(shell \
+		grep -v '^\s*$$' .env | \
+		while IFS== read name value; do \
+			echo $$name="'$$value'"; \
+		done \
+	)
 
 debug-on:
 	heroku labs:enable log-runtime-metrics

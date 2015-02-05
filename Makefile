@@ -8,7 +8,7 @@ run: test
 	@NODE_ENV=development node .
 
 deps:
-	npm prune && npm install
+	npm prune && npm install && npm outdated
 
 include $(shell find makefiles -name '*.mk' | sort)
 

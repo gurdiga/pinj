@@ -4,4 +4,4 @@
 
 ### PINJ search engine
 
-A thingy for a lawyer friend. A side project.
+The PINJ module that does the searches.

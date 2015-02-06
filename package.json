@@ -10,6 +10,7 @@
     "node": "0.10.x"
   },
   "dependencies": {
+    "pinj-config": "gurdiga/pinj-config",
     "util-data": "gurdiga/util-data",
     "util-for-each": "gurdiga/util-for-each",
     "nodemailer": "1.3.0",

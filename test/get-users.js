@@ -258,5 +258,5 @@ describe('getUsers', function() {
 
 var getUsers = require('app/get-users');
 var Data = require('util-data');
-var config = require('app/config');
+var config = require('pinj-config');
 var Promise = require('app/util/promise');

@@ -89,4 +89,4 @@ function prepareClientList(list) {
 var _ = require('underscore');
 var Data = require('util-data');
 var time = require('app/util/time');
-var config = require('app/config');
+var config = require('pinj-config');

@@ -63,7 +63,7 @@ function getLastRow(section, subsectionName) {
 var request = require('request');
 
 var normalizeAPIResponse = require('app/util/normalize-api-response');
-var forEach = require('app/util/for-each');
+var forEach = require('util-for-each');
 var Promise = require('app/util/promise');
 
 var SupremeCourt = require('app/supreme-court');

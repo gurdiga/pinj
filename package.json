@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "util-data": "gurdiga/util-data",
-    "async": "0.9.0",
+    "util-for-each": "gurdiga/util-for-each",
     "nodemailer": "1.3.0",
     "nodemailer-smtp-transport": "0.1.13",
     "q": "1.1.2",

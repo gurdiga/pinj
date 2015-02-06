@@ -21,5 +21,5 @@ function reportEmailCount(emails) {
 }
 
 var sendEmail = require('app/util/send-email');
-var forEach = require('app/util/for-each');
+var forEach = require('util-for-each');
 var time = require('app/util/time');

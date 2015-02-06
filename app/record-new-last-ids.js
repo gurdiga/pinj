@@ -47,5 +47,5 @@ function getNewLastID(newResults, levelLabel, sectionLabel, subsectionLabel) {
   return subsection.results.lastID;
 }
 
-var Data = require('app/util/data');
+var Data = require('util-data');
 var where = require('app/util/where');

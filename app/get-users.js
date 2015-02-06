@@ -87,6 +87,6 @@ function prepareClientList(list) {
 }
 
 var _ = require('underscore');
-var Data = require('app/util/data');
+var Data = require('util-data');
 var time = require('app/util/time');
 var config = require('app/config');

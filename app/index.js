@@ -2,7 +2,7 @@
 
 function main() {
   assertEnvironment();
-  console.log('Starting pinj-serch-engine in “' + process.env.NODE_ENV + '” mode');
+  console.log('Starting %s in %s mode', app.name, process.env.NODE_ENV);
 
   var newResultsContainer = {};
 
@@ -53,5 +53,6 @@ var matchResultsToUsers = require('app/match-results-to-user');
 var prepareEmails = require('app/prepare-emails');
 var sendEmails = require('app/send-emails');
 var recordNewLastIDs = require('app/record-new-last-ids');
+var app = require('../package.json');
 
 main();

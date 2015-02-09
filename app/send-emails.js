@@ -7,7 +7,7 @@ function sendEmails(emails) {
     return sendEmail({
       'from': 'info@pinj.pentru.md',
       'to': meta.label,
-      'subject': 'Monitorul PINJ: informaţii despre clienţi',
+      'subject': 'Monitorul PINJ: informaţii despre clienţi (next)',
       'html': meta.results.html,
       'text': meta.results.text
     });

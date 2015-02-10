@@ -101,11 +101,6 @@ describe('getUsers', function() {
       .that.is.equal(userData.timestamps.lastSearch);
     });
 
-    it('remembers the paymentOverdueNotification timestamp', function() {
-      expect(preparedUser).to.have.property('paymentOverdueNotification')
-      .that.is.equal(userData.timestamps.paymentOverdueNotification);
-    });
-
     it('add the toString() method which returns the email', function() {
       expect(preparedUser.toString()).to.equal(preparedUser.email);
     });

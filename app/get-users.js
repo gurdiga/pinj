@@ -12,7 +12,6 @@ function prepareForSearch(users) {
 
   return _(users)
   .map(prepareUserData)
-  .filter(notYetServed)
   .filter(nonTestUsers)
   .filter(accountForDevelopmentMode);
 }
@@ -23,7 +22,6 @@ function prepareUserData(data, aid) {
   user.clientList = prepareClientList(data.clients);
   user.email = emailFromAID(aid);
   user.aid = aid;
-  user.lastSearch = data.timestamps.lastSearch;
   user.toString = function() {
     return user.email;
   };
@@ -32,12 +30,6 @@ function prepareUserData(data, aid) {
   else if (isPayer(data.timestamps.lastPayment)) user.isPayer = true;
 
   return user;
-}
-
-function notYetServed(user) {
-  if (!user.lastSearch) return true;
-
-  return Date.now() - user.lastSearch > config.TIME_BEFORE_THE_COVER_RUN;
 }
 
 function nonTestUsers(user) {

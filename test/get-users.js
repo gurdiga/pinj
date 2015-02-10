@@ -5,8 +5,6 @@ describe('getUsers', function() {
   var userData = {
     'clients': '',
     'timestamps': {
-      'lastSearch': 1321343414543,
-      'paymentOverdueNotification': 1321343414543
     }
   };
   var allUserData = { 'test@example:com': userData };
@@ -96,11 +94,6 @@ describe('getUsers', function() {
       expect(preparedUser.aid).to.equal('test@example:com');
     });
 
-    it('remembers the lastSearch', function() {
-      expect(preparedUser).to.have.property('lastSearch')
-      .that.is.equal(userData.timestamps.lastSearch);
-    });
-
     it('add the toString() method which returns the email', function() {
       expect(preparedUser.toString()).to.equal(preparedUser.email);
     });
@@ -182,26 +175,6 @@ describe('getUsers', function() {
   describe('filtering', function() {
     beforeEach(function() {
       Data.get.returns(Promise.resolve(allUserData));
-    });
-
-    describe('cover run', function() {
-      beforeEach(function() {
-        var aFewMinutes = 4 * 60 * 1000;
-
-        allUserData['already-served@test:com'] = {
-          'timestamps': {
-            'lastSearch': Date.now() - (config.TIME_BEFORE_THE_COVER_RUN - aFewMinutes)
-          }
-        };
-      });
-
-      it('excludes users that were served on the first run', function() {
-        return getUsers().then(function(preparedUsers) {
-          preparedUsers.forEach(function(user) {
-            expect(user.aid).not.to.equal('already-served@test:com');
-          });
-        });
-      });
     });
 
     describe('development mode', function() {

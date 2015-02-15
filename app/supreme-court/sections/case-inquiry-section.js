@@ -19,42 +19,51 @@ var CaseInquirySection = {
     {
       'title': 'Numărul de înregistrare',
       'index': 1,
+      'tableColumnName': 'nr_inregistrare',
       'show': true
     }, {
       'title': 'Data înregistrării',
       'index': 2,
+      'tableColumnName': 'data_inregistrare',
       'show': true
     }, {
       'title': 'Numărul dosarului',
       'index': 3,
+      'tableColumnName': 'nr_dosar',
       'searchable': true,
       'queryType': 'caseNumber',
       'show': true
     }, {
       'title': 'Statutul',
       'index': 4,
+      'tableColumnName': 'statutul_dosarului',
       'show': true
     }, {
       'title': 'Tipul dosarului',
       'index': 5,
+      'tableColumnName': 'tip_dosar',
       'show': true
     }, {
       'title': 'Părţile',
       'index': 6,
+      'tableColumnName': 'parti_dosar',
       'searchable': true,
       'queryType': 'name',
       'show': true
     }, {
       'title': 'Recurentul/Revizuientul',
       'index': 7,
+      'tableColumnName': 'recurent_revizuient',
       'show': true
     }, {
       'title': 'Obiectul',
       'index': 8,
+      'tableColumnName': 'obiect_dosar',
       'show': true
     }, {
       'title': 'Procedura',
       'index': 9,
+      'tableColumnName': 'procedura_examinare',
       'show': true
     }, {
       'title': 'ROWID',

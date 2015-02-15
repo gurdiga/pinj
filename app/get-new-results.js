@@ -10,13 +10,14 @@ function getNewResults() {
 
   return time('. getting new results',
     Data.get('/last-ids')
-    .then(function(lastIDs) {
+    .then(function(lastRows) {
       return forEach(levels).inSeries(function(level) {
         return forEach(level).inParallel(function(section) {
           return forEach(section.subsectionNames).inParallel(function(subsectionName) {
-            var lastID = getLastID(lastIDs, level.toString(), section.toString(), subsectionName);
-            return getRows(section, subsectionName, lastID)
-            .then(extractRowsAndLastID(lastID));
+            return getLastRow(lastRows, level.toString(), section.toString(), subsectionName)
+            .then(getLastRowID(section, subsectionName))
+            .then(getNewRows(section, subsectionName))
+            .then(extractRows);
           })
           .then(addSectionReferences(section));
         });
@@ -27,11 +28,13 @@ function getNewResults() {
   ).then(reportRowCount);
 }
 
-function getLastID(lastIDs, levelLabel, sectionLabel, subsectionName) {
-  return lastIDs
-  .filter(where('label', levelLabel)).reduce(noop).results
-  .filter(where('label', sectionLabel)).reduce(noop).results
-  .filter(where('label', subsectionName)).reduce(noop).results;
+function getLastRow(lastRows, levelLabel, sectionLabel, subsectionName) {
+  return new Promise.resolve(
+    lastRows
+    .filter(where('label', levelLabel)).reduce(noop).results
+    .filter(where('label', sectionLabel)).reduce(noop).results
+    .filter(where('label', subsectionName)).reduce(noop).results
+  );
 
   // “If the array is empty and no initialValue was provided, TypeError would
   // be thrown. If the array has only one element (regardless of position) and
@@ -42,63 +45,95 @@ function getLastID(lastIDs, levelLabel, sectionLabel, subsectionName) {
   function noop() {}
 }
 
-function getRows(section, subsectionName, lastID) {
-  return new Promise(function(resolve) {
-    var url = section.getURL(subsectionName);
+function getLastRowID(section, subsectionName) {
+  return function(lastRow) {
+    return new Promise(function(resolve) {
+      var url = section.getURL(subsectionName);
 
-    var form = {
-      '_search': true,
-      'nd': Date.now(),
-      'rows': 500,
-      'page': 1,
-      'filters': JSON.stringify({
-        'groupOp': 'AND',
-        'rules': [
-          {'field': 'id', 'op': 'gt', 'data': lastID}
-        ]
-      })
-    };
+      var form = {
+        '_search': true,
+        'rows': 1,
+        'filters': JSON.stringify({
+          'groupOp': 'AND',
+          'rules': getRules(lastRow)
+        })
+      };
 
-    var requestOptions = {
-      uri: url,
-      form: form,
-      method: 'POST',
-      gzip: true,
-      json: true
-    };
+      var requestOptions = {
+        uri: url,
+        form: form,
+        method: 'POST',
+        gzip: true,
+        json: true
+      };
 
-    request(requestOptions, normalizeAPIResponse(url, form, resolve));
-  });
-}
+      request(requestOptions, normalizeAPIResponse(url, form, resolve));
+    })
+    .then(extractID);
 
-function extractRowsAndLastID(previousLastID) {
-  return function(result) {
-    var rows = result.rows
-    .filter(withValidID)
-    .filter(withValidData)
-    .map(extractData);
-
-    if (result.rows.length === 0) {
-      rows.lastID = previousLastID;
-    } else {
-      var lastRow = result.rows[result.rows.length - 1];
-      rows.lastID = lastRow.id;
+    function getRules(lastRow) {
+      return _(lastRow).map(function(fieldValue, fieldName) {
+        return {
+          'field': fieldName,
+          'op': 'cn',
+          'data': fieldValue
+        };
+      });
     }
 
-    return rows;
+    function extractID(result) {
+      if (result.rows.length === 0) {
+        var context = {
+          'lastRow': lastRow,
+          'rules': getRules(lastRow),
+          'url': section.getURL(subsectionName)
+        };
 
-    function withValidID(row) {
-      return !!row.id;
-    }
+        throw new Error('Couldn’t find the previously saved last row:\n' + JSON.stringify(context));
+      }
 
-    function withValidData(row) {
-      return !!row.cell;
-    }
-
-    function extractData(row) {
-      return row.cell;
+      return result.rows[0].id;
     }
   };
+}
+
+function getNewRows(section, subsectionName) {
+  return function(lastID) {
+    return new Promise(function(resolve) {
+      var url = section.getURL(subsectionName);
+
+      var form = {
+        '_search': true,
+        'rows': 500,
+        'page': 1,
+        'filters': JSON.stringify({
+          'groupOp': 'AND',
+          'rules': [
+            {'field': 'id', 'op': 'lt', 'data': lastID}
+          ]
+        })
+      };
+
+      var requestOptions = {
+        uri: url,
+        form: form,
+        method: 'POST',
+        gzip: true,
+        json: true
+      };
+
+      request(requestOptions, normalizeAPIResponse(url, form, resolve));
+    });
+  };
+}
+
+function extractRows(result) {
+  return result.rows.map(extractData);
+
+  function extractData(row) {
+    if (!row.cell) throw new Error('No data found in row: ' + JSON.stringify(row));
+    return row.cell;
+  }
 }
 
 function addSectionReferences(section) {

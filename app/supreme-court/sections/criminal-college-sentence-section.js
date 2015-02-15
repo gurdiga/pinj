@@ -19,30 +19,36 @@ var CriminalCollegeSentenceSection = {
     {
       'title': 'Numărul dosarului',
       'index': 1,
+      'tableColumnName': 'nr_dosar',
       'searchable': true,
       'queryType': 'caseNumber',
       'show': true
     }, {
       'title': 'Data pronunţării',
       'index': 2,
+      'tableColumnName': 'data_pronuntare',
       'show': true
     }, {
       'title': 'Părţile dosarului',
       'index': 3,
+      'tableColumnName': 'partea_dosar',
       'searchable': true,
       'queryType': 'name',
       'show': true
     }, {
       'title': 'Infracţiunea',
       'index': 4,
+      'tableColumnName': 'infractiunea_crime',
       'show': true
     }, {
       'title': 'Problema de drept',
       'index': 5,
+      'tableColumnName': 'art_cp_cpp',
       'show': true
     }, {
       'title': 'Procedura',
       'index': 6,
+      'tableColumnName': 'procedura_examinare',
       'show': true
     }, {
       'title': 'ROWID',

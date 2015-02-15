@@ -1,8 +1,8 @@
 'use strict';
 
-module.exports = getLastIDs;
+module.exports = getLastRows;
 
-function getLastIDs() {
+function getLastRows() {
   var levels = [
     DistrictCourts,
     SupremeCourt
@@ -12,11 +12,28 @@ function getLastIDs() {
     return forEach(sections).inParallel(function(section) {
       return forEach(section.subsectionNames).inParallel(function(subsectionName) {
         return getLastRow(section, subsectionName).then(function(data) {
-          return data.rows[0].id;
+          return section.columns
+          .filter(publishedColumns)
+          .reduce(columnValue(data.rows[0].cell), {});
         });
       });
     });
   });
+
+  function publishedColumns(column) {
+    return ('tableColumnName' in column) && (['data_inregistrare', 'data_actualizare', 'data_publicare', 'PDF'].indexOf(column.tableColumnName) === -1);
+  }
+
+  function columnValue(row) {
+    return function(values, column) {
+      if (!column.tableColumnName) throw new Error('There is no tableColumnName defined for column: ' + JSON.stringify(column));
+
+      var value = row[column.index].trim();
+      if (value) values[column.tableColumnName] = value;
+
+      return values;
+    };
+  }
 }
 
 function getLastRow(section, subsectionName) {
@@ -24,28 +41,8 @@ function getLastRow(section, subsectionName) {
     var url = section.getURL(subsectionName);
 
     var form = {
-      '_search': true,
-      'nd': Date.now(),
       'rows': 1,
       'page': 1,
-      'sidx': 'id',
-      'sord': 'desc',
-
-      //
-      // The queries for the last ID generally work without this nonsensical
-      // filters definition, but werdly enough, it doesn’t for these two:
-      // - Cereri în instanţă
-      // - Hotărîrile instanţei:jia
-      //
-      // So this in essence is a hack to work around that.
-      //
-
-      'filters': JSON.stringify({
-        'groupOp': 'OR',
-        'rules': [
-          {'field': 'id', 'op': 'gt', 'data': 1}
-        ]
-      })
     };
 
     var requestOptions = {

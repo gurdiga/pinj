@@ -14,7 +14,7 @@ function main() {
   .then(matchResultsToUsers)
   .then(prepareEmails)
   .then(sendEmails)
-  .then(recordNewLastIDs(newResultsContainer))
+  .then(recordNewLastRows(newResultsContainer))
   .then(exit)
   .catch(logErrors);
 }
@@ -41,7 +41,7 @@ function exit() {
 }
 
 function logErrors(error) {
-  console.log('Error:', error.stack);
+  console.log(error.stack);
   process.exit(1);
 }
 
@@ -52,7 +52,7 @@ var getNewResults = require('app/get-new-results');
 var matchResultsToUsers = require('app/match-results-to-users');
 var prepareEmails = require('app/prepare-emails');
 var sendEmails = require('app/send-emails');
-var recordNewLastIDs = require('app/record-new-last-ids');
+var recordNewLastRows = require('app/record-new-last-rows');
 var app = require('../package.json');
 
 main();

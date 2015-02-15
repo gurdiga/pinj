@@ -27,16 +27,19 @@ var SentenceSection = {
   columns: [{
       'title': 'relative PDF link',
       'index': 0,
+      'tableColumnName': 'PDF',
       'used': true
     }, {
       'title': 'Denumirea dosarului',
       'index': 3,
+      'tableColumnName': 'denumire_dosar',
       'searchable': true,
       'queryType': 'name',
       'show': true
     }, {
       'title': 'Numărul dosarului',
       'index': 2,
+      'tableColumnName': 'nr_dosar',
       'searchable': true,
       'queryType': 'caseNumber',
       'show': true
@@ -47,10 +50,12 @@ var SentenceSection = {
     }, {
       'title': 'Data pronunţării',
       'index': 1,
+      'tableColumnName': 'data_deciziei',
       'show': false
     }, {
       'title': 'Tipul dosarului',
       'index': 4,
+      'tableColumnName': 'tip_dosar',
       'show': false
     }, {
       'title': 'ROWID',

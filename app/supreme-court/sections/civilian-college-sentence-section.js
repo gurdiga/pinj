@@ -19,30 +19,36 @@ var CivilianCollegeSentenceSection = {
     {
       'title': 'Numărul dosarului',
       'index': 1,
+      'tableColumnName': 'nr_dosar',
       'searchable': true,
       'queryType': 'caseNumber',
       'show': true
     }, {
       'title': 'Data',
       'index': 2,
+      'tableColumnName': 'data_examinare',
       'show': true
     }, {
       'title': 'Părţile dosarului',
       'index': 3,
+      'tableColumnName': 'partile_dosar',
       'searchable': true,
       'queryType': 'name',
       'show': true
     }, {
       'title': 'Obiectul',
       'index': 4,
+      'tableColumnName': 'obiectul_litigiului',
       'show': true
     }, {
       'title': 'Problema de drept',
       'index': 5,
+      'tableColumnName': 'problema_juridica',
       'show': true
     }, {
       'title': 'Procedura',
       'index': 6,
+      'tableColumnName': 'procedura_examinare',
       'show': true
     }, {
       'title': 'ROWID',

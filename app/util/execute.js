@@ -5,15 +5,29 @@ module.exports = execute;
 function execute(command) {
   return Q.Promise(function(resolve, reject) {
     var exec = require('child_process').exec;
-    var child = exec(command);
+    var child = exec(command, captureStreams);
+    var stdErr, stdOut, exitCode;
 
-    child.stdout.pipe(process.stdout);
-    child.stderr.pipe(process.stderr);
-    child.on('exit', checkExitCode);
+    child.on('exit', captureExitCode);
 
-    function checkExitCode(code) {
-      if (code === 0) resolve();
-      else reject(new Error('Command “' + command + '” exitted with the code of ' + code));
+    function captureStreams(error, stdout, stderr) {
+      stdErr = stderr;
+      stdOut = stdout;
+
+      if (exitCode === 0) resolve(getStdIO());
+      else reject(new Error(getErrorMessage()));
+    }
+
+    function captureExitCode(code) {
+      exitCode = code;
+    }
+
+    function getErrorMessage() {
+      return 'Command “' + command + '” exitted with the code of ' + exitCode + '\n' + getStdIO();
+    }
+
+    function getStdIO() {
+      return 'STDOUT: \n' + stdOut + '\n' + 'STDERR: \n' + stdErr + '\n';
     }
   });
 }

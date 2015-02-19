@@ -17,28 +17,35 @@ function main() {
   ]);
 
   JOB_DEFINITIONS.forEach(function(job) {
-    new CronJob(job.schedule, executeCommand(job.command), null, true, 'Europe/Chisinau');
+    new CronJob(job.schedule, getPreparedExecution(job.command), null, true, 'Europe/Chisinau');
   });
 }
 
-function executeCommand(command) {
+function getPreparedExecution(command) {
   return function() {
-    execute(command).then(notify).catch(notify);
+    console.log('executing', command);
+    execute(command)
+    .then(announceSuccess(command))
+    .catch(announceFailure(command));
   };
 }
 
-function notify(result) {
-  var subject, body;
+function announceSuccess(command) {
+  return function(stdIO) {
+    var subject = 'PINJ cron success: ' + command;
+    var body = '<pre>' + stdIO + '</pre>';
 
-  if (result instanceof Error) {
-    subject ='Monitorul PINJ: eroare';
-    body = result.message;
-  } else {
-    subject ='Monitorul PINJ: executat cu success';
-    body = 'Yes';
-  }
+    return sendEmail('gurdiga@gmail.com', subject)({ html: body });
+  };
+}
 
-  sendEmail('gurdiga@gmail.com', subject)({ html: body });
+function announceFailure(command) {
+  return function(error) {
+    var subject = 'PINJ cron failure: ' + command;
+    var body = '<pre>' + error.stack + '</pre>';
+
+    return sendEmail('gurdiga@gmail.com', subject)({ html: body });
+  };
 }
 
 var CronJob = require('cron').CronJob;

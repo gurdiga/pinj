@@ -2,10 +2,10 @@
 
 var JOB_DEFINITIONS = [{
   'schedule': process.env.SEARCH_SCHEDULE,
-  'command' : './time node app/index'
+  'command' : './time --verbose node app/index'
 }, {
   'schedule': process.env.PURGE_SCHEDULE,
-  'command' : './time node app/crontab/purge-search-history'
+  'command' : './time --verbose node app/crontab/purge-search-history'
 }];
 
 function main() {

@@ -8,9 +8,7 @@ function main() {
 }
 
 function purgeSearchHistory(users) {
-  console.log('. purging search history');
-
-  return forEach(users).inSeries(purgeSearchHistoryForUser);
+  return time(forEach(users).inSeries(purgeSearchHistoryForUser), '. purging search history');
 }
 
 function purgeSearchHistoryForUser(user) {
@@ -21,9 +19,9 @@ function purgeSearchHistoryForUser(user) {
     var resultTimestamps = _(results).keys();
     var oldResultTimestamps = _.initial(resultTimestamps, config.MAX_HISTORY_LENGTH);
 
-    return time(forEach(oldResultTimestamps).inSeries(function(timestamp) {
+    return forEach(oldResultTimestamps).inSeries(function(timestamp) {
       return Data.set(path + '/' + timestamp, null);
-    }), '.. ' + user.email);
+    });
   });
 }
 

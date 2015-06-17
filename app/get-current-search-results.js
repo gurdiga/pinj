@@ -2,6 +2,8 @@
 
 module.exports = getCurrentSearchResults;
 
+var DELAY_AFTER_EACH_CLIENT = 2000;
+
 function getCurrentSearchResults(clientList) {
   return function() {
     var levels = [
@@ -20,7 +22,8 @@ function getCurrentSearchResults(clientList) {
             .then(preprocessRows(section.rowPreprocessor));
           });
         });
-      }), '- ' + clientName);
+      })
+      .then(delay(DELAY_AFTER_EACH_CLIENT)), '- ' + clientName);
     })
     .then(removeEmptySearchResults)
     .then(deleteUnusedColumns)
@@ -122,6 +125,13 @@ function stringifyRows(results) {
   return results;
 }
 
+function delay(ms) {
+  return function(v) {
+    return Q.delay(ms)
+    .then(function() { return v; });
+  };
+}
+
 var SupremeCourt = require('app/supreme-court');
 var DistrictCourts = require('app/district-courts');
 var forEach = require('app/util/for-each');
@@ -130,3 +140,4 @@ var escapeQuotes = require('app/util/mysql-escape');
 var time = require('app/util/time');
 var sectionColumns = require('app/util/get-useful-section-columns')();
 var _ = require('underscore');
+var Q = require('q');

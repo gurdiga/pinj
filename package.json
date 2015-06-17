@@ -7,7 +7,7 @@
     "postinstall": "ln --force --verbose --symbolic --target=node_modules ../app"
   },
   "engines": {
-    "node": "0.10.x"
+    "node": "0.12.x"
   },
   "dependencies": {
     "async": "0.9.0",

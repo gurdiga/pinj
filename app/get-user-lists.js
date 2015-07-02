@@ -10,7 +10,7 @@ function getUserList() {
 function prepareForSearch(users) {
   return _(users)
   .map(prepareUserData)
-  .filter(notYetServed)
+  .filter(not(seachedWithinTheLast(6 * 3600 * 1000)))
   .filter(nonTestUsers)
   .filter(accountForDevelopmentMode);
 }
@@ -33,10 +33,20 @@ function prepareUserData(data, aid) {
   return user;
 }
 
-function notYetServed(user) {
-  if (!user.lastSearch) return true;
+function not(f) {
+  return function() {
+    return !f.apply(this, arguments);
+  };
+}
 
-  return Date.now() - user.lastSearch > config.TIME_BEFORE_THE_COVER_RUN;
+function seachedWithinTheLast(time) {
+  return function(user) {
+    if (!user.lastSearch) return false;
+
+    var timeSinceLastSearch = Date.now() - user.lastSearch;
+
+    return timeSinceLastSearch < time;
+  };
 }
 
 function nonTestUsers(user) {

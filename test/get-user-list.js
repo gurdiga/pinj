@@ -195,7 +195,7 @@ describe('getUserList', function() {
 
         allUserData['already-served@test:com'] = {
           'timestamps': {
-            'lastSearch': Date.now() - (config.TIME_BEFORE_THE_COVER_RUN - aFewMinutes)
+            'lastSearch': Date.now() - aFewMinutes
           }
         };
       });

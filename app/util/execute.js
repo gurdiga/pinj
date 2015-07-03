@@ -9,6 +9,8 @@ function execute(command) {
     var stdErr, stdOut, exitCode;
 
     child.on('exit', captureExitCode);
+    child.stdout.pipe(process.stdout);
+    child.stderr.pipe(process.stderr);
 
     function captureStreams(error, stdout, stderr) {
       stdErr = stderr;

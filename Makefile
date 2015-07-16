@@ -10,6 +10,8 @@ run: test
 deps:
 	npm prune && npm install
 
+JS_FILES = $(shell find test app -name '*.js' -or -name '*.json' | sort)
+
 include $(shell find makefiles -name '*.mk' | sort)
 
 include .env

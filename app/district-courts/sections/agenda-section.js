@@ -42,6 +42,18 @@ var AgendaSection = {
     }
   },
 
+  getRowDate: function(row) {
+    var dateString = row[1];
+
+    if (!dateString) return new Date();
+
+    var datePieces = dateString.split('-');
+    var year  = parseInt(datePieces[2], 10);
+    var month = parseInt(datePieces[1], 10);
+    var date  = parseInt(datePieces[0], 10);
+    return new Date(year, month - 1, date);
+  },
+
   columns: [
     {
       'title': 'Părţile dosarului',

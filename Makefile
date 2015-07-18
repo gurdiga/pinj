@@ -1,5 +1,5 @@
 default: test
-pre-commit: test
+pre-commit: prevent-only test
 
 x:
 	node 1.js
@@ -9,6 +9,16 @@ run: test
 
 deps:
 	npm prune && npm install
+
+prevent-only:
+	@grep -n -R -F '.only(' test; \
+	if [ "$$?" == "0" ]; then \
+		echo '\n-- Please remove only() from tests --\n'; \
+		RESULT=1; \
+	else \
+		RESULT=0; \
+	fi && \
+	exit $$RESULT
 
 JS_FILES = $(shell find test app -name '*.js' -or -name '*.json' | sort)
 

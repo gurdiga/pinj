@@ -44,14 +44,21 @@ var AgendaSection = {
 
   getRowDate: function(row) {
     var dateString = row[1];
+    var currentDate = new Date();
 
-    if (!dateString) return new Date();
+    if (!dateString) return currentDate;
 
     var datePieces = dateString.split('-');
-    var year  = parseInt(datePieces[2], 10);
+
+    var year = parseInt(datePieces[2], 10);
     var month = parseInt(datePieces[1], 10);
-    var date  = parseInt(datePieces[0], 10);
-    return new Date(year, month - 1, date);
+    var dayOfMonth = parseInt(datePieces[0], 10);
+
+    var date = new Date(year + '-' + month + '-' + dayOfMonth);
+
+    if (date.toString() === 'Invalid Date') return currentDate;
+
+    return date;
   },
 
   columns: [

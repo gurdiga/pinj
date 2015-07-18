@@ -50,6 +50,15 @@ describe.only('Relevance filtering', function() {
         expect(rowDate.getMonth()).to.equal(today.getMonth());
         expect(rowDate.getFullYear()).to.equal(today.getFullYear());
       });
+
+      it('getRowDate(undefined) returns current date when date is likely invalid', function() {
+        row[1] = '23-23-2015';
+        var today = new Date();
+        var rowDate = section.getRowDate(row);
+        expect(rowDate.getDate()).to.equal(today.getDate());
+        expect(rowDate.getMonth()).to.equal(today.getMonth());
+        expect(rowDate.getFullYear()).to.equal(today.getFullYear());
+      });
     });
 
     describe('CaseInquirySection', function() {

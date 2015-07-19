@@ -1,17 +1,8 @@
 'use strict';
 
-//
-// TODO:
-// - get sample row sets for each section.
-// - implement per-section getRowDate()
-//
-// Note: for records that do not have an explicit event date, try to
-// extract it from the file ID.
-//
-
-var section, row;
-
 describe('Relevance filtering', function() {
+  var section, row;
+
   describe('district courts', function() {
     describe('AgendaSection', function() {
       beforeEach(function() {
@@ -61,72 +52,94 @@ describe('Relevance filtering', function() {
       });
     });
 
-    describe('CaseInquirySection', function() {
-      beforeEach(function() {
-        section = require('app/district-courts/sections/case-inquiry-section');
-        row = [
-          null,
-          '51-4-3403-08112010',
-          'Romanescu Constantin Cosmin',
-          'Contravenţie administrativă',
-          'Alte contraventii',
-          'Incheiat',
-          'Ungheni',
-          null,
-          null
-        ];
-      });
-
-      it('has a getRowDate(row) method', function() {
-        expect(section.getRowDate, 'CaseInquirySection.getRowDate').to.be.a('function');
-      });
-
-      it('extracts the date from file number', function() {
-        var rowDate = section.getRowDate(row); // 08112010
-        expect(rowDate.getDate(), 'day of month').to.equal(8);
-        expect(rowDate.getMonth(), 'month').to.equal(10);
-        expect(rowDate.getFullYear(), 'year').to.equal(2010);
-      });
-
-      it('returns current date when there is no file number', function() {
-        row[1] = '';
-        var rowDate = section.getRowDate(row);
-        var currentDate = new Date();
-        expect(rowDate.getDate(), 'day of month').to.equal(currentDate.getDate());
-        expect(rowDate.getMonth(), 'month').to.equal(currentDate.getMonth());
-        expect(rowDate.getFullYear(), 'year').to.equal(currentDate.getFullYear());
-      });
-
-      it('returns current date when file number is null', function() {
-        row[1] = null;
-        var rowDate = section.getRowDate(row);
-        var currentDate = new Date();
-        expect(rowDate.getDate(), 'day of month').to.equal(currentDate.getDate());
-        expect(rowDate.getMonth(), 'month').to.equal(currentDate.getMonth());
-        expect(rowDate.getFullYear(), 'year').to.equal(currentDate.getFullYear());
-      });
-
-      it('returns current date when can’t extract date from file number', function() {
-        row[1] = 'some-garbage-1234';
-        var rowDate = section.getRowDate(row);
-        var currentDate = new Date();
-        expect(rowDate.getDate(), 'day of month').to.equal(currentDate.getDate());
-        expect(rowDate.getMonth(), 'month').to.equal(currentDate.getMonth());
-        expect(rowDate.getFullYear(), 'year').to.equal(currentDate.getFullYear());
-      });
-
-      it('returns current date when the extracted date is invalid', function() {
-        row[1] = 'some-garbage-12345678';
-        var rowDate = section.getRowDate(row);
-        var currentDate = new Date();
-        expect(rowDate.getDate(), 'day of month').to.equal(currentDate.getDate());
-        expect(rowDate.getMonth(), 'month').to.equal(currentDate.getMonth());
-        expect(rowDate.getFullYear(), 'year').to.equal(currentDate.getFullYear());
-      });
+    [{
+      section: require('app/district-courts/sections/case-inquiry-section'),
+      sampleRow: [
+        null,
+        '51-4-3403-08112010',
+        'Romanescu Constantin Cosmin',
+        'Contravenţie administrativă',
+        'Alte contraventii',
+        'Incheiat',
+        'Ungheni',
+        null,
+        null
+      ],
+      fileNumberColumnIndex: 1,
+      expectedDate: new Date('2010-11-08')
+    }, {
+      section: require('app/district-courts/sections/sentence-section'),
+      sampleRow: [
+        '<a href="get_decision_doc.php?..." target="_blank">PDF_doc</a>',
+        null,
+        '02-2r-19549-31102014',
+        'Romanescu Constantin vs Ex.Cogilnicean Victor',
+        null,
+        null,
+        null,
+        null
+      ],
+      fileNumberColumnIndex: 2,
+      expectedDate: new Date('2014-10-31')
+    }].forEach(function(item) {
+      testDateExtractionFromFileNumber(
+          item.section,
+          item.sampleRow,
+          item.fileNumberColumnIndex,
+          item.expectedDate
+      );
     });
 
-    describe('SentenceSection', function() {
-    });
+    function testDateExtractionFromFileNumber(section, row, columnIndex, expectedDate) {
+      describe(section.toString(), function() {
+        it('has a getRowDate(row) method', function() {
+          expect(section.getRowDate, 'CaseInquirySection.getRowDate').to.be.a('function');
+        });
+
+        it('extracts the date from file number', function() {
+          var rowDate = section.getRowDate(row); // 08112010
+          expect(rowDate.getDate(), 'day of month').to.equal(expectedDate.getDate());
+          expect(rowDate.getMonth(), 'month').to.equal(expectedDate.getMonth());
+          expect(rowDate.getFullYear(), 'year').to.equal(expectedDate.getFullYear());
+        });
+
+        it('returns current date when there is no file number', function() {
+          row[columnIndex] = '';
+          var rowDate = section.getRowDate(row);
+          var currentDate = new Date();
+          expect(rowDate.getDate(), 'day of month').to.equal(currentDate.getDate());
+          expect(rowDate.getMonth(), 'month').to.equal(currentDate.getMonth());
+          expect(rowDate.getFullYear(), 'year').to.equal(currentDate.getFullYear());
+        });
+
+        it('returns current date when file number is null', function() {
+          row[columnIndex] = null;
+          var rowDate = section.getRowDate(row);
+          var currentDate = new Date();
+          expect(rowDate.getDate(), 'day of month').to.equal(currentDate.getDate());
+          expect(rowDate.getMonth(), 'month').to.equal(currentDate.getMonth());
+          expect(rowDate.getFullYear(), 'year').to.equal(currentDate.getFullYear());
+        });
+
+        it('returns current date when can’t extract date from file number', function() {
+          row[columnIndex] = 'some-garbage-1234';
+          var rowDate = section.getRowDate(row);
+          var currentDate = new Date();
+          expect(rowDate.getDate(), 'day of month').to.equal(currentDate.getDate());
+          expect(rowDate.getMonth(), 'month').to.equal(currentDate.getMonth());
+          expect(rowDate.getFullYear(), 'year').to.equal(currentDate.getFullYear());
+        });
+
+        it('returns current date when the extracted date is invalid', function() {
+          row[columnIndex] = 'some-garbage-12345678';
+          var rowDate = section.getRowDate(row);
+          var currentDate = new Date();
+          expect(rowDate.getDate(), 'day of month').to.equal(currentDate.getDate());
+          expect(rowDate.getMonth(), 'month').to.equal(currentDate.getMonth());
+          expect(rowDate.getFullYear(), 'year').to.equal(currentDate.getFullYear());
+        });
+      });
+    }
 
     describe('SummonsSection', function() {
     });

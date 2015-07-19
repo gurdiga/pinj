@@ -55,6 +55,11 @@ var SentenceSection = {
     return row;
   },
 
+  getRowDate: function(row) {
+    var fileNumber = row[2];
+    return dateFromFileNumber(fileNumber);
+  },
+
   columns: [{
       'title': 'relative PDF link',
       'index': 0,
@@ -108,3 +113,4 @@ module.exports = SentenceSection;
 
 var format = require('util').format;
 var queryType = require('app/util/query-type');
+var dateFromFileNumber = require('app/util/date-from-file-number');

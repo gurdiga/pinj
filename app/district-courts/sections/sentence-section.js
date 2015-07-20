@@ -1,5 +1,7 @@
 'use strict';
 
+// http://instante.justice.md/apps/hotariri_judecata/inst/cac/cac.php
+
 var SentenceSection = {
   toString: function() {
     return 'Hotărîrile instanţei';
@@ -56,8 +58,8 @@ var SentenceSection = {
   },
 
   getRowDate: function(row) {
-    var fileNumber = row[2];
-    return dateFromFileNumber(fileNumber);
+    var dateString = row[1];
+    return dateFromDateString(dateString);
   },
 
   columns: [{
@@ -113,4 +115,4 @@ module.exports = SentenceSection;
 
 var format = require('util').format;
 var queryType = require('app/util/query-type');
-var dateFromFileNumber = require('app/util/date-from-file-number');
+var dateFromDateString = require('app/util/date-from-date-string');

@@ -1,5 +1,6 @@
 'use strict';
 
+// http://instante.justice.md/apps/citatii_judecata/citatii.php
 var SummonsSection = {
   toString: function() {
     return 'Citaţii în instanţă';
@@ -40,6 +41,11 @@ var SummonsSection = {
 
       return searchOptions;
     }
+  },
+
+  getRowDate: function(row) {
+    var dateString = row[2];
+    return dateFromDateString(dateString);
   },
 
   columns: [
@@ -125,3 +131,4 @@ function getRole(row, fieldName) {
 module.exports = SummonsSection;
 
 var queryType = require('app/util/query-type');
+var dateFromDateString = require('app/util/date-from-date-string');

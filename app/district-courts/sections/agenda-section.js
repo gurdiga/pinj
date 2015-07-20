@@ -1,5 +1,7 @@
 'use strict';
 
+// http://instante.justice.md/apps/agenda_judecata/inst/cac/cac.php
+
 var AgendaSection = {
   toString: function() {
     return 'Agenda şedinţelor';
@@ -44,21 +46,7 @@ var AgendaSection = {
 
   getRowDate: function(row) {
     var dateString = row[1];
-    var currentDate = new Date();
-
-    if (!dateString) return currentDate;
-
-    var datePieces = dateString.split('-');
-
-    var year = parseInt(datePieces[2], 10);
-    var month = parseInt(datePieces[1], 10);
-    var dayOfMonth = parseInt(datePieces[0], 10);
-
-    var date = new Date(year + '-' + month + '-' + dayOfMonth);
-
-    if (date.toString() === 'Invalid Date') return currentDate;
-
-    return date;
+    return dateFromDateString(dateString);
   },
 
   columns: [
@@ -115,3 +103,4 @@ function courtLabels() {
 module.exports = AgendaSection;
 
 var queryType = require('app/util/query-type');
+var dateFromDateString = require('app/util/date-from-date-string');

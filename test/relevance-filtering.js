@@ -41,6 +41,11 @@ describe('Relevance filtering', function() {
     sampleRow: [null, '1ra-483/2013', '2013-07-19', 'Naumov V., Ciorba D., Mancevschi O., Safron D., Pozdîrca A., Crotov V.', 'art. 187 al.2, 188 al.2, 208 CP', 'art. 187 al.2, 188 al.2, 208 CP', 'Recurs împotriva hotărârii instanţei de apel', '470'],
     columnIndex: 2,
     expectedDate: new Date('2013-07-19')
+  }, {
+    section: require('app/supreme-court/sections/criminal-plenum-agenda-section'),
+    sampleRow: [null, '4-1re-59/2015', '2015-04-02', 'avocatul Guţu V. în numele condamnatei Zaharia N.', 'Zaharia Natalia', 'CSJ', 'art.190 alin. 5 CP', '10.00', 'Fără participarea părţilor', 'Admisibilitatea recursului în anulare', 'inadmisibilitatea recursului în anulare declarat, ca fiind vădit neîntemeiat, publicat la 09.04.2015', null, '985'],
+    columnIndex: 2,
+    expectedDate: new Date('2015-04-02')
   }].forEach(function(item) {
     testDateExtraction(
       item.section,
@@ -147,12 +152,4 @@ describe('Relevance filtering', function() {
       });
     });
   }
-
-  describe('supreme court', function() {
-    describe('CriminalPlenumAgendaSection', function() {
-    });
-
-    describe('CriminalPlenumAgendaSection', function() {
-    });
-  });
 });

@@ -46,6 +46,11 @@ var CriminalCollegeAgendaSection = {
     }
   },
 
+  getRowDate: function(row) {
+    var dateString = row[2];
+    return dateFromDateString(dateString);
+  },
+
   columns: [
     {
       'title': 'Numărul dosarului',
@@ -113,4 +118,5 @@ function getPDFURL(row) {
 
 module.exports = CriminalCollegeAgendaSection;
 
+var dateFromDateString = require('app/util/date-from-date-string');
 var queryType = require('app/util/query-type');

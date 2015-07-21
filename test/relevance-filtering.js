@@ -31,6 +31,11 @@ describe('Relevance filtering', function() {
     sampleRow: [null, '2ra-1223/14', '2014-05-28', 'Edu Larisa vs Edu Mihail', 'Partajarea proprietăţii comune în devălmăşie şi evacuare', 'Depunerea cererii de apel. Cuprinsul cererii de apel. Cazurile in care nu se da curs cererii de apel. Restituirea cererii de apel. Cuantumurile tarifare ale taxei de stat', 'Recurs în secţiunea II', '10325'],
     columnIndex: 2,
     expectedDate: new Date('2014-05-28')
+  }, {
+    section: require('app/supreme-court/sections/criminal-college-agenda-section'),
+    sampleRow: [null, '1ra-422/2015', '2015-06-09', 'avocatul în numele inculpaţilor', 'Rotov Grigorii, Labliuc Evgheni, Rodin Veaceslav, Costocichin Oleg', 'CA Chişinău', 'art.362/1 alin.2 CP', '10.00', 'Fără participarea părţilor', ' Completul nr.1', 'Recurs împotriva hotărârii instanţei de apel', 'Amînată pronunţarea deciziei integrale pentru 16.07.2015.', '2015-07-02 16:26:08', '7884'],
+    columnIndex: 2,
+    expectedDate: new Date('2015-06-09')
   }].forEach(function(item) {
     testDateExtraction(
       item.section,
@@ -139,9 +144,6 @@ describe('Relevance filtering', function() {
   }
 
   describe('supreme court', function() {
-    describe('CriminalCollegeAgendaSection', function() {
-    });
-
     describe('CriminalCollegeSentenceSection', function() {
     });
 

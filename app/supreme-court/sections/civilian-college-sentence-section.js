@@ -46,6 +46,11 @@ var CivilianCollegeSentenceSection = {
     }
   },
 
+  getRowDate: function(row) {
+    var dateString = row[2];
+    return dateFromDateString(dateString);
+  },
+
   columns: [
     {
       'title': 'Numărul dosarului',
@@ -90,3 +95,4 @@ function getPDFURL(row) {
 module.exports = CivilianCollegeSentenceSection;
 
 var queryType = require('app/util/query-type');
+var dateFromDateString = require('app/util/date-from-date-string');

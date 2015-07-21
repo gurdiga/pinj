@@ -26,6 +26,11 @@ describe('Relevance filtering', function() {
     sampleRow: [null, '2ra-1223/14', 'Edu Larisa vs Edu Mihail', 'CA Chişinău', '2014-05-28', '09.00', 'În lipsa părţilor', ' Completul nr.3', 'Recurs secţiunea II', 'Admise recursurile, casată integral decizia CA, remisă pricina spre rejudecare la CA Chişinău', null, '16667'],
     columnIndex: 4,
     expectedDate: new Date('2014-05-28')
+  }, {
+    section: require('app/supreme-court/sections/civilian-college-sentence-section'),
+    sampleRow: [null, '2ra-1223/14', '2014-05-28', 'Edu Larisa vs Edu Mihail', 'Partajarea proprietăţii comune în devălmăşie şi evacuare', 'Depunerea cererii de apel. Cuprinsul cererii de apel. Cazurile in care nu se da curs cererii de apel. Restituirea cererii de apel. Cuantumurile tarifare ale taxei de stat', 'Recurs în secţiunea II', '10325'],
+    columnIndex: 2,
+    expectedDate: new Date('2014-05-28')
   }].forEach(function(item) {
     testDateExtraction(
       item.section,
@@ -134,9 +139,6 @@ describe('Relevance filtering', function() {
   }
 
   describe('supreme court', function() {
-    describe('CivilianCollegeSentenceSection', function() {
-    });
-
     describe('CriminalCollegeAgendaSection', function() {
     });
 

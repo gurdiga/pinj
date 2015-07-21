@@ -36,6 +36,11 @@ describe('Relevance filtering', function() {
     sampleRow: [null, '1ra-422/2015', '2015-06-09', 'avocatul în numele inculpaţilor', 'Rotov Grigorii, Labliuc Evgheni, Rodin Veaceslav, Costocichin Oleg', 'CA Chişinău', 'art.362/1 alin.2 CP', '10.00', 'Fără participarea părţilor', ' Completul nr.1', 'Recurs împotriva hotărârii instanţei de apel', 'Amînată pronunţarea deciziei integrale pentru 16.07.2015.', '2015-07-02 16:26:08', '7884'],
     columnIndex: 2,
     expectedDate: new Date('2015-06-09')
+  }, {
+    section: require('app/supreme-court/sections/criminal-college-sentence-section'),
+    sampleRow: [null, '1ra-483/2013', '2013-07-19', 'Naumov V., Ciorba D., Mancevschi O., Safron D., Pozdîrca A., Crotov V.', 'art. 187 al.2, 188 al.2, 208 CP', 'art. 187 al.2, 188 al.2, 208 CP', 'Recurs împotriva hotărârii instanţei de apel', '470'],
+    columnIndex: 2,
+    expectedDate: new Date('2013-07-19')
   }].forEach(function(item) {
     testDateExtraction(
       item.section,
@@ -144,9 +149,6 @@ describe('Relevance filtering', function() {
   }
 
   describe('supreme court', function() {
-    describe('CriminalCollegeSentenceSection', function() {
-    });
-
     describe('CriminalPlenumAgendaSection', function() {
     });
 

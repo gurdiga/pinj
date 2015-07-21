@@ -42,6 +42,11 @@ describe('Relevance filtering', function() {
     columnIndex: 2,
     expectedDate: new Date('2013-07-19')
   }, {
+    section: require('app/supreme-court/sections/criminal-plenum-sentence-section'),
+    sampleRow: [null, '4-1re-59/2015', '2015-04-02', 'Zaharia Natalia', 'art.190 alin.5 Cod penal', 'art.453 CPP', 'Recurs în anulare împotriva hotărârii  judecătoreşti irevocabile după epuizarea căilor ordinare de atac', '691'],
+    columnIndex: 2,
+    expectedDate: new Date('2015-04-02')
+  }, {
     section: require('app/supreme-court/sections/criminal-plenum-agenda-section'),
     sampleRow: [null, '4-1re-59/2015', '2015-04-02', 'avocatul Guţu V. în numele condamnatei Zaharia N.', 'Zaharia Natalia', 'CSJ', 'art.190 alin. 5 CP', '10.00', 'Fără participarea părţilor', 'Admisibilitatea recursului în anulare', 'inadmisibilitatea recursului în anulare declarat, ca fiind vădit neîntemeiat, publicat la 09.04.2015', null, '985'],
     columnIndex: 2,

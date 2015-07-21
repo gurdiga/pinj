@@ -16,6 +16,11 @@ describe('Relevance filtering', function() {
     sampleRow: [null, '2-1674/2014; 38-2-3714-01102014', '2015-06-03', '08.20', 'Postu Tudor Gheorghe,  dom. r.Orhei, s.Bieşti', 'Încasarea sumei', 'ÎCS”Red Union Fenosa”SA', 'Judecătoria Orhei', null, null, null, null, null],
     columnIndex: 2,
     expectedDate: new Date('2015-06-03')
+  }, {
+    section: require('app/supreme-court/sections/case-inquiry-section'),
+    sampleRow: [null, '4028', '2015-06-25', '2r-573/15', 'Repartizat', 'Civil', 'Iordan Vitalie vs Tanga Vasilii,  ÎMOM Moldcredit SRL, intervenient accesoriu executorii judecătorești Gușan Nicolae, Albot Radu', 'executorul judecătoresc Gușan Nicolae', 'recunoașterea valabilității actului juridic  ', 'Examinarea recursului în secţiunea I', '28182'],
+    columnIndex: 2,
+    expectedDate: new Date('2015-06-25')
   }].forEach(function(item) {
     testDateExtraction(
       item.section,
@@ -123,13 +128,7 @@ describe('Relevance filtering', function() {
     });
   }
 
-  describe('SummonsSection', function() {
-  });
-
   describe('supreme court', function() {
-    describe('CaseInquirySection', function() {
-    });
-
     describe('CivilianCollegeAgendaSection', function() {
     });
 

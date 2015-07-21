@@ -21,6 +21,11 @@ describe('Relevance filtering', function() {
     sampleRow: [null, '4028', '2015-06-25', '2r-573/15', 'Repartizat', 'Civil', 'Iordan Vitalie vs Tanga Vasilii,  ÎMOM Moldcredit SRL, intervenient accesoriu executorii judecătorești Gușan Nicolae, Albot Radu', 'executorul judecătoresc Gușan Nicolae', 'recunoașterea valabilității actului juridic  ', 'Examinarea recursului în secţiunea I', '28182'],
     columnIndex: 2,
     expectedDate: new Date('2015-06-25')
+  }, {
+    section: require('app/supreme-court/sections/civilian-college-agenda-section'),
+    sampleRow: [null, '2ra-1223/14', 'Edu Larisa vs Edu Mihail', 'CA Chişinău', '2014-05-28', '09.00', 'În lipsa părţilor', ' Completul nr.3', 'Recurs secţiunea II', 'Admise recursurile, casată integral decizia CA, remisă pricina spre rejudecare la CA Chişinău', null, '16667'],
+    columnIndex: 4,
+    expectedDate: new Date('2014-05-28')
   }].forEach(function(item) {
     testDateExtraction(
       item.section,
@@ -129,9 +134,6 @@ describe('Relevance filtering', function() {
   }
 
   describe('supreme court', function() {
-    describe('CivilianCollegeAgendaSection', function() {
-    });
-
     describe('CivilianCollegeSentenceSection', function() {
     });
 

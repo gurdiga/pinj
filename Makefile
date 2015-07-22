@@ -5,7 +5,7 @@ x:
 	node 1.js
 
 run: test
-	@NODE_ENV=development node .
+	@NODE_ENV=development node run app/index
 
 deps:
 	npm prune && npm install

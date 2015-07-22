@@ -20,12 +20,14 @@ function getDateParts(dateString) {
     year: dateParts[0],
     month: dateParts[1],
     dayOfMonth: dateParts[2]
-  };
-
-  if (dateString.match(/^\d{2}-\d{2}-\d{4}$/)) return {
+  }; else if (dateString.match(/^\d{2}-\d{2}-\d{4}$/)) return {
     year: dateParts[2],
     month: dateParts[1],
     dayOfMonth: dateParts[0]
+  }; else return {
+    year: undefined,
+    month: undefined,
+    dayOfMonth: undefined
   };
 }
 

@@ -96,8 +96,8 @@ describe('Relevance filtering', function() {
         expect(rowDate.getFullYear()).to.equal(today.getFullYear());
       });
 
-      it('getRowDate() returns current date when date is likely invalid', function() {
-        row[columnIndex] = '23-23-2015';
+      it('getRowDate() returns current date when date is invalid', function() {
+        row[columnIndex] = '23-23';
         var today = new Date();
         var rowDate = section.getRowDate(row);
         expect(rowDate.getDate()).to.equal(today.getDate());

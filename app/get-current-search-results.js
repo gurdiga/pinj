@@ -18,7 +18,7 @@ function getCurrentSearchResults(clientList) {
             var apiRequestParams = section.getAPIRequestParams(subsectionName, escapeQuotes(clientName));
 
             return queryAPI(apiRequestParams)
-            .then(extractRows)
+            .then(extractRows(section))
             .then(preprocessRows(section.rowPreprocessor));
           });
         });
@@ -31,11 +31,14 @@ function getCurrentSearchResults(clientList) {
   };
 }
 
-function extractRows(result) {
-  return result.rows
-  .filter(withValidID)
-  .filter(withValidData)
-  .map(extractData);
+function extractRows(section) {
+  return function(result) {
+    return result.rows
+    .filter(withValidID)
+    .filter(withValidData)
+    .filter(relevant)
+    .map(extractData);
+  };
 
   function withValidID(row) {
     return !!row.id;
@@ -43,6 +46,14 @@ function extractRows(result) {
 
   function withValidData(row) {
     return !!row.cell;
+  }
+
+  function relevant(row) {
+    var MAX_AGE = 6 * 12 * 31 * 24 * 3600 * 1000;
+    var currentDate = new Date();
+    var rowDate = section.getRowDate(row.cell);
+    var isRecentEnough = currentDate.getTime() - rowDate.getTime() < MAX_AGE;
+    return isRecentEnough;
   }
 
   function extractData(row) {

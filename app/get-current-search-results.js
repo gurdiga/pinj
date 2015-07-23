@@ -49,10 +49,14 @@ function extractRows(section) {
   }
 
   function relevant(row) {
-    var MAX_AGE = 6 * 12 * 31 * 24 * 3600 * 1000;
+    var MONTH = 12 * 31 * 24 * 3600 * 1000;
+    var MAX_AGE = 3 * MONTH;
+
     var currentDate = new Date();
     var rowDate = section.getRowDate(row.cell);
-    var isRecentEnough = currentDate.getTime() - rowDate.getTime() < MAX_AGE;
+
+    var isRecentEnough = currentDate - rowDate < MAX_AGE;
+
     return isRecentEnough;
   }
 

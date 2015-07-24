@@ -49,15 +49,7 @@ function extractRows(section) {
   }
 
   function relevant(row) {
-    var MONTH = 12 * 31 * 24 * 3600 * 1000;
-    var MAX_AGE = 3 * MONTH;
-
-    var currentDate = new Date();
-    var rowDate = section.getRowDate(row.cell);
-
-    var isRecentEnough = currentDate - rowDate < MAX_AGE;
-
-    return isRecentEnough;
+    return isSearchResultRecentEnough(section, row.cell);
   }
 
   function extractData(row) {
@@ -149,6 +141,7 @@ function delay(ms) {
 
 var SupremeCourt = require('app/supreme-court');
 var DistrictCourts = require('app/district-courts');
+var isSearchResultRecentEnough = require('app/is-search-result-recent-enough');
 var forEach = require('app/util/for-each');
 var queryAPI = require('app/util/query-api');
 var escapeQuotes = require('app/util/mysql-escape');

@@ -20,6 +20,10 @@ prevent-only:
 	fi && \
 	exit $$RESULT
 
+crontab:
+	# daily@6 node run app/purge-search-history
+	# nightly@21 node run app/index
+
 JS_FILES = $(shell find test app -name '*.js' -or -name '*.json' | sort)
 
 include $(shell find makefiles -name '*.mk' | sort)

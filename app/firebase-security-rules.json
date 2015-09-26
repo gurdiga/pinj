@@ -18,9 +18,6 @@
             ".read": "auth.isSearchEngine === true",
             ".write": "auth.isSearchEngine === true"
           },
-          "paymentOverdueNotification": {
-            ".write": "auth.isSearchEngine === true || auth.uid === 'script'"
-          },
           "registration": {
             ".write": "!data.exists() || auth.isSearchEngine === true"
           },

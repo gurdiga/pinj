@@ -22,13 +22,9 @@ function prepareUserData(data, aid) {
   user.email = emailFromAID(aid);
   user.aid = aid;
   user.lastSearch = data.timestamps.lastSearch;
-  user.paymentOverdueNotification = data.timestamps.paymentOverdueNotification;
   user.toString = function() {
     return user.email;
   };
-
-  if (isTrial(data.timestamps.registration)) user.isTrial = true;
-  else if (isPayer(data.timestamps.lastPayment)) user.isPayer = true;
 
   return user;
 }
@@ -60,16 +56,6 @@ function accountForDevelopmentMode(user) {
 
 function emailFromAID(aid) {
   return aid.replace(/:/g, '.');
-}
-
-function isTrial(registrationTimestamp) {
-  registrationTimestamp = registrationTimestamp || 0;
-  return Date.now() - registrationTimestamp < config.TRIAL_PERIOD;
-}
-
-function isPayer(lastPaymentTimestamp) {
-  lastPaymentTimestamp = lastPaymentTimestamp || 0;
-  return Date.now() - lastPaymentTimestamp < config.SUBSCRIPTION_PERIOD + config.GRACE_PERIOD;
 }
 
 function prepareClientList(list) {

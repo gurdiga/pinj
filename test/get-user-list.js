@@ -5,8 +5,7 @@ describe('getUserList', function() {
   var userData = {
     'clients': '',
     'timestamps': {
-      'lastSearch': 1321343414543,
-      'paymentOverdueNotification': 1321343414543
+      'lastSearch': 1321343414543
     }
   };
   var allUserData = { 'test@example:com': userData };
@@ -101,87 +100,9 @@ describe('getUserList', function() {
       .that.is.equal(userData.timestamps.lastSearch);
     });
 
-    it('remembers the paymentOverdueNotification timestamp', function() {
-      expect(preparedUser).to.have.property('paymentOverdueNotification')
-      .that.is.equal(userData.timestamps.paymentOverdueNotification);
-    });
-
     it('add the toString() method which returns the email', function() {
       expect(preparedUser.toString()).to.equal(preparedUser.email);
     });
-
-    var oneDay = 24 * 3600 * 1000;
-
-    describe('trial detection', function() {
-      var registration;
-
-      describe('when user is in their trial period', function() {
-        beforeEach(function() {
-          registration = Date.now() - (config.TRIAL_PERIOD - oneDay);
-          return prepareUserWith('registration', registration);
-        });
-
-        it('marks the user as trial', function() {
-          expect(preparedUser).to.have.property('isTrial').that.is.true;
-        });
-      });
-
-      describe('when user’s trial ended', function() {
-        beforeEach(function() {
-          registration = Date.now() - (config.TRIAL_PERIOD + oneDay);
-          return prepareUserWith('registration', registration);
-        });
-
-        it('marks the user as trial', function() {
-          expect(preparedUser).not.to.have.property('isTrial');
-        });
-      });
-    });
-
-    describe('payer detection', function() {
-      var lastPayment;
-
-      describe('when user has never paid', function() {
-        beforeEach(function() {
-          lastPayment = undefined;
-          return prepareUserWith('lastPayment', lastPayment);
-        });
-
-        it('is not considered a payer', function() {
-          expect(preparedUser).not.to.have.property('isPayer');
-        });
-      });
-
-      describe('when user has paid less than (a payment period + a grace period) ago', function() {
-        beforeEach(function() {
-          lastPayment = Date.now() - (config.SUBSCRIPTION_PERIOD + config.GRACE_PERIOD - oneDay);
-          return prepareUserWith('lastPayment', lastPayment);
-        });
-
-        it('is considered a payer', function() {
-          expect(preparedUser).to.have.property('isPayer').that.is.true;
-        });
-      });
-
-      describe('when user has paid more than (a payment period + a grace period) ago', function() {
-        beforeEach(function() {
-          lastPayment = Date.now() - (config.SUBSCRIPTION_PERIOD + config.GRACE_PERIOD + oneDay);
-          return prepareUserWith('lastPayment', lastPayment);
-        });
-
-        it('is not considered a payer', function() {
-          expect(preparedUser).not.to.have.property('isPayer');
-        });
-      });
-    });
-
-    function prepareUserWith(timestampName, value) {
-      userData.timestamps[timestampName] = value;
-
-      return getUserList().then(function(preparedUsers) {
-        preparedUser = preparedUsers[0];
-      });
-    }
   });
 
   describe('filtering', function() {
@@ -258,5 +179,4 @@ describe('getUserList', function() {
 
 var getUserList = require('app/get-user-lists');
 var Data = require('app/util/data');
-var config = require('app/config');
 var Q = require('q');

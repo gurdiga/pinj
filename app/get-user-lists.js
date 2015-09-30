@@ -10,7 +10,7 @@ function getUserList() {
 function prepareForSearch(users) {
   return _(users)
   .map(prepareUserData)
-  .filter(not(seachedWithinTheLast(6 * 3600 * 1000)))
+  .filter(not(searchedWithinTheLast(6 * 3600 * 1000)))
   .filter(nonTestUsers)
   .filter(accountForDevelopmentMode);
 }
@@ -35,7 +35,7 @@ function not(f) {
   };
 }
 
-function seachedWithinTheLast(time) {
+function searchedWithinTheLast(time) {
   return function(user) {
     if (!user.lastSearch) return false;
 

@@ -2,7 +2,7 @@
 
 module.exports = getCurrentSearchResults;
 
-var DELAY_AFTER_EACH_CLIENT = 3000;
+var DELAY_AFTER_EACH_CLIENT = process.env['DELAY_AFTER_EACH_CLIENT'] || 3000;
 
 function getCurrentSearchResults(clientList) {
   return function() {

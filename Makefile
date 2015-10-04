@@ -4,6 +4,9 @@ pre-commit: prevent-only test
 x:
 	node 1.js
 
+manual:
+	heroku run node run app/index
+
 run: test
 	@NODE_ENV=development node run app/index
 

@@ -11,10 +11,16 @@ function forEach(items) {
       return Q.Promise(function(resolve, reject) {
         var asyncTasks = prepareAsyncTasks(items, thenableIterator, thisObject);
 
-        async[flowType](asyncTasks, function(err, results) {
+        if (flowType === 'parallel') {
+          async.parallelLimit(asyncTasks, 10, callback);
+        } else {
+          async.series(asyncTasks, callback);
+        }
+
+        function callback(err, results) {
           if (err) reject(err);
           else resolve(zip(items, results));
-        });
+        }
       });
     };
   }

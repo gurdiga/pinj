@@ -1,5 +1,7 @@
 'use strict';
 
+var MAX_PARALLEL_CONNECTIONS = process.env.MAX_PARALLEL_CONNECTIONS || 10;
+
 function forEach(items) {
   return {
     inSeries: asyncRun('series'),
@@ -12,7 +14,7 @@ function forEach(items) {
         var asyncTasks = prepareAsyncTasks(items, thenableIterator, thisObject);
 
         if (flowType === 'parallel') {
-          async.parallelLimit(asyncTasks, 10, callback);
+          async.parallelLimit(asyncTasks, MAX_PARALLEL_CONNECTIONS, callback);
         } else {
           async.series(asyncTasks, callback);
         }

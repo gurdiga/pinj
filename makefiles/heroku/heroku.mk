@@ -1,6 +1,9 @@
 deploy: test
 	@git push -f heroku
 
+add-prod-remote:
+	git remote add heroku git@heroku.com:pinj-search-engine.git
+
 log:
 	@heroku logs --tail
 

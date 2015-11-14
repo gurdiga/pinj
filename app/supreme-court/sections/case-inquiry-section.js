@@ -9,11 +9,20 @@ var CaseInquirySection = {
     return 'Cereri pendinte spre examinare la CSJ';
   },
 
+  slugName: 'case-inquiries',
+
   subsectionNames: ['only one'],
+
+  getAPIRequestParamsForBulkDownload: function(subsectionName, pageNumber) {
+    return {
+      url: getURL(),
+      searchOptions: getBulkDownloadOptions(pageNumber)
+    };
+  },
 
   getAPIRequestParams: function(subsectionName, clientName) {
     return {
-      url: 'http://jurisprudenta.csj.md/grid_lista_dosare.php',
+      url: getURL(),
       searchOptions: getSearchOptions(clientName)
     };
 
@@ -104,7 +113,12 @@ function getPDFURL(row) {
   return 'http://jurisprudenta.csj.md/pdf_gen_dosare.php?id=' + row[ROWID_INDEX];
 }
 
+function getURL() {
+  return 'http://jurisprudenta.csj.md/grid_lista_dosare.php';
+}
+
 module.exports = CaseInquirySection;
 
 var queryType = require('app/util/query-type');
 var dateFromDateString = require('app/util/date-from-date-string');
+var getBulkDownloadOptions = require('app/util/get-bulk-download-options');

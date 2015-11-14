@@ -9,11 +9,20 @@ var CriminalPlenumSentenceSection = {
     return 'Hotărîrile Plenului Colegiului Penal al CSJ';
   },
 
+  slugName: 'criminal-plenum-sentences',
+
   subsectionNames: ['only one'],
+
+  getAPIRequestParamsForBulkDownload: function(subsectionName, pageNumber) {
+    return {
+      url: getURL(),
+      searchOptions: getBulkDownloadOptions(pageNumber)
+    };
+  },
 
   getAPIRequestParams: function(subsectionName, clientName) {
     return {
-      url: 'http://jurisprudenta.csj.md/plen_penal_grid.php',
+      url: getURL(),
       searchOptions: getSearchOptions(clientName)
     };
 
@@ -92,7 +101,12 @@ function getPDFURL(row) {
   return 'http://jurisprudenta.csj.md/search_plen_penal.php?id=' + row[ROWID_INDEX];
 }
 
+function getURL() {
+  return 'http://jurisprudenta.csj.md/plen_penal_grid.php';
+}
+
 module.exports = CriminalPlenumSentenceSection;
 
 var queryType = require('app/util/query-type');
 var dateFromDateString = require('app/util/date-from-date-string');
+var getBulkDownloadOptions = require('app/util/get-bulk-download-options');

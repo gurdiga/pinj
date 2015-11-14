@@ -22,4 +22,6 @@ SupremeCourt.toString = function() {
   return 'Curtea Supremă de Justiţie';
 };
 
+SupremeCourt.slugName = 'sc';
+
 module.exports = SupremeCourt;

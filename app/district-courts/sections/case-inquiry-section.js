@@ -7,11 +7,20 @@ var CaseInquirySection = {
     return 'Cereri în instanţă';
   },
 
+  slugName: 'case-inquiries',
+
   subsectionNames: ['only one'],
+
+  getAPIRequestParamsForBulkDownload: function(pageNumber) {
+    return {
+      url: getURL(),
+      searchOptions: getBulkDownloadOptions(pageNumber)
+    };
+  },
 
   getAPIRequestParams: function(subsectionName, clientName) {
     return {
-      url: 'http://instante.justice.md/apps/cereri_pendinte/cereri_grid.php',
+      url: getURL(),
       searchOptions: getSearchOptions(clientName)
     };
 
@@ -86,7 +95,12 @@ var CaseInquirySection = {
   ]
 };
 
+function getURL() {
+  return 'http://instante.justice.md/apps/cereri_pendinte/cereri_grid.php';
+}
+
 module.exports = CaseInquirySection;
 
 var queryType = require('app/util/query-type');
 var dateFromFileNumber = require('app/util/date-from-file-number');
+var getBulkDownloadOptions = require('app/util/get-bulk-download-options');

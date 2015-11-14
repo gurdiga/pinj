@@ -7,11 +7,20 @@ var AgendaSection = {
     return 'Agenda şedinţelor';
   },
 
+  slugName: 'agenda',
+
   subsectionNames: courtLabels(),
+
+  getAPIRequestParamsForBulkDownload: function(courtLabel, pageNumber) {
+    return {
+      url: getURL(courtLabel),
+      searchOptions: getBulkDownloadOptions(pageNumber)
+    };
+  },
 
   getAPIRequestParams: function(courtLabel, clientName) {
     return {
-      url: 'http://instante.justice.md/apps/agenda_judecata/inst/' + courtLabel + '/agenda_grid.php',
+      url: getURL(courtLabel),
       searchOptions: getSearchOptions(clientName)
     };
 
@@ -100,7 +109,12 @@ function courtLabels() {
   return _(Courts.getIds()).without('jslb');
 }
 
+function getURL(courtLabel) {
+  return 'http://instante.justice.md/apps/agenda_judecata/inst/' + courtLabel + '/agenda_grid.php';
+}
+
 module.exports = AgendaSection;
 
 var queryType = require('app/util/query-type');
 var dateFromDateString = require('app/util/date-from-date-string');
+var getBulkDownloadOptions = require('app/util/get-bulk-download-options');

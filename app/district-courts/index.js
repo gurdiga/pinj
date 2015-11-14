@@ -16,4 +16,6 @@ DistrictCourts.toString = function() {
   return 'Instanţele de gradul 1 şi 2 de jurisdicţie';
 };
 
+DistrictCourts.slugName = 'dc';
+
 module.exports = DistrictCourts;

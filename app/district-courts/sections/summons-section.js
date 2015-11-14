@@ -6,11 +6,20 @@ var SummonsSection = {
     return 'Citaţii în instanţă';
   },
 
+  slugName: 'summons',
+
   subsectionNames: ['persoana_citata', 'reclamantul'],
+
+  getAPIRequestParamsForBulkDownload: function(fieldName, pageNumber) {
+    return {
+      url: getURL(),
+      searchOptions: getBulkDownloadOptions(pageNumber)
+    };
+  },
 
   getAPIRequestParams: function(fieldName, clientName) {
     return {
-      url: 'http://instante.justice.md/apps/citatii_judecata/citatii_grid.php',
+      url: getURL(),
       searchOptions: getSearchOptions(fieldName, clientName)
     };
 
@@ -128,7 +137,12 @@ function getRole(row, fieldName) {
   }
 }
 
+function getURL() {
+  return 'http://instante.justice.md/apps/citatii_judecata/citatii_grid.php';
+}
+
 module.exports = SummonsSection;
 
 var queryType = require('app/util/query-type');
 var dateFromDateString = require('app/util/date-from-date-string');
+var getBulkDownloadOptions = require('app/util/get-bulk-download-options');

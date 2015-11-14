@@ -1,7 +1,7 @@
 default: test
 pre-commit: prevent-only test
 
-x:
+x: jshint
 	node 1.js
 
 manual:

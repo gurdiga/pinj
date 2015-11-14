@@ -9,11 +9,20 @@ var CivilianCollegeAgendaSection = {
     return 'Agenda şedinţelor Colegiului civil, comercial şi de contencios administrativ al CSJ';
   },
 
+  slugName: 'civilian-college-agenda',
+
   subsectionNames: ['only one'],
+
+  getAPIRequestParamsForBulkDownload: function(subsectionName, pageNumber) {
+    return {
+      url: getURL(),
+      searchOptions: getBulkDownloadOptions(pageNumber)
+    };
+  },
 
   getAPIRequestParams: function(subsectionName, clientName) {
     return {
-      url: 'http://agenda.csj.md/civil_grid.php',
+      url: getURL(),
       searchOptions: getSearchOptions(clientName)
     };
 
@@ -108,7 +117,12 @@ function getPDFURL(row) {
   return 'http://agenda.csj.md/pdf_creator_civil.php?id=' + row[ROWID_INDEX];
 }
 
+function getURL() {
+  return 'http://agenda.csj.md/civil_grid.php';
+}
+
 module.exports = CivilianCollegeAgendaSection;
 
 var queryType = require('app/util/query-type');
 var dateFromDateString = require('app/util/date-from-date-string');
+var getBulkDownloadOptions = require('app/util/get-bulk-download-options');

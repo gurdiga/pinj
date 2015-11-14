@@ -9,11 +9,20 @@ var CriminalCollegeAgendaSection = {
     return 'Agenda şedinţelor Colegiului Penal al CSJ';
   },
 
+  slugName: 'criminal-college-agenda',
+
   subsectionNames: ['only one'],
+
+  getAPIRequestParamsForBulkDownload: function(subsectionName, pageNumber) {
+    return {
+      url: getURL(),
+      searchOptions: getBulkDownloadOptions(pageNumber)
+    };
+  },
 
   getAPIRequestParams: function(subsectionName, clientName) {
     return {
-      url: 'http://agenda.csj.md/penal_grid.php',
+      url: getURL(),
       searchOptions: getSearchOptions(clientName)
     };
 
@@ -116,7 +125,12 @@ function getPDFURL(row) {
   return 'http://agenda.csj.md/pdf_creator_penal.php?id=' + row[ROWID_INDEX];
 }
 
+function getURL() {
+  return 'http://agenda.csj.md/penal_grid.php';
+}
+
 module.exports = CriminalCollegeAgendaSection;
 
 var dateFromDateString = require('app/util/date-from-date-string');
 var queryType = require('app/util/query-type');
+var getBulkDownloadOptions = require('app/util/get-bulk-download-options');

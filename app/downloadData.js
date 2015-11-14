@@ -22,9 +22,13 @@ function downloadData() {
 
         var allRows = [];
 
-        return requestNextPage(1)
+        return collectAllRows()
         .then(removeDiacritics)
         .then(saveToFile(fileName));
+
+        function collectAllRows() {
+          return requestNextPage(1);
+        }
 
         function requestNextPage(pageNumber) {
           var apiRequestParams = section.getAPIRequestParamsForBulkDownload(subsectionName, pageNumber);
@@ -41,7 +45,7 @@ function downloadData() {
               if (isTherePossiblyMoreData) {
                 return requestNextPage(pageNumber + 1);
               } else {
-                return Q.Promise.resolve();
+                return Q.Promise.resolve(allRows);
               }
             };
           }

@@ -11,7 +11,7 @@ var CaseInquirySection = {
 
   subsectionNames: ['only one'],
 
-  getAPIRequestParamsForBulkDownload: function(pageNumber) {
+  getAPIRequestParamsForBulkDownload: function(courtLabel, pageNumber) {
     return {
       url: getURL(),
       searchOptions: getBulkDownloadOptions(pageNumber)

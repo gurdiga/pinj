@@ -2,5 +2,7 @@ node_modules/
 heroku.log
 .env
 
+app/data/
+
 # quick experiments
 ?.js

@@ -137,7 +137,7 @@ function removeDiacritics(rows) {
 
 function saveToFile(filePath) {
   return function(rows) {
-    fs.writeFileSync(filePath, JSON.stringify(rows));
+    fs.writeFileSync(filePath, JSON.stringify(rows, null, 2));
   };
 }
 

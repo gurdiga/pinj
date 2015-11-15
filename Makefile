@@ -2,7 +2,7 @@ default: test
 pre-commit: prevent-only test
 
 x: jshint
-	node 1.js
+	node --expose-gc 1.js
 
 manual:
 	heroku run node run app/index

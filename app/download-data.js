@@ -1,5 +1,8 @@
 'use strict';
 
+module.exports = downloadData;
+module.exports.getFilePath = getFilePath;
+
 var DELAY_BETWEEN_REQUESTS = 125;
 var DATA_DIR = './app/data/';
 
@@ -9,28 +12,33 @@ function downloadData() {
     SupremeCourt
   ];
 
-  removeOldDataFiles();
+  prepareDataDirectory();
 
   return forEach(levels).inSeries(function(sections) {
     return forEach(sections).inSeries(function(section) {
       return forEach(section.subsectionNames).inSeries(function(subsectionName) {
-        var fileName = [sections.slugName, section.slugName, subsectionName].join('-') + '.json';
+        /*global gc*/
+        gc();
+
+        var filePath = getFilePath(sections, section, subsectionName);
+
         console.log('');
-        console.log(fileName);
+        console.log(filePath);
 
-        if (fs.existsSync(DATA_DIR + fileName)) return Q.Promise.resolve();
-
-        var allRows = [];
+        if (fs.existsSync(filePath)) return Q.Promise.resolve();
 
         return collectAllRows()
         .then(removeDiacritics)
-        .then(saveToFile(fileName));
+        .then(saveToFile(filePath));
 
         function collectAllRows() {
-          return requestNextPage(1);
+          var startPage = 1;
+          var allRows = [];
+
+          return requestNextPage(startPage, allRows);
         }
 
-        function requestNextPage(pageNumber) {
+        function requestNextPage(pageNumber, allRows) {
           var apiRequestParams = section.getAPIRequestParamsForBulkDownload(subsectionName, pageNumber);
 
           return queryAPI(apiRequestParams)
@@ -42,11 +50,8 @@ function downloadData() {
             return function(numberOfRowsFetchedWithLastRequest) {
               var isTherePossiblyMoreData = numberOfRowsFetchedWithLastRequest === BulkDownloadOptions.PAGE_SIZE;
 
-              if (isTherePossiblyMoreData) {
-                return requestNextPage(pageNumber + 1);
-              } else {
-                return Q.Promise.resolve(allRows);
-              }
+              if (isTherePossiblyMoreData) return requestNextPage(pageNumber + 1, allRows);
+              else return Q.Promise.resolve(allRows);
             };
           }
         }
@@ -59,8 +64,11 @@ function downloadData() {
   });
 }
 
-function removeOldDataFiles() {
-  if (!fs.existsSync(DATA_DIR)) return;
+function prepareDataDirectory() {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR);
+    return;
+  }
 
   var fileNames = fs.readdirSync(DATA_DIR);
 
@@ -127,10 +135,14 @@ function removeDiacritics(rows) {
   return rows;
 }
 
-function saveToFile(fileName) {
+function saveToFile(filePath) {
   return function(rows) {
-    fs.writeFileSync(DATA_DIR + fileName, JSON.stringify(rows));
+    fs.writeFileSync(filePath, JSON.stringify(rows));
   };
+}
+
+function getFilePath(sections, section, subsectionName) {
+  return DATA_DIR + [sections.slugName, section.slugName, subsectionName].join('-') + '.json';
 }
 
 var SupremeCourt = require('app/supreme-court');
@@ -141,5 +153,3 @@ var BulkDownloadOptions = require('app/util/get-bulk-download-options');
 
 var fs = require('fs');
 var Q = require('q');
-
-downloadData();

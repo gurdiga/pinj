@@ -28,7 +28,6 @@ function downloadData() {
         if (fs.existsSync(filePath)) return Q.Promise.resolve();
 
         return collectAllRows()
-        .then(removeDiacritics)
         .then(saveToFile(filePath));
 
         function collectAllRows() {
@@ -135,14 +134,12 @@ function extractRows(section) {
 }
 */
 
-function removeDiacritics(rows) {
-  // TODO: figure out how
-  return rows;
-}
-
 function saveToFile(filePath) {
+  var removeDiacritics = require('diacritics').remove;
+
   return function(rows) {
-    fs.writeFileSync(filePath, JSON.stringify(rows, null, 2));
+    var text = JSON.stringify(rows, null, 2);
+    fs.writeFileSync(filePath, removeDiacritics(text));
   };
 }
 

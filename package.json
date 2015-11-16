@@ -20,6 +20,7 @@
     "request": "2.51.0",
     "dateformat": "1.0.11",
     "underscore": "1.7.0",
+    "diacritics": "1.2.3",
     "cron": "1.0.5",
     "time": "0.11.0"
   },

@@ -3,8 +3,8 @@
 module.exports = downloadData;
 module.exports.getFilePath = getFilePath;
 
-var DELAY_BETWEEN_REQUESTS = 125;
-var DATA_DIR = './app/data/';
+var DELAY_BETWEEN_REQUESTS = 500;
+var DATA_DIR = './data/';
 
 function downloadData() {
   var levels = [
@@ -70,9 +70,14 @@ function prepareDataDirectory() {
     return;
   }
 
-  var fileNames = fs.readdirSync(DATA_DIR);
+  var fileNames = fs.readdirSync(DATA_DIR).filter(isFile);
 
   fileNames.forEach(removeFile);
+
+  function isFile(fileName) {
+    var stat = fs.statSync(DATA_DIR + fileName);
+    return stat.isFile();
+  }
 
   function removeFile(fileName) {
     fs.unlinkSync(DATA_DIR + fileName);

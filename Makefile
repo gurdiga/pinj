@@ -5,10 +5,13 @@ x:
 	node 1.js
 
 manual:
-	heroku run node run app/index
+	heroku run --app pinj-search-engine node run app/index
 
 run: test
 	@NODE_ENV=development node run app/index
+
+run-production: test
+	@NODE_ENV=production node run app/index
 
 deps:
 	npm prune && npm install

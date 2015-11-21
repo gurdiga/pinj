@@ -16,7 +16,9 @@ function queryAPI(apiRequestOptions) {
   };
 
   return Q.Promise(function(resolve, reject) {
+    console.log('-->', requestOptions.uri);
     request(requestOptions, function(err, res, body) {
+      console.log('<--', requestOptions.uri);
       if (err) {
         console.error(err, apiRequestOptions);
         reject(err);

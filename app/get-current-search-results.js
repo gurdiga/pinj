@@ -13,7 +13,7 @@ function getCurrentSearchResults(clientList) {
 
     return forEach(clientList).inSeries(function(clientName) {
       return time(forEach(levels).inSeries(function(sections) {
-        return forEach(sections).inParallel(function(section) {
+        return forEach(sections).inSeries(function(section) {
           return forEach(section.subsectionNames).inParallel(function(subsectionName) {
             var apiRequestParams = section.getAPIRequestParams(subsectionName, escapeQuotes(clientName));
 

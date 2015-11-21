@@ -20,7 +20,8 @@ function getCurrentSearchResults(clientList) {
             return queryAPI(apiRequestParams)
             .then(extractRows(section))
             .then(preprocessRows(section.rowPreprocessor));
-          });
+          })
+          .then(delay(1000));
         })
         .then(delay(1000));
       })

@@ -21,7 +21,8 @@ function getCurrentSearchResults(clientList) {
             .then(extractRows(section))
             .then(preprocessRows(section.rowPreprocessor));
           });
-        });
+        })
+        .then(delay(1000));
       })
       .then(delay(DELAY_AFTER_EACH_CLIENT)), '- ' + clientName);
     })

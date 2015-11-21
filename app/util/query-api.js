@@ -15,9 +15,13 @@ function queryAPI(apiRequestOptions) {
     json: true
   };
 
-  return Q.Promise(function(resolve) {
+  return Q.Promise(function(resolve, reject) {
     request(requestOptions, function(err, res, body) {
-      if (err) console.error(err, apiRequestOptions);
+      if (err) {
+        console.error(err, apiRequestOptions);
+        reject(err);
+        return;
+      }
 
       res = res || {statusCode: -1};
       if (res.statusCode !== 200) console.error('HTTP', res.statusCode, apiRequestOptions);

@@ -4,7 +4,7 @@ function main() {
   var script = process.argv[2];
   assert(script, 'Script to run is required: give it as the first argument');
 
-  execute('node ' + script)
+  time(execute('node ' + script), '- execution')
   .then(announceSuccess(script))
   .catch(announceFailure(script))
   .finally(exit);
@@ -34,6 +34,7 @@ function exit() {
 
 var sendEmail = require('app/util/send-email');
 var execute = require('app/util/execute');
+var time = require('app/util/time');
 var assert = require('assert');
 
 main();

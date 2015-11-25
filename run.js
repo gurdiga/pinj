@@ -11,9 +11,9 @@ function main() {
 }
 
 function announceSuccess(script) {
-  return function(stdIO) {
+  return function(output) {
     var subject = 'PINJ cron success: ' + script;
-    var body = '<pre>' + stdIO + '</pre>';
+    var body = '<pre>' + output + '</pre>';
 
     return sendEmail('gurdiga@gmail.com', subject)({ html: body });
   };

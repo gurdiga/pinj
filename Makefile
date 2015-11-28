@@ -10,7 +10,7 @@ manual:
 run: test
 	@NODE_ENV=development node run app/index
 
-run-production: test
+run-production:
 	@NODE_ENV=production node run app/index
 
 deps:

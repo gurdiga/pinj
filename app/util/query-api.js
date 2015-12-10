@@ -24,7 +24,11 @@ function queryAPI(apiRequestOptions) {
       }
 
       res = res || {statusCode: -1};
-      if (res.statusCode !== 200) console.error('HTTP', res.statusCode, apiRequestOptions);
+
+      if (res.statusCode !== 200) {
+        console.error('HTTP', res.statusCode, apiRequestOptions);
+        process.exit(1);
+      }
 
       resolve(prepareBody(body));
     });

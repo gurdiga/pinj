@@ -27,7 +27,7 @@ function queryAPI(apiRequestOptions) {
 
       if (res.statusCode !== 200) {
         console.error('HTTP', res.statusCode, apiRequestOptions);
-        process.exit(1);
+        reject(new Error('HTTP ' + res.statusCode));
       }
 
       resolve(prepareBody(body));
